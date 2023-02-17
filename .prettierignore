@@ -1,0 +1,7 @@
+src/docs/*.md
+src/components/*.md
+**/*.svg
+**/*.html
+build
+node_modules
+.github
