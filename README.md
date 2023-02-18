@@ -36,3 +36,16 @@ git commit 规范
 -   revert：回滚到上一个版本。
 -   merge：代码合并。
 -   sync：同步主线或分支的 Bug。
+
+组件库
+
+```
+# react-styleguidist
+npm install --save-dev react-styleguidist
+npm install --save-dev react-docgen-typescript
+
+# setting: styleguide.config.js
+
+# start react-styleguidist
+npx styleguidist server
+```
