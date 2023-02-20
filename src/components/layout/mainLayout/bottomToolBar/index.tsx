@@ -10,8 +10,8 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import Tooltip from '@mui/material/Tooltip';
 
-const buttonSize = '28px';
-const buttonRadius = '14px';
+const buttonSize = '24px';
+const buttonRadius = '12px';
 
 const BlueCircleToolIconButton = styled(MuiButton)(({ theme }) => ({
     minWidth: buttonSize,

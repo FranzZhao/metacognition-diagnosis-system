@@ -29,6 +29,8 @@ const MainLayout = () => {
                     <Outlet />
                 </Box>
             </Box>
+            {/* TODO-今晚完成: 工具窗口 */}
+            <Box>知识地图工具小窗口</Box>
             {/* 底部工具栏 */}
             <BottomToolBar />
         </Box>
