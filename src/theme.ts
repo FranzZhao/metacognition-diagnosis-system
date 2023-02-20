@@ -40,7 +40,15 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    background: '#30384A'
+                    background: '#242a37'
+                }
+            }
+        },
+        MuiToolbar: {
+            styleOverrides: {
+                root: {
+                    background: '#1a5678',
+                    width: '100%'
                 }
             }
         }
