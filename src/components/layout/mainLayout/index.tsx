@@ -18,10 +18,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import PublicIcon from '@mui/icons-material/Public';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { Link, Outlet, useLocation, useMatch, useResolvedPath } from 'react-router-dom';
 import { routes } from '../../../utils/routers';
+import { Avatar, Button, Tooltip } from '@mui/material';
+import { orange, green, blue } from '@mui/material/colors';
+import userBg from '@/assets/img/userBg.jpg';
+import logo from '@/assets/img/logo.png';
+import franz from '@/assets/img/Franz.png';
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 const openedMixin = (theme: Theme): CSSObject => ({
     width: drawerWidth,
@@ -47,8 +55,9 @@ const closedMixin = (theme: Theme): CSSObject => ({
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
+    justifyContent: 'center',
+    background: theme.palette.primary.dark,
+    userSelect: 'none',
     // necessary for content to be below app bar
     ...theme.mixins.toolbar
 }));
@@ -60,19 +69,11 @@ interface AppBarProps extends MuiAppBarProps {
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open'
 })<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen
-        })
-    })
+    // zIndex: theme.zIndex.drawer + 1,
+    background: theme.palette.primary.dark,
+    '& .css-hyum1k-MuiToolbar-root': {
+        minHeight: '50px'
+    }
 }));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -93,31 +94,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 // 自定义Router的Link
-// TODO: 加入进入对应项目时显示选中状态
+// TODO: 添加进入对应项目时显示选中状态
 const CustomLink = ({ to, open, icon, text, ...props }) => {
+    const theme = useTheme();
     // 检测是否已经点击链接
-    let resolved = useResolvedPath(to);
-    let match = useMatch({ path: resolved.pathname, end: true });
-    let { pathname } = useLocation();
-    const [selected, setSelected] = React.useState(false);
-
-    // React.useEffect(() => {
-    //     console.log(pathname, ' => ', to);
-    //     handleIsSelected();
-    // }, [pathname]);
-
-    // const handleIsSelected = () => {
-    //     if (pathname === to) {
-    //         console.log('here');
-    //         setSelected(true);
-    //     } else if (pathname !== '/' && pathname.includes(to)) {
-    //         setSelected(true);
-    //     }
-    //     setSelected(false);
-    // };
+    // let resolved = useResolvedPath(to);
+    // let match = useMatch({ path: resolved.pathname, end: true });
 
     return (
-        <Link style={{ textDecoration: 'none', color: 'black' }} to={to} {...props}>
+        <Link style={{ textDecoration: 'none', color: theme.palette.grey[50] }} to={to} {...props}>
             <ListItemButton
                 sx={{
                     minHeight: 48,
@@ -131,10 +116,10 @@ const CustomLink = ({ to, open, icon, text, ...props }) => {
                     sx={{
                         minWidth: 0,
                         mr: open ? 3 : 'auto',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        color: theme.palette.grey[50]
                     }}
                 >
-                    {/* <InboxIcon /> */}
                     {icon}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
@@ -145,110 +130,221 @@ const CustomLink = ({ to, open, icon, text, ...props }) => {
 
 const MainLayout = () => {
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-    const [click, setClick] = React.useState('主页');
+    const [open, setOpen] = React.useState(true);
 
-    const handleChangeClickItem = (item) => {
-        setClick(item);
-    };
-
-    const handleDrawerOpen = () => {
-        setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
+    const handleChangeDrawerOpenState = (currentState: boolean) => {
+        setOpen(!currentState);
     };
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <AppBar position="fixed" open={open}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{
-                            marginRight: 5,
-                            ...(open && { display: 'none' })
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Mini variant drawer
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+            {/* 左侧导航栏 */}
             <Drawer variant="permanent" open={open}>
                 <DrawerHeader>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                    </IconButton>
+                    <Avatar
+                        alt="logo"
+                        src={logo}
+                        sx={{
+                            width: theme.spacing(4),
+                            height: theme.spacing(4),
+                            mr: open ? 1 : 0,
+                            ml: open ? '-10px' : 0
+                        }}
+                    />
+                    {open && (
+                        <Typography
+                            color={theme.palette.common.white}
+                            fontSize="18px"
+                            fontWeight="bold"
+                            letterSpacing="3px"
+                        >
+                            ANDURIL
+                        </Typography>
+                    )}
                 </DrawerHeader>
-                <Divider />
-                <List>
-                    {routes[0].children.map((route) => {
-                        if (route.path === '/' || route.path === '*') {
+                {/* 用户卡片 */}
+                <Box
+                    sx={{
+                        minHeight: '120px',
+                        backgroundImage: `url(${userBg})`,
+                        backgroundSize: '240px',
+                        color: '#e8e8e8'
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-end',
+                            p: theme.spacing(0, 1)
+                        }}
+                    >
+                        <Avatar
+                            alt={'username'}
+                            src={franz}
+                            sx={{
+                                width: theme.spacing(6),
+                                height: theme.spacing(6),
+                                mr: '85px',
+                                mt: '25px',
+                                boxShadow: '0px 0px 20px #294761',
+                                backgroundColor: theme.palette.secondary.main,
+                                filter: 'blur(18)'
+                            }}
+                        />
+                        <Box>
+                            <IconButton
+                                color="inherit"
+                                key={'open-drawer'}
+                                onClick={() => handleChangeDrawerOpenState(open)}
+                                sx={{
+                                    mt: '5px',
+                                    mr: '5px'
+                                }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        </Box>
+                    </Box>
+                    <Typography
+                        mt="15px"
+                        fontSize="15px"
+                        p="8px 20px"
+                        bgcolor="#0000008f"
+                        height="32px"
+                    >
+                        {open && 'Franz Zhao'}
+                    </Typography>
+                </Box>
+                <List
+                    sx={{
+                        pt: '0px !important'
+                    }}
+                >
+                    {/* 导航栏-二级路由 */}
+                    {routes[0].children.map((route, index) => {
+                        if (route.path === '/') {
                             return (
-                                <ListItem key={route.path} disablePadding sx={{ display: 'block' }}>
-                                    <CustomLink
-                                        to={route.path}
-                                        open={open}
-                                        icon={<InboxIcon />}
-                                        text={route.name}
-                                    />
-                                </ListItem>
+                                <Tooltip title={open ? '' : route.name} placement="right" arrow>
+                                    <ListItem
+                                        key={route.path}
+                                        disablePadding
+                                        sx={{ display: 'block' }}
+                                    >
+                                        <CustomLink
+                                            to={route.path}
+                                            open={open}
+                                            icon={route.icon}
+                                            text={route.name}
+                                        />
+                                    </ListItem>
+                                </Tooltip>
                             );
-                        } else {
+                        } else if (route.path !== '*') {
+                            let isNewModule = false;
+                            if (route.module !== routes[0].children[index - 1].module) {
+                                isNewModule = true;
+                            }
                             return (
-                                <ListItem key={route.path} disablePadding sx={{ display: 'block' }}>
-                                    <CustomLink
-                                        to={route.path}
-                                        open={open}
-                                        icon={<InboxIcon />}
-                                        text={route.name}
-                                    />
-                                </ListItem>
+                                <Box key={route.path}>
+                                    {isNewModule && (
+                                        <Box>
+                                            {open ? (
+                                                <Typography
+                                                    display="block"
+                                                    gutterBottom
+                                                    fontSize={'12px'}
+                                                    p={'10px 20px 0px'}
+                                                    color={theme.palette.grey[400]}
+                                                >
+                                                    {route.module}
+                                                </Typography>
+                                            ) : (
+                                                <Divider
+                                                    sx={{
+                                                        borderColor: theme.palette.grey[700]
+                                                    }}
+                                                />
+                                            )}
+                                        </Box>
+                                    )}
+                                    <Tooltip title={open ? '' : route.name} placement="right" arrow>
+                                        <ListItem disablePadding sx={{ display: 'block' }}>
+                                            <CustomLink
+                                                to={route.path}
+                                                open={open}
+                                                icon={route.icon}
+                                                text={route.name}
+                                            />
+                                        </ListItem>
+                                    </Tooltip>
+                                </Box>
                             );
                         }
                     })}
                 </List>
-                {/* <Divider />
-                <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <Box>
-                            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-                                <ListItemButton
-                                    sx={{
-                                        minHeight: 48,
-                                        justifyContent: open ? 'initial' : 'center',
-                                        px: 2.5
-                                    }}
-                                >
-                                    <ListItemIcon
-                                        sx={{
-                                            minWidth: 0,
-                                            mr: open ? 3 : 'auto',
-                                            justifyContent: 'center'
-                                        }}
-                                    >
-                                        {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-                                </ListItemButton>
-                            </ListItem>
-                            <Divider />
-                        </Box>
-                    ))}
-                </List> */}
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <DrawerHeader />
-                {/* 各页面的内容 */}
-                <Outlet />
+            {/* 页面右侧：工具栏+核心内容 */}
+            <Box sx={{ flexGrow: 1 }}>
+                {/* 页面顶部 */}
+                <Box
+                    sx={{
+                        width: '100%',
+                        background: theme.palette.primary.dark,
+                        color: theme.palette.common.white
+                    }}
+                >
+                    <Toolbar>
+                        <Avatar
+                            sx={{
+                                bgcolor: blue[800],
+                                width: '35px',
+                                height: '35px',
+                                borderRadius: '10px',
+                                ml: 'auto'
+                            }}
+                            variant="rounded"
+                        >
+                            <Brightness7Icon fontSize="small" />
+                        </Avatar>
+                        <Avatar
+                            sx={{
+                                bgcolor: orange[600],
+                                width: '35px',
+                                height: '35px',
+                                borderRadius: '10px',
+                                ml: 1
+                            }}
+                            variant="rounded"
+                        >
+                            <PublicIcon fontSize="small" />
+                        </Avatar>
+                        <Button>
+                            <Avatar
+                                sx={{
+                                    bgcolor: green[700],
+                                    width: '35px',
+                                    height: '35px',
+                                    borderRadius: '10px',
+                                    ml: 1
+                                }}
+                                variant="rounded"
+                            >
+                                <QuestionAnswerIcon fontSize="small" />
+                            </Avatar>
+                        </Button>
+                        <Avatar
+                            alt="username"
+                            src={franz}
+                            sx={{ width: '35px', height: '35px', borderRadius: '10px', ml: 1 }}
+                        />
+                    </Toolbar>
+                </Box>
+                {/* 右侧主体内容：各页面的内容 */}
+                <Box component="main">
+                    <Outlet />
+                </Box>
             </Box>
         </Box>
     );

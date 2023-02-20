@@ -1,15 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import rootStore from '@/store';
-
-// import { SnackbarProvider } from 'notistack';
-// import { SnackbarUtilsConfigurator } from '@components/common/toast';
-
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getDesignTokens } from '@/theme';
+import { getSystemTheme } from '@/theme';
 
 const Wrapper = ({ children }) => {
-    const theme = createTheme(getDesignTokens('light'));
+    const theme = createTheme(getSystemTheme('light'));
 
     return (
         <Provider store={rootStore.store}>

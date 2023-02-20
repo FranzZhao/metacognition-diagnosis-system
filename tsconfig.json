@@ -30,8 +30,12 @@
         //编译出错误的时候, 会生产JS代码
         "jsx": "react-jsx",
         //允许编译器支持编译React代码,
-        "jsxImportSource": "@emotion/react"
+        "jsxImportSource": "@emotion/react",
         //emotion的ts支持[参考](https://github.com/emotion-js/emotion/issues/1249#issuecomment-828088254)
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["src/*"]
+        }
     },
     "include": [
         //需要编译的文件, 使用需要编译文件的绝对或相对路径
