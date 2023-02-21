@@ -125,7 +125,7 @@ const TopToolBar = () => {
                     )}
                 </BlueToolIconButton>
             </Tooltip>
-            <Tooltip title="语言切换" placement="bottom" arrow>
+            <Tooltip title="language" placement="bottom" arrow>
                 <OrangeToolIconButton sx={{ ml: 2 }}>
                     <PublicIcon sx={{ fontSize: '18px' }} />
                 </OrangeToolIconButton>

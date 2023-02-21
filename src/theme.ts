@@ -56,7 +56,7 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
                         // backgroundColor: themeMode === 'light' ? '#ffffff' : '#233044'
                     },
                     '&::-webkit-scrollbar-thumb': {
-                        background: themeMode === 'light' ? '#cecdcdb8' : '#444a53a6',
+                        background: '#666d7b8f',
                         borderRadius: '6px'
                     }
                 }
