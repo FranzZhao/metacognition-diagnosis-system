@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 // router
 import { Outlet } from 'react-router-dom';
 // custom layouts
@@ -15,6 +15,7 @@ import LearningManagementTool from '@/components/business/learningManagementTool
 import KnowledgeMapTool from '@/components/business/knowledgeMapTool';
 import KnowledgeTagTool from '@/components/business/knowledgeTagTool';
 import KnowledgeNoteTool from '@/components/business/knowledgeNoteTool';
+import AgentCard from '@/components/business/agent';
 
 const MainLayout = () => {
     const theme = useTheme();
@@ -81,6 +82,8 @@ const MainLayout = () => {
         };
     };
 
+    const [openMsg, setOpenMsg] = React.useState(false);
+
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
@@ -90,7 +93,26 @@ const MainLayout = () => {
             {/* 页面顶部工具栏 */}
             <TopToolBar />
             {/* 右侧主体内容：各页面的内容 */}
-            <Box component="main" sx={{ p: '60px 10px 55px' }}>
+            <Box
+                component="main"
+                sx={{
+                    p: '10px 20px 50px',
+                    mt: '50px',
+                    height: 'calc(100vh - 50px)',
+                    overflow: 'hidden',
+                    overflowY: 'overlay',
+                    '&::-webkit-scrollbar': {
+                        width: '4px',
+                        height: '6px'
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: theme.palette.secondary.main,
+                        borderRadius: '4px'
+                    }
+                }}
+            >
+                <AgentCard />
+
                 <Outlet />
             </Box>
             {/* 底部工具栏 */}

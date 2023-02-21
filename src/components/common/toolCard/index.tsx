@@ -1,14 +1,11 @@
 import React from 'react';
 // mui5
 import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import HubIcon from '@mui/icons-material/Hub';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 interface ToolCardProps {
     /** 标题 */
@@ -36,7 +33,7 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
     const theme = useTheme();
 
     return (
-        <Card sx={{ width: cardWidth }}>
+        <Card sx={{ width: cardWidth, '& svg': { color: theme.palette.grey[100] } }}>
             <CardHeader
                 avatar={icon}
                 title={title}
@@ -49,9 +46,9 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
                         }}
                         onClick={action}
                     >
-                        <MoreVertIcon
+                        <HighlightOffIcon
                             sx={{
-                                color: theme.palette.grey[300],
+                                // color: theme.palette.grey[300],
                                 fontSize: '18px'
                             }}
                         />

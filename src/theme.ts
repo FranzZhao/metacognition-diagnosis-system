@@ -80,6 +80,14 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
                     marginRight: '-5px'
                 }
             }
+        },
+        MuiSnackbar: {
+            styleOverrides: {
+                root: {
+                    top: '65px !important',
+                    right: '15px !important'
+                }
+            }
         }
     }
     // components: {
