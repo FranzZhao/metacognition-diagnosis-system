@@ -15,6 +15,11 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
             dark: '#b28035',
             contrastText: '#000'
         },
+        warning: {
+            light: '#ffcf33',
+            main: '#ffc400',
+            dark: '#b28900'
+        },
         error: {
             light: '#ff7171',
             main: '#f44336',
@@ -37,18 +42,42 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
         }
     },
     components: {
+        // 左侧导航栏默认样式
         MuiDrawer: {
             styleOverrides: {
                 paper: {
-                    background: '#242a37'
+                    background: '#242a37',
+                    overflowY: 'overlay',
+                    overflowX: 'hidden',
+                    marginBottom: 55,
+                    '&::-webkit-scrollbar': {
+                        width: 4,
+                        backgroundColor: '#ffffff00'
+                        // backgroundColor: themeMode === 'light' ? '#ffffff' : '#233044'
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: themeMode === 'light' ? '#cecdcdb8' : '#444a53a6',
+                        borderRadius: '6px'
+                    }
                 }
             }
         },
+        // 顶部+底部工具栏默认样式
         MuiToolbar: {
             styleOverrides: {
                 root: {
                     background: '#1a5678',
                     width: '100%'
+                }
+            }
+        },
+        // 工具卡片标题默认样式
+        MuiCardHeader: {
+            styleOverrides: {
+                action: {
+                    marginTop: '-12px',
+                    marginBottom: '0px',
+                    marginRight: '-5px'
                 }
             }
         }

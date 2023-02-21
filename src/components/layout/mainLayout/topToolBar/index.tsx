@@ -109,7 +109,9 @@ const TopToolBar = () => {
     return (
         <Toolbar
             sx={{
-                background: '#30384A'
+                background: '#30384A',
+                position: 'fixed',
+                zIndex: '99'
             }}
         >
             {/* toolbar默认的背景颜色在theme.ts中设置 */}

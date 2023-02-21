@@ -78,7 +78,19 @@ const RedCircleToolIconButton = styled(MuiButton)(({ theme }) => ({
     }
 }));
 
-const BottomToolBar = () => {
+interface BottomToolBarProps {
+    /** 按钮点击事件 */
+    handleOpenToolCared: (
+        target:
+            | 'learningPortfolioTool'
+            | 'learningManagementTool'
+            | 'knowledgeMapTool'
+            | 'knowledgeTagTool'
+            | 'knowledgeNoteTool'
+    ) => void;
+}
+
+const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) => {
     return (
         <Toolbar
             sx={{
@@ -91,27 +103,42 @@ const BottomToolBar = () => {
             }}
         >
             <Tooltip title="学习画像小工具" placement="top" arrow>
-                <BlueCircleToolIconButton sx={{ ml: 'auto' }}>
+                <BlueCircleToolIconButton
+                    sx={{ ml: 'auto' }}
+                    onClick={() => handleOpenToolCared('learningPortfolioTool')}
+                >
                     <MoodIcon sx={{ fontSize: '16px' }} />
                 </BlueCircleToolIconButton>
             </Tooltip>
             <Tooltip title="学习管理小工具" placement="top" arrow>
-                <OrangeCircleToolIconButton sx={{ ml: 3 }}>
+                <OrangeCircleToolIconButton
+                    sx={{ ml: 3 }}
+                    onClick={() => handleOpenToolCared('learningManagementTool')}
+                >
                     <EventIcon sx={{ fontSize: '16px' }} />
                 </OrangeCircleToolIconButton>
             </Tooltip>
             <Tooltip title="知识地图小工具" placement="top" arrow>
-                <GreenCircleToolIconButton sx={{ ml: 3 }}>
+                <GreenCircleToolIconButton
+                    sx={{ ml: 3 }}
+                    onClick={() => handleOpenToolCared('knowledgeMapTool')}
+                >
                     <HubIcon sx={{ fontSize: '16px' }} />
                 </GreenCircleToolIconButton>
             </Tooltip>
             <Tooltip title="知识标签小工具" placement="top" arrow>
-                <YellowCircleToolIconButton sx={{ ml: 3 }}>
+                <YellowCircleToolIconButton
+                    sx={{ ml: 3 }}
+                    onClick={() => handleOpenToolCared('knowledgeTagTool')}
+                >
                     <LocalOfferIcon sx={{ fontSize: '16px' }} />
                 </YellowCircleToolIconButton>
             </Tooltip>
             <Tooltip title="知识笔记小工具" placement="top" arrow>
-                <RedCircleToolIconButton sx={{ ml: 3 }}>
+                <RedCircleToolIconButton
+                    sx={{ ml: 3 }}
+                    onClick={() => handleOpenToolCared('knowledgeNoteTool')}
+                >
                     <NoteAltIcon sx={{ fontSize: '16px' }} />
                 </RedCircleToolIconButton>
             </Tooltip>

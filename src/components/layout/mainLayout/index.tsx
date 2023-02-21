@@ -1,18 +1,84 @@
 import * as React from 'react';
+// mui
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Button } from '@mui/material';
 // router
 import { Outlet } from 'react-router-dom';
-// custom components
+// custom layouts
 import Drawer from './drawer';
 import TopToolBar from './topToolBar';
 import BottomToolBar from './bottomToolBar';
+import LearningPortfolioTool from '@/components/business/learningPortfolioTool';
+import LearningManagementTool from '@/components/business/learningManagementTool';
+import KnowledgeMapTool from '@/components/business/knowledgeMapTool';
+import KnowledgeTagTool from '@/components/business/knowledgeTagTool';
+import KnowledgeNoteTool from '@/components/business/knowledgeNoteTool';
 
 const MainLayout = () => {
+    const theme = useTheme();
     const [open, setOpen] = React.useState(true);
+    const [openTools, setOpenTools] = React.useState({
+        learningPortfolioTool: false,
+        learningManagementTool: false,
+        knowledgeMapTool: false,
+        knowledgeTagTool: false,
+        knowledgeNoteTool: false
+    });
 
+    /** 打开左侧导航栏 */
     const handleChangeDrawerOpenState = (currentState: boolean) => {
         setOpen(!currentState);
+    };
+
+    /** 关闭所有工具小卡片: 清空 */
+    const handleCloseAllToolCard = () => {
+        setOpenTools({
+            learningPortfolioTool: false,
+            learningManagementTool: false,
+            knowledgeMapTool: false,
+            knowledgeTagTool: false,
+            knowledgeNoteTool: false
+        });
+    };
+
+    /** 打开工具小卡片 */
+    const handleOpenToolCard = (
+        target:
+            | 'learningPortfolioTool'
+            | 'learningManagementTool'
+            | 'knowledgeMapTool'
+            | 'knowledgeTagTool'
+            | 'knowledgeNoteTool'
+    ) => {
+        const defaultState = {
+            learningPortfolioTool: false,
+            learningManagementTool: false,
+            knowledgeMapTool: false,
+            knowledgeTagTool: false,
+            knowledgeNoteTool: false
+        };
+        setOpenTools({
+            ...defaultState,
+            [target]: true
+        });
+    };
+
+    const ToolCardBoxStyle = (
+        target:
+            | 'learningPortfolioTool'
+            | 'learningManagementTool'
+            | 'knowledgeMapTool'
+            | 'knowledgeTagTool'
+            | 'knowledgeNoteTool'
+    ) => {
+        return {
+            position: 'fixed',
+            bottom: '50px',
+            right: openTools[target] ? '10px' : '-400px',
+            transition: 'right 200ms linear'
+        };
     };
 
     return (
@@ -21,18 +87,32 @@ const MainLayout = () => {
             {/* 左侧导航栏 */}
             <Drawer open={open} handleChangeDrawerOpenState={handleChangeDrawerOpenState} />
             {/* 页面右侧：工具栏+核心内容 */}
-            <Box sx={{ flexGrow: 1 }}>
-                {/* 页面顶部工具栏 */}
-                <TopToolBar />
-                {/* 右侧主体内容：各页面的内容 */}
-                <Box component="main">
-                    <Outlet />
+            {/* 页面顶部工具栏 */}
+            <TopToolBar />
+            {/* 右侧主体内容：各页面的内容 */}
+            <Box component="main" sx={{ p: '60px 10px 55px' }}>
+                <Outlet />
+            </Box>
+            {/* 底部工具栏 */}
+            <BottomToolBar handleOpenToolCared={handleOpenToolCard} />
+            {/* 工具窗口 */}
+            <Box>
+                <Box sx={{ ...ToolCardBoxStyle('learningPortfolioTool') }}>
+                    <LearningPortfolioTool handleClose={handleCloseAllToolCard} />
+                </Box>
+                <Box sx={{ ...ToolCardBoxStyle('learningManagementTool') }}>
+                    <LearningManagementTool handleClose={handleCloseAllToolCard} />
+                </Box>
+                <Box sx={{ ...ToolCardBoxStyle('knowledgeMapTool') }}>
+                    <KnowledgeMapTool handleClose={handleCloseAllToolCard} />
+                </Box>
+                <Box sx={{ ...ToolCardBoxStyle('knowledgeTagTool') }}>
+                    <KnowledgeTagTool handleClose={handleCloseAllToolCard} />
+                </Box>
+                <Box sx={{ ...ToolCardBoxStyle('knowledgeNoteTool') }}>
+                    <KnowledgeNoteTool handleClose={handleCloseAllToolCard} />
                 </Box>
             </Box>
-            {/* TODO-今晚完成: 工具窗口 */}
-            <Box>知识地图工具小窗口</Box>
-            {/* 底部工具栏 */}
-            <BottomToolBar />
         </Box>
     );
 };
