@@ -53,6 +53,7 @@ const MainLayout = () => {
             | 'knowledgeTagTool'
             | 'knowledgeNoteTool'
     ) => {
+        const targetCurrentState = openTools[target];
         const defaultState = {
             learningPortfolioTool: false,
             learningManagementTool: false,
@@ -62,7 +63,7 @@ const MainLayout = () => {
         };
         setOpenTools({
             ...defaultState,
-            [target]: true
+            [target]: !targetCurrentState
         });
     };
 
