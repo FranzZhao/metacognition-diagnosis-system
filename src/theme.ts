@@ -30,7 +30,7 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
             selected: 'rgb(0 0 0 / 12%)' //8
         },
         background: {
-            paper: themeMode === 'light' ? '#fafafa' : '#2e3642',
+            paper: themeMode === 'light' ? '#ffffff' : '#2e3642',
             default: themeMode === 'light' ? '#f7f7f7' : '#1f2733'
         }
     },

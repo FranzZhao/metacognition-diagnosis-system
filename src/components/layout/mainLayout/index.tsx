@@ -86,7 +86,7 @@ const MainLayout = () => {
     const [openMsg, setOpenMsg] = React.useState(false);
 
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', bgcolor: '#f2f5f9' }}>
             <CssBaseline />
             {/* 左侧导航栏 */}
             <Drawer open={open} handleChangeDrawerOpenState={handleChangeDrawerOpenState} />

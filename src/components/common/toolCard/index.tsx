@@ -29,7 +29,7 @@ interface ToolCardProps {
  * @visibleName  ToolCard 工具卡片
  */
 const ToolCard: React.FC<ToolCardProps> = (props) => {
-    const { title, icon, action, content, cardWidth = '275px', titleSX, contentSX } = props;
+    const { title, icon, action, content, cardWidth = '400px', titleSX, contentSX } = props;
     const theme = useTheme();
 
     return (
@@ -61,7 +61,9 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
                     ...titleSX
                 }}
             />
-            <CardContent sx={{ ...contentSX }}>{content}</CardContent>
+            <CardContent sx={{ ...contentSX, height: '200px' }}>
+                {content}
+            </CardContent>
         </Card>
     );
 };
