@@ -114,7 +114,6 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
     const [currentSelectedItem, setCurrentSelectedItem] = useState<string>('/');
 
     useEffect(() => {
-        console.log('location =>', location);
         if (location.pathname === '/') {
             // 首页/个人空间
             setCurrentSelectedItem('/');

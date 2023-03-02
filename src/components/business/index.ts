@@ -4,3 +4,4 @@ export * from './knowledgeMapTool';
 export * from './knowledgeNoteTool';
 export * from './knowledgeTagTool';
 export * from './agent';
+export * from './tagTree';
