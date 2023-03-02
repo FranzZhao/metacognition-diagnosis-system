@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,12 +6,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { Box, Button, Divider, Typography } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
-import InputBase from '@mui/material/InputBase';
-import SaveIcon from '@mui/icons-material/Save';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 interface CustomTableProps {
     columns: any;
@@ -34,20 +29,36 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows }) => {
 
     return (
         <Box>
-            <TableContainer>
+            <TableContainer sx={{ borderTopLeftRadius: '5px', borderTopRightRadius: '5px' }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
-                        <TableRow>
+                        <TableRow
+                            sx={{
+                                '& th': { p: '12px' }
+                            }}
+                        >
                             {columns.map((column) => (
                                 <TableCell
                                     key={column.id}
                                     align="left"
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{
+                                        minWidth: column.minWidth,
+                                        backgroundColor: 'steelblue',
+                                        color: 'white'
+                                    }}
                                 >
                                     {column.label}
                                 </TableCell>
                             ))}
-                            <TableCell align="center">操作</TableCell>
+                            <TableCell
+                                align="center"
+                                sx={{
+                                    backgroundColor: 'steelblue',
+                                    color: 'white'
+                                }}
+                            >
+                                操作
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -55,7 +66,13 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows }) => {
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
                                 return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                    <TableRow
+                                        hover
+                                        role="checkbox"
+                                        tabIndex={-1}
+                                        key={row.id}
+                                        sx={{ '& td': { p: '8px' } }}
+                                    >
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
@@ -86,7 +103,8 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows }) => {
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 sx={{
-                    bgcolor: 'grey'
+                    bgcolor: 'grey',
+                    minHeight: '40px !important'
                 }}
             />
         </Box>

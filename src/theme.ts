@@ -95,7 +95,16 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
         MuiTablePagination: {
             styleOverrides: {
                 toolbar: {
-                    background: '#f7f7f7'
+                    background: '#f7f7f7',
+                    minHeight: '48px !important'
+                }
+            }
+        },
+        // chip
+        MuiChip: {
+            styleOverrides: {
+                root: {
+                    borderRadius: '6px'
                 }
             }
         }

@@ -71,7 +71,7 @@ function StyledTreeItem(props: StyledTreeItemProps) {
         <StyledTreeItemRoot
             label={
                 <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                    <Box component={LabelIcon} color="inherit" sx={{ mr: 1 }} />
+                    <Box component={LabelIcon} color="inherit" sx={{ mr: 1, fontSize: '16px' }} />
                     <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
                         {labelText}
                     </Typography>
