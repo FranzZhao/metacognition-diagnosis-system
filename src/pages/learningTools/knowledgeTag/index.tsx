@@ -1,7 +1,7 @@
 import React from 'react';
 // mui5
 import { styled } from '@mui/material/styles';
-import { Box, Card, Button } from '@mui/material';
+import { Box, Card, Button, Divider } from '@mui/material';
 import TreeView from '@mui/lab/TreeView';
 import TreeItem, { TreeItemProps, treeItemClasses } from '@mui/lab/TreeItem';
 import Typography from '@mui/material/Typography';
@@ -107,6 +107,7 @@ const KnowledgeTag = () => {
                 <Typography margin="10px" fontWeight="bold">
                     知识标签列表
                 </Typography>
+                <Divider />
                 <TreeView
                     aria-label="gmail"
                     defaultExpanded={['3']}
@@ -114,9 +115,10 @@ const KnowledgeTag = () => {
                     defaultExpandIcon={<ArrowRightIcon />}
                     defaultEndIcon={<div style={{ width: 24 }} />}
                     sx={{
+                        m: '5px 0',
                         flexGrow: 1,
                         minWidth: 200,
-                        height: 'calc(100vh - 226px)',
+                        height: 'calc(100vh - 230px)',
                         overflow: 'overlay',
                         '&::-webkit-scrollbar': {
                             width: 0
@@ -247,6 +249,7 @@ const KnowledgeTag = () => {
                     </StyledTreeItem>
                     <StyledTreeItem nodeId="4" labelText="History" labelIcon={Label} />
                 </TreeView>
+                <Divider />
                 <Button
                     variant="contained"
                     sx={{ width: '100%', m: '10px 0' }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,7 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 // routes
-import { Link } from 'react-router-dom';
+import { Link, useMatch, useResolvedPath, useLocation } from 'react-router-dom';
 import { routes } from '@/utils/routers';
 // img
 import userBg from '@/assets/img/userBg.jpg';
@@ -78,11 +78,8 @@ const DrawerBox = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'ope
 
 // 自定义Router的Link
 // TODO: 添加进入对应项目时显示选中状态
-const CustomLink = ({ to, open, icon, text, ...props }) => {
+const CustomLink = ({ to, open, icon, name, selected, ...props }) => {
     const theme = useTheme();
-    // 检测是否已经点击链接
-    // let resolved = useResolvedPath(to);
-    // let match = useMatch({ path: resolved.pathname, end: true });
 
     return (
         <Link style={{ textDecoration: 'none', color: theme.palette.grey[50] }} to={to} {...props}>
@@ -92,8 +89,7 @@ const CustomLink = ({ to, open, icon, text, ...props }) => {
                     justifyContent: open ? 'initial' : 'center',
                     px: 2.5
                 }}
-                // selected={selected}
-                // onClick={handleIsSelected}
+                selected={selected}
             >
                 <ListItemIcon
                     sx={{
@@ -105,7 +101,7 @@ const CustomLink = ({ to, open, icon, text, ...props }) => {
                 >
                     {icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={name} sx={{ opacity: open ? 1 : 0 }} />
             </ListItemButton>
         </Link>
     );
@@ -113,6 +109,21 @@ const CustomLink = ({ to, open, icon, text, ...props }) => {
 
 const Drawer = ({ open, handleChangeDrawerOpenState }) => {
     const theme = useTheme();
+    const location = useLocation();
+    // 当前所在的导航item
+    const [currentSelectedItem, setCurrentSelectedItem] = useState<string>('/');
+
+    useEffect(() => {
+        console.log('location =>', location);
+        if (location.pathname === '/') {
+            // 首页/个人空间
+            setCurrentSelectedItem('/');
+        } else {
+            // 其他页面的根页面
+            let currentRootRouteName = location.pathname.split('/')[1];
+            setCurrentSelectedItem('/' + currentRootRouteName);
+        }
+    }, [location]);
 
     return (
         <DrawerBox variant="permanent" open={open}>
@@ -214,7 +225,8 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
                                         to={route.path}
                                         open={open}
                                         icon={route.icon}
-                                        text={route.name}
+                                        name={route.name}
+                                        selected={currentSelectedItem === route.path}
                                     />
                                 </ListItem>
                             </Tooltip>
@@ -226,6 +238,7 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
                         }
                         return (
                             <Box key={route.path}>
+                                {/* 模块小标题 */}
                                 {isNewModule && (
                                     <Box>
                                         {open ? (
@@ -247,13 +260,15 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
                                         )}
                                     </Box>
                                 )}
+                                {/* 页面导航项 */}
                                 <Tooltip title={open ? '' : route.name} placement="right" arrow>
                                     <ListItem disablePadding sx={{ display: 'block' }}>
                                         <CustomLink
                                             to={route.path}
                                             open={open}
                                             icon={route.icon}
-                                            text={route.name}
+                                            name={route.name}
+                                            selected={currentSelectedItem === route.path}
                                         />
                                     </ListItem>
                                 </Tooltip>
