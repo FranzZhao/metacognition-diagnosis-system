@@ -112,7 +112,7 @@ const MainLayout = () => {
                     }
                 }}
             >
-                <AgentCard />
+                {/* <AgentCard /> */}
 
                 <Outlet />
             </Box>

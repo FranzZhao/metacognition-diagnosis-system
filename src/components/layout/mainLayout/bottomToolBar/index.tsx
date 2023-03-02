@@ -98,7 +98,8 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
                 bottom: 0,
                 background: '#30384A',
                 color: 'white',
-                minHeight: '40px !important'
+                minHeight: '40px !important',
+                zIndex: '99'
                 // alignItems: 'center'
             }}
         >

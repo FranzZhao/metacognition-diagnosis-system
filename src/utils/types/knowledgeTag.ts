@@ -28,3 +28,15 @@ export interface TagTreeProps {
     /** tag的子节点 */
     children?: TagTreeProps[];
 }
+
+// 知识标签关联项目的表格
+export interface TagAssociatedItemsProps {
+    /** 表格ID-每个项目自己的id */
+    id: string;
+    /** 项目标题 */
+    title: string;
+    /** 项目类型 */
+    type: '知识节点' | '知识关联' | '知识笔记' | '文本信息';
+    /** 更新时间 */
+    time: string;
+}

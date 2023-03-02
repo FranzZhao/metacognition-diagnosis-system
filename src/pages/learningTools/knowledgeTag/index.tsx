@@ -7,10 +7,12 @@ import Typography from '@mui/material/Typography';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 // custom components
 import TagTree from '@/components/business/tagTree';
+import KnowledgeTagContent from './knowledgeTagContent';
 // mock data
 import { mockTagLists } from '@/utils/mock/mockTagTree';
 
 const KnowledgeTag = () => {
+    // 知识标签树的获取&处理
     const KnowledgeTagTree = ({ tagList }) => {
         // const [tagList, setTagList] = useState<TagListProps[]>(mockTagLists);
         const [tagTree, setTagTree] = useState<TagTreeProps[]>([]);
@@ -105,12 +107,21 @@ const KnowledgeTag = () => {
                 sx={{
                     boxShadow:
                         'rgb(50 50 93 / 2%) 0px 2px 5px -1px, rgb(0 0 0 / 5%) 0px 1px 3px -1px',
-                    p: 2,
+                    p: '15px 20px',
                     ml: 2,
-                    width: 'calc(100vw)'
+                    width: 'calc(100vw)',
+                    height: 'calc(100vh - 110px)',
+                    overflow: 'overlay',
+                    '&::-webkit-scrollbar': {
+                        width: 5
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: '#a4b7c670',
+                        borderRadius: '4px'
+                    }
                 }}
             >
-                知识标签详情
+                <KnowledgeTagContent />
             </Card>
         </Box>
     );

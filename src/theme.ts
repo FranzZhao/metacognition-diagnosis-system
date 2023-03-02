@@ -91,6 +91,13 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
                     right: '15px !important'
                 }
             }
+        },
+        MuiTablePagination: {
+            styleOverrides: {
+                toolbar: {
+                    background: '#f7f7f7'
+                }
+            }
         }
     }
     // components: {
