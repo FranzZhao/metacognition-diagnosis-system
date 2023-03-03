@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 // mui5
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import InputBase from '@mui/material/InputBase';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
@@ -16,7 +15,8 @@ import PaymentIcon from '@mui/icons-material/Payment';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-// TinyMCE
+// custom components
+import TagSelector from '@/components/common/tagSelector';
 import { Editor } from '@tinymce/tinymce-react';
 
 interface FeatureProps {
@@ -151,10 +151,18 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                             笔记标签
                         </Typography>
                     </Box>
-                    <TextField
+                    {/* <TextField
                         sx={{ ml: 1, mr: 1, flex: 1 }}
                         placeholder="请选择笔记所属标签"
                         variant="standard"
+                    /> */}
+                    <TagSelector
+                        value={noteTags}
+                        // tagList={['元认知', '元认知意识', '认知调控', '自指', '自我概念']}
+                        tagList={[]}
+                        onChange={(event, newValue) => setNoteTags(newValue)}
+                        sx={{ flex: 1, mr: 1, ml: 1 }}
+                        placeholder="请选择笔记所属标签"
                     />
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', margin: '8px 5px' }}>

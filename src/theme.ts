@@ -1,3 +1,4 @@
+import { grey } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
 
 export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
@@ -110,6 +111,12 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
             styleOverrides: {
                 root: {
                     borderRadius: '6px'
+                },
+                deleteIcon: {
+                    color: grey[100],
+                    '&:hover': {
+                        color: grey[200]
+                    }
                 }
             }
         }
