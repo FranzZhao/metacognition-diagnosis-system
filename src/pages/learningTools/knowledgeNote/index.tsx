@@ -19,22 +19,25 @@ const notebookViewButtonStyle = {
     padding: '5px 10px',
     marginTop: '5px',
     '&:hover': {
-        background: '#ebebeb',
-        cursor: 'pointer'
+        background: '#f5f5f5',
+        cursor: 'pointer',
+        transition: 'background 150ms linear'
     }
 };
 
 const notebookViewButtonClickStyle = {
-    color: '#ef1d1d',
+    color: '#ff5757',
     fontWeight: 'bold',
     display: 'flex',
     width: '100%',
     borderRadius: '5px',
     padding: '5px 10px',
     marginTop: '5px',
+    background: '#ffeded',
     '&:hover': {
-        background: '#ebebeb',
-        cursor: 'pointer'
+        background: '#ffdcdc',
+        cursor: 'pointer',
+        transition: 'background 150ms linear'
     }
 };
 
@@ -117,7 +120,11 @@ const KnowledgeNote = () => {
                     }
                 }}
             >
-                {isNoteDetail ? <KnowledgeNoteDetail /> : <KnowledgeNoteList />}
+                {isNoteDetail ? (
+                    <KnowledgeNoteDetail handleOpenNoteList={() => setIsNoteDetail(false)} />
+                ) : (
+                    <KnowledgeNoteList handleOpenDetail={() => setIsNoteDetail(true)} />
+                )}
             </Card>
         </Box>
     );

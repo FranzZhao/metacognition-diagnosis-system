@@ -25,6 +25,11 @@ export const getSystemTheme = (themeMode: 'light' | 'dark'): ThemeOptions => ({
             main: '#f44336',
             dark: '#d32f2f'
         },
+        success: {
+            main: '#349938',
+            light: '#4caf50',
+            dark: '#1b5e20'
+        },
         action: {
             hover: 'rgb(0 0 0 / 4%)', //4
             selected: 'rgb(0 0 0 / 12%)' //8

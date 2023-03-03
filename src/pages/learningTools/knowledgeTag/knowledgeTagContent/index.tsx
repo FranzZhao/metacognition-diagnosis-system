@@ -72,6 +72,12 @@ export default function KnowledgeTagContent() {
                     { id: 'time', label: '更新时间', minWidth: 150 }
                 ]}
                 rows={mockTagContentLists}
+                hasActions={
+                    <Button size="small" variant="outlined">
+                        详情
+                    </Button>
+                }
+                renderTags={'type'}
             />
         </Paper>
     );

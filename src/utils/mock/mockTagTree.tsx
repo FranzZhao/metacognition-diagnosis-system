@@ -90,91 +90,31 @@ export const mockTagContentLists: TagAssociatedItemsProps[] = [
     {
         id: '1',
         title: '元认知知识',
-        type: <Chip color="warning" size="small" label="知识节点" />,
+        type: [{ label: '知识节点', color: 'warning' }],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '2',
         title: '元认知调节',
-        type: <Chip color="warning" size="small" label="知识节点" />,
+        type: [{ label: '知识节点', color: 'warning' }],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '3',
         title: '自指',
-        type: <Chip color="info" size="small" label="知识关联" />,
+        type: [{ label: '知识关联', color: 'info' }],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '4',
         title: '认知知识的内涵',
-        type: <Chip color="success" size="small" label="知识笔记" />,
+        type: [{ label: '知识笔记', color: 'success' }],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '5',
         title: '认知知识的发展',
-        type: <Chip color="error" size="small" label="文本信息" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '6',
-        title: '元认知知识',
-        type: <Chip color="warning" size="small" label="知识节点" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '7',
-        title: '元认知调节',
-        type: <Chip color="warning" size="small" label="知识节点" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '8',
-        title: '自指',
-        type: <Chip color="info" size="small" label="知识关联" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '9',
-        title: '认知知识的内涵',
-        type: <Chip color="success" size="small" label="知识笔记" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '10',
-        title: '认知知识的发展',
-        type: <Chip color="error" size="small" label="文本信息" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '11',
-        title: '元认知知识',
-        type: <Chip color="warning" size="small" label="知识节点" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '12',
-        title: '元认知调节',
-        type: <Chip color="warning" size="small" label="知识节点" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '13',
-        title: '自指',
-        type: <Chip color="info" size="small" label="知识关联" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '14',
-        title: '认知知识的内涵',
-        type: <Chip color="success" size="small" label="知识笔记" />,
-        time: '2021/12/30 18:23:42'
-    },
-    {
-        id: '15',
-        title: '认知知识的发展',
-        type: <Chip color="error" size="small" label="文本信息" />,
+        type: [{ label: '文本信息', color: 'error' }],
         time: '2021/12/30 18:23:42'
     }
 ];
