@@ -11,35 +11,7 @@ import StarIcon from '@mui/icons-material/Star';
 // custom component
 import KnowledgeNoteList from './knowledgeNoteList';
 import KnowledgeNoteDetail from './knowledgeNoteDetail';
-
-const notebookViewButtonStyle = {
-    display: 'flex',
-    width: '100%',
-    borderRadius: '5px',
-    padding: '5px 10px',
-    marginTop: '5px',
-    '&:hover': {
-        background: '#f5f5f5',
-        cursor: 'pointer',
-        transition: 'background 150ms linear'
-    }
-};
-
-const notebookViewButtonClickStyle = {
-    color: '#ff5757',
-    fontWeight: 'bold',
-    display: 'flex',
-    width: '100%',
-    borderRadius: '5px',
-    padding: '5px 10px',
-    marginTop: '5px',
-    background: '#ffeded',
-    '&:hover': {
-        background: '#ffdcdc',
-        cursor: 'pointer',
-        transition: 'background 150ms linear'
-    }
-};
+import { ViewButton } from '@/components/common';
 
 const KnowledgeNote = () => {
     // 切换视图: 所有笔记 & 重要笔记 & 新建笔记 & 笔记内容
@@ -60,7 +32,7 @@ const KnowledgeNote = () => {
                 }}
             >
                 <Typography margin="10px" fontWeight="bold">
-                    知识标签列表
+                    知识笔记
                 </Typography>
                 <Divider />
                 <Box
@@ -68,28 +40,18 @@ const KnowledgeNote = () => {
                         height: 'calc(100vh - 230px)'
                     }}
                 >
-                    <Box
-                        sx={
-                            view === '所有笔记'
-                                ? notebookViewButtonClickStyle
-                                : notebookViewButtonStyle
-                        }
+                    <ViewButton
+                        text="所有笔记"
+                        icon={<AllInboxIcon sx={{ mr: '10px' }} />}
+                        isClick={view === '所有笔记'}
                         onClick={() => setView('所有笔记')}
-                    >
-                        <AllInboxIcon sx={{ mr: '10px' }} />
-                        所有笔记
-                    </Box>
-                    <Box
-                        sx={
-                            view === '重要笔记'
-                                ? notebookViewButtonClickStyle
-                                : notebookViewButtonStyle
-                        }
+                    />
+                    <ViewButton
+                        text="重要笔记"
+                        icon={<StarIcon sx={{ mr: '10px' }} />}
+                        isClick={view === '重要笔记'}
                         onClick={() => setView('重要笔记')}
-                    >
-                        <StarIcon sx={{ mr: '10px' }} />
-                        重要笔记
-                    </Box>
+                    />
                 </Box>
                 <Button
                     variant="contained"

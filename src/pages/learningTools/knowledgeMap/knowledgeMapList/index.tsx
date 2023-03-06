@@ -6,13 +6,13 @@ import Button from '@mui/material/Button';
 // custom component
 import CustomTable from '@/components/common/table';
 // mock
-import { mockNoteList } from '@/utils/mock';
+import { mockKnowledgeMapList } from '@/utils/mock';
 
-interface KnowledgeNoteListProps {
+interface KnowledgeMapListProps {
     handleOpenDetail: () => void;
 }
 
-const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail }) => {
+const KnowledgeMapList: React.FC<KnowledgeMapListProps> = ({ handleOpenDetail }) => {
     return (
         <Box>
             <Typography fontWeight="bold" fontSize="1.2rem" marginBottom="15px">
@@ -26,7 +26,7 @@ const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail 
                     { id: 'tags', label: '标签', minWidth: 200 },
                     { id: 'time', label: '更新时间', minWidth: 150 }
                 ]}
-                rows={mockNoteList}
+                rows={mockKnowledgeMapList}
                 hasActions={
                     <Button size="small" variant="outlined" onClick={handleOpenDetail}>
                         详情
@@ -41,4 +41,4 @@ const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail 
     );
 };
 
-export default KnowledgeNoteList;
+export default KnowledgeMapList;

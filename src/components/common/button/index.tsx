@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, ButtonProps, Tooltip, IconButton, IconButtonProps, Fab } from '@mui/material';
-// import { MenuIcon, CardIcon } from '../svgIcon';
+import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
 
 // 一些可以复用的按钮，保证样式一致。
@@ -9,17 +9,55 @@ import AddIcon from '@mui/icons-material/Add';
  * create by 赵梓宏
  * @visibleName  Button 按钮
  */
-export const TextButton = ({ sx = {}, ...props }) => {
+interface ViewButtonProps {
+    text: string;
+    icon: React.ReactNode;
+    isClick: boolean;
+    onClick: () => void;
+    sx?: any;
+}
+export const ViewButton: React.FC<ViewButtonProps> = ({
+    text,
+    icon,
+    isClick,
+    onClick,
+    sx = {},
+    ...props
+}) => {
+    const viewButtonStyle = {
+        display: 'flex',
+        width: '100%',
+        borderRadius: '5px',
+        padding: '5px 10px',
+        marginTop: '5px',
+        '&:hover': {
+            background: '#f5f5f5',
+            cursor: 'pointer',
+            transition: 'background 150ms linear'
+        }
+    };
+
+    const viewButtonClickStyle = {
+        color: '#ff5757',
+        fontWeight: 'bold',
+        display: 'flex',
+        width: '100%',
+        borderRadius: '5px',
+        padding: '5px 10px',
+        marginTop: '5px',
+        background: '#ffeded',
+        '&:hover': {
+            background: '#ffdcdc',
+            cursor: 'pointer',
+            transition: 'background 150ms linear'
+        }
+    };
+
     return (
-        <Button
-            sx={{
-                minWidth: 50,
-                color: '#2C68FF',
-                ...sx
-            }}
-            size="small"
-            {...props}
-        />
+        <Box sx={isClick ? viewButtonClickStyle : viewButtonStyle} onClick={onClick}>
+            {icon}
+            {text}
+        </Box>
     );
 };
 

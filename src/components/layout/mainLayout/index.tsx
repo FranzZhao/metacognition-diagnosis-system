@@ -100,6 +100,7 @@ const MainLayout = () => {
                     p: '10px 20px 50px',
                     mt: '50px',
                     height: 'calc(100vh - 50px)',
+                    width: '100%',
                     overflow: 'hidden',
                     overflowY: 'overlay',
                     '&::-webkit-scrollbar': {

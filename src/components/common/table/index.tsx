@@ -40,7 +40,22 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, re
 
     return (
         <Box>
-            <TableContainer sx={{ borderTopLeftRadius: '5px', borderTopRightRadius: '5px', ...sx }}>
+            <TableContainer
+                sx={{
+                    borderTopLeftRadius: '5px',
+                    borderTopRightRadius: '5px',
+                    overflow: 'overlay',
+                    '&::-webkit-scrollbar': {
+                        width: 5,
+                        height: 5
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: '#a4b7c670',
+                        borderRadius: '4px'
+                    },
+                    ...sx
+                }}
+            >
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow
