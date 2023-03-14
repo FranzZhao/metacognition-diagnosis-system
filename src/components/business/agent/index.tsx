@@ -47,7 +47,8 @@ const AgentCard = () => {
         <Box
             sx={{
                 position: 'fixed',
-                right: '15px'
+                right: '15px',
+                zIndex: '1'
             }}
         >
             {open ? (

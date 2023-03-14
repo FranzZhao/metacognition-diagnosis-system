@@ -10,6 +10,7 @@ import MediationIcon from '@mui/icons-material/Mediation';
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
+import Fade from '@mui/material/Fade';
 // custom components
 import { KnowledgeGraph } from '@/components/business';
 // mock
@@ -27,6 +28,8 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
         relations: mockRelations
     });
 
+    const [open, setOpen] = useState(false);
+
     const [view, setView] = React.useState('list');
 
     const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
@@ -35,20 +38,30 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
 
     return (
         <Box>
-            <Typography
-                position="relative"
-                zIndex="2"
-                margin="10px 0px -35px 15px"
-                fontSize="1.1rem"
-                fontWeight="bold"
-            >
-                元认知知识地图
-            </Typography>
-            <Box sx={{ display: 'flex', mt: '-10px' }}>
-                <Box sx={{ height: '100%', mt: '40px', ml: '10px', zIndex: 1 }}>
+            <Box sx={{ display: 'flex', width: '100%', position: 'relative' }}>
+                {/* 知识地图标题 */}
+                <Typography
+                    position="absolute"
+                    top="20px"
+                    left="20px"
+                    zIndex="1"
+                    fontSize="1.1rem"
+                    fontWeight="bold"
+                >
+                    元认知知识地图
+                </Typography>
+                {/* 知识地图编辑工具 */}
+                <Box
+                    sx={{ height: '160px', zIndex: 1, position: 'absolute', bottom: 20, left: 20 }}
+                >
                     <Paper variant="outlined" sx={{ p: '5px', borderRadius: '8px' }}>
                         <Tooltip title="修改基本信息" arrow placement="right">
-                            <IconButton aria-label="delete" size="small" sx={{ mb: '5px' }}>
+                            <IconButton
+                                aria-label="delete"
+                                size="small"
+                                sx={{ mb: '5px' }}
+                                onClick={() => setOpen(!open)}
+                            >
                                 <DescriptionIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
@@ -72,15 +85,25 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
                         </Tooltip>
                     </Paper>
                 </Box>
-                <Box sx={{ ml: '-52px', width: '100%' }}>
-                    <KnowledgeGraph
-                        nodeData={graph.node}
-                        linkData={graph.link}
-                        relations={graph.relations}
-                    />
-                </Box>
+                <KnowledgeGraph
+                    nodeData={graph.node}
+                    linkData={graph.link}
+                    relations={graph.relations}
+                />
                 {/* 信息面板 */}
-                <Paper>信息内容</Paper>
+                <Fade in={open}>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            right: 0,
+                            width: '150px',
+                            background: 'steelblue',
+                            height: '200px'
+                        }}
+                    >
+                        信息内容
+                    </Box>
+                </Fade>
             </Box>
         </Box>
     );
