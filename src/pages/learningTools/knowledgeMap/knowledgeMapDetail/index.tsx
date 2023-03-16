@@ -98,7 +98,7 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
                             position: 'absolute',
                             right: 0,
                             width: '300px',
-                            background: '#c2d7e0b0',
+                            background: '#c2d7e0d9',
                             height: 'calc(100vh - 150px)'
                         }}
                     >
