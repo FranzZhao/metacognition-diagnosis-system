@@ -6,6 +6,7 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
+import Fade from '@mui/material/Fade';
 import bot1 from '../../../assets/img/ai.png';
 // import bot2 from '../../../assets/img/bot.png';
 import CardActions from '@mui/material/CardActions';
@@ -39,19 +40,20 @@ const AvatarToolIconButton = styled(MuiButton)(({ theme }) => ({
     }
 }));
 
-const AgentCard = () => {
+const AgentCard = ({ open, handleClose }) => {
     const theme = useTheme();
-    const [open, setOpen] = useState(false);
+    // const [open, setOpen] = useState(false);
 
     return (
         <Box
             sx={{
                 position: 'fixed',
-                right: '15px',
-                zIndex: '1'
+                right: '10px',
+                top: '60px',
+                zIndex: '10'
             }}
         >
-            {open ? (
+            <Fade in={open}>
                 <Card
                     sx={{
                         width: '450px',
@@ -94,7 +96,7 @@ const AgentCard = () => {
                                         maxWidth: '24px',
                                         maxHeight: '24px'
                                     }}
-                                    onClick={() => setOpen(false)}
+                                    onClick={handleClose}
                                 >
                                     <RemoveCircleOutlineIcon
                                         sx={{
@@ -142,31 +144,7 @@ const AgentCard = () => {
                         </Button>
                     </CardActions>
                 </Card>
-            ) : (
-                <Tooltip title="学习助手Anduril" arrow>
-                    <AvatarToolIconButton onClick={() => setOpen(true)}>
-                        <Avatar
-                            src={bot1}
-                            sx={{
-                                // position: 'fixed',
-                                // right: '15px',
-                                // width: '35px',
-                                // height: '35px',
-                                bgcolor: theme.palette.secondary.main,
-                                '& img': {
-                                    width: '25px',
-                                    height: '25px'
-                                }
-                                // '&:hover': {
-                                //     cursor: 'pointer',
-                                //     filter: 'blur(18)',
-                                //     boxShadow: '0px 0px 10px #294761'
-                                // }
-                            }}
-                        />
-                    </AvatarToolIconButton>
-                </Tooltip>
-            )}
+            </Fade>
         </Box>
     );
 };

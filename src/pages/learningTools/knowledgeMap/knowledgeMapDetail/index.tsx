@@ -11,6 +11,7 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
+import Button from '@mui/material/Button';
 // custom components
 import { KnowledgeGraph } from '@/components/business';
 // mock
@@ -96,9 +97,9 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
                         sx={{
                             position: 'absolute',
                             right: 0,
-                            width: '150px',
-                            background: 'steelblue',
-                            height: '200px'
+                            width: '300px',
+                            background: '#c2d7e0b0',
+                            height: 'calc(100vh - 150px)'
                         }}
                     >
                         信息内容

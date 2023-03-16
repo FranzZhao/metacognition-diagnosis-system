@@ -113,8 +113,6 @@ const MainLayout = () => {
                     }
                 }}
             >
-                <AgentCard />
-
                 <Outlet />
             </Box>
             {/* 底部工具栏 */}

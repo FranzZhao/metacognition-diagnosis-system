@@ -6,3 +6,4 @@ export * from './knowledgeTagTool';
 export * from './agent';
 export * from './tagTree';
 export * from './knowledgeGraph';
+export * from './agentMsg';
