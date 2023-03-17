@@ -11,30 +11,168 @@ import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
 // custom components
-import { KnowledgeGraph } from '@/components/business';
+import { KnowledgeMap } from '@/components/business';
 // mock
 import { mockLinkData, mockNodeData, mockRelations } from '@/utils/mock';
+// panel detail
+import AddNewNode from './panelDetail/addNewNode';
+import MapInfo from './panelDetail/mapInfo';
+import AddNewLink from './panelDetail/addNewLink';
+import NodeInfo from './panelDetail/nodeInfo';
+import LinkInfo from './panelDetail/linkInfo';
+
+interface MapProps {
+    mapInfo: any;
+    node: any[];
+    link: any[];
+    relations: any[];
+}
 
 interface KnowledgeMapDetailProp {
+    mapInfo: any;
     handleOpenList: () => void;
 }
 
-const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }) => {
-    // Graph state
-    const [graph, setGraph] = useState({
+const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ mapInfo, handleOpenList }) => {
+    // map state
+    const [map, setMap] = useState<MapProps>({
+        mapInfo: mapInfo,
         node: mockNodeData,
         link: mockLinkData,
         relations: mockRelations
     });
+    // 呈现在页面上的知识地图标题
+    const [mapTitle, setMapTitle] = useState(mapInfo.mapTitle);
+    // 点击的节点信息
+    const [nodeInfo, setNodeInfo] = useState({});
+    // 点击的节点信息
+    const [linkInfo, setLinkInfo] = useState({});
+    // 页面试图切换
+    const [open, setOpen] = useState<
+        'mapInfo' | 'addNewNode' | 'addNewLink' | 'nodeInfo' | 'linkInfo' | null
+    >(null);
 
-    const [open, setOpen] = useState(false);
+    // handle map elements click
+    const echartsClick = {
+        click: (e) => {
+            if (e.dataType === 'node') {
+                // console.log(e);
+                setOpen('nodeInfo');
+                setNodeInfo(e);
+            }
+            if (e.dataType === 'edge') {
+                // console.log(e);
+                setOpen('linkInfo');
+                setLinkInfo(e);
+            }
+        }
+    };
 
-    const [view, setView] = React.useState('list');
+    // 修改知识地图基本信息
+    const handleUpdateMapInfo = (newData: any) => {
+        setMap({
+            ...map,
+            mapInfo: newData
+        });
+        setMapTitle(newData.mapTitle);
+    };
 
-    const handleChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
-        setView(nextView);
+    // 修改已有节点与关联的信息
+    const handleChangeMap = (type: 'node' | 'link', newData: any) => {
+        let newNodeList = [...map.node];
+        let newLinkList = [...map.link];
+        let newRelations: any[] = [];
+        // 更新节点信息
+        if (type === 'node') {
+            newNodeList.map((node, idx) => {
+                if (node.id === newData.id) {
+                    newNodeList[idx] = {
+                        id: newData.id,
+                        name: newData.nodeName,
+                        draggable: true, // 节点是否可拖拽，只在使用力引导布局的时候有用。
+                        symbolSize: [newData.nodeSize, newData.nodeSize],
+                        itemStyle: {
+                            color: newData.nodeColor
+                        },
+                        extraInfo: {
+                            intro: newData.nodeIntro,
+                            tags: newData.nodeTag
+                        }
+                    };
+                }
+            });
+        }
+        // 更新关联信息
+        if (type === 'link') {
+            newLinkList.map((link, idx) => {
+                if (link.extraInfo.id === newData.id) {
+                    newLinkList[idx] = {
+                        target: newData.endNode,
+                        source: newData.startNode,
+                        value: newData.linkName,
+                        extraInfo: {
+                            id: newData.id,
+                            intro: newData.linkIntro,
+                            tags: newData.linkTag
+                        }
+                    };
+                }
+            });
+        }
+        // 更新relations
+        newLinkList.map((link) => newRelations.push(link.value));
+        // 更新map全部信息
+        setMap({
+            ...map,
+            node: newNodeList,
+            link: newLinkList,
+            relations: newRelations
+        });
+    };
+
+    // 新增知识节点
+    const handleAddNewNode = (newData) => {
+        let newNodeList = [...map.node];
+        newNodeList.push({
+            id: newData.id,
+            name: newData.nodeName,
+            draggable: true, // 节点是否可拖拽，只在使用力引导布局的时候有用。
+            symbolSize: [newData.nodeSize, newData.nodeSize],
+            itemStyle: {
+                color: newData.nodeColor
+            },
+            extraInfo: {
+                intro: newData.nodeIntro,
+                tags: newData.nodeTag
+            }
+        });
+        setMap({
+            ...map,
+            node: newNodeList
+        });
+    };
+
+    // 新增知识关联
+    const handleAddNewLink = (newData) => {
+        let newLinkList = [...map.link];
+        let newRelations = [...map.relations];
+        newLinkList.push({
+            target: newData.endNode,
+            source: newData.startNode,
+            value: newData.linkName,
+            extraInfo: {
+                id: newData.id,
+                intro: newData.linkIntro,
+                tags: newData.linkTag
+            }
+        });
+        newLinkList.map((link) => newRelations.push(link.value));
+        setMap({
+            ...map,
+            link: newLinkList,
+            relations: newRelations
+        });
     };
 
     return (
@@ -49,7 +187,7 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
                     fontSize="1.1rem"
                     fontWeight="bold"
                 >
-                    元认知知识地图
+                    知识地图：{mapTitle}
                 </Typography>
                 {/* 知识地图编辑工具 */}
                 <Box
@@ -61,50 +199,94 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ handleOpenList }
                                 aria-label="delete"
                                 size="small"
                                 sx={{ mb: '5px' }}
-                                onClick={() => setOpen(!open)}
+                                onClick={() => setOpen('mapInfo')}
                             >
                                 <DescriptionIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
                         <Divider />
                         <Tooltip title="新增知识节点" arrow placement="right">
-                            <IconButton aria-label="delete" size="small" sx={{ m: '5px 0' }}>
+                            <IconButton
+                                aria-label="delete"
+                                size="small"
+                                sx={{ m: '5px 0' }}
+                                onClick={() => setOpen('addNewNode')}
+                            >
                                 <AddCircleIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
                         <Divider />
                         <Tooltip title="新增知识关联" arrow placement="right">
-                            <IconButton aria-label="delete" size="small" sx={{ mt: '5px' }}>
+                            <IconButton
+                                aria-label="delete"
+                                size="small"
+                                sx={{ mt: '5px' }}
+                                onClick={() => setOpen('addNewLink')}
+                            >
                                 <MediationIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
                         <Divider />
                         <Tooltip title="返回知识列表" arrow placement="right">
-                            <IconButton aria-label="delete" size="small" sx={{ mt: '5px' }}>
+                            <IconButton
+                                aria-label="delete"
+                                size="small"
+                                sx={{ mt: '5px' }}
+                                onClick={handleOpenList}
+                            >
                                 <KeyboardReturnIcon fontSize="small" />
                             </IconButton>
                         </Tooltip>
                     </Paper>
                 </Box>
-                <KnowledgeGraph
-                    nodeData={graph.node}
-                    linkData={graph.link}
-                    relations={graph.relations}
+                {/* 知识地图主体 */}
+                <KnowledgeMap
+                    nodeData={map.node}
+                    linkData={map.link}
+                    relations={map.relations}
+                    echartsClick={echartsClick}
                 />
                 {/* 信息面板 */}
-                <Fade in={open}>
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            right: 0,
-                            width: '300px',
-                            background: '#c2d7e0d9',
-                            height: 'calc(100vh - 150px)'
-                        }}
-                    >
-                        信息内容
-                    </Box>
-                </Fade>
+                {open === 'mapInfo' && (
+                    <MapInfo
+                        mapInfo={map.mapInfo}
+                        open={open === 'mapInfo'}
+                        handleClosePanel={() => setOpen(null)}
+                        handleUpdateMapInfo={handleUpdateMapInfo}
+                    />
+                )}
+                {open === 'addNewNode' && (
+                    <AddNewNode
+                        open={open === 'addNewNode'}
+                        handleClosePanel={() => setOpen(null)}
+                        handleAddNewNode={handleAddNewNode}
+                    />
+                )}
+                {open === 'addNewLink' && (
+                    <AddNewLink
+                        open={open === 'addNewLink'}
+                        nodeList={map.node}
+                        handleClosePanel={() => setOpen(null)}
+                        handleAddNewLink={handleAddNewLink}
+                    />
+                )}
+                {open === 'nodeInfo' && (
+                    <NodeInfo
+                        nodeInfo={nodeInfo}
+                        open={open === 'nodeInfo'}
+                        handleClosePanel={() => setOpen(null)}
+                        handleUpdateData={handleChangeMap}
+                    />
+                )}
+                {open === 'linkInfo' && (
+                    <LinkInfo
+                        linkInfo={linkInfo}
+                        open={open === 'linkInfo'}
+                        nodeList={map.node}
+                        handleClosePanel={() => setOpen(null)}
+                        handleUpdateData={handleChangeMap}
+                    />
+                )}
             </Box>
         </Box>
     );

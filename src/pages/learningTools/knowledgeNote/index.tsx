@@ -58,7 +58,7 @@ const KnowledgeNote = () => {
                     sx={{ width: '100%', m: '10px 0' }}
                     disableElevation
                     startIcon={<AddBoxIcon />}
-                    onClick={() => setIsNoteDetail(!isNoteDetail)}
+                    onClick={() => setIsNoteDetail(true)}
                 >
                     新建笔记
                 </Button>

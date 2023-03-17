@@ -13,18 +13,34 @@ import { mockTagContentLists } from '@/utils/mock/mockTagTree';
 export default function KnowledgeTagContent() {
     // 编辑修改标签内容
     const [isEdit, setIsEdit] = useState(false);
+    // 标签标题
+    const [tagTitle, setTagTitle] = useState('元认知');
+    // 标签内容
+    const [tagContent, setTagContent] = useState(
+        '元认知是认知系统中的高阶认知主体（higher-order cognitive agent），是认知系统实现自指（self-reference）的认知组件（cognitive components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。'
+    );
 
     return (
         <Paper sx={{ boxShadow: 'none' }}>
             <Box sx={{ display: 'flex', margin: '10px 0' }}>
                 {isEdit ? (
                     <InputBase
-                        sx={{ fontSize: '1.2rem', fontWeight: 'bold', mt: '-4px' }}
+                        sx={{
+                            fontSize: '1.2rem',
+                            fontWeight: 'bold',
+                            mt: '-4px',
+                            width: '50%',
+                            borderBottom: '1px solid black'
+                        }}
                         placeholder="请输入标签名"
+                        value={tagTitle}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            setTagTitle(event.target.value)
+                        }
                     />
                 ) : (
                     <Typography fontWeight="bold" fontSize="1.2rem">
-                        自指与元认知
+                        {tagTitle}
                     </Typography>
                 )}
 
@@ -46,7 +62,10 @@ export default function KnowledgeTagContent() {
             </Box>
             {isEdit ? (
                 <TextField
-                    value="元认知是认知系统中的高阶认知主体（higher-order cognitive agent），是认知系统实现自指（self-reference）的认知组件（cognitive components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。"
+                    value={tagContent}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                        setTagContent(event.target.value)
+                    }
                     multiline
                     variant="standard"
                     sx={{
@@ -54,11 +73,7 @@ export default function KnowledgeTagContent() {
                     }}
                 />
             ) : (
-                <Typography margin={'15px 0'}>
-                    元认知是认知系统中的高阶认知主体（higher-order cognitive
-                    agent），是认知系统实现自指（self-reference）的认知组件（cognitive
-                    components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。
-                </Typography>
+                <Typography margin={'15px 0'}>{tagContent}</Typography>
             )}
             <Divider sx={{ mt: 2, mb: 2 }} />
             <Typography fontWeight="bold" marginBottom="10px" fontSize="1.1rem">

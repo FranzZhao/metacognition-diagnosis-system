@@ -30,6 +30,8 @@ interface KnowledgeNoteDetailProps {
 }
 
 const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNoteList }) => {
+    // 笔记标题
+    const [noteTitle, setNoteTitle] = useState('');
     // 标签字段
     const [noteTags, setNoteTags] = useState([]);
     // 笔记简介字段
@@ -103,6 +105,10 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         borderBottom: '1px solid grey'
                     }}
                     placeholder="请输入笔记标题"
+                    value={noteTitle}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                        setNoteTitle(event.target.value);
+                    }}
                 />
                 <Tooltip title="保存笔记" arrow>
                     <IconButton
@@ -110,7 +116,14 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         size="small"
                         sx={{ ml: 'auto' }}
                         onClick={() => {
-                            console.log(extraFeature);
+                            let noteInfo = {
+                                noteTitle: noteTitle,
+                                noteTags: noteTags,
+                                noteIntro: noteIntro,
+                                extraFeature: extraFeature,
+                                noteContent: text
+                            };
+                            console.log(noteInfo);
                         }}
                     >
                         <SaveIcon fontSize="small" />
@@ -151,15 +164,10 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                             笔记标签
                         </Typography>
                     </Box>
-                    {/* <TextField
-                        sx={{ ml: 1, mr: 1, flex: 1 }}
-                        placeholder="请选择笔记所属标签"
-                        variant="standard"
-                    /> */}
                     <TagSelector
                         value={noteTags}
-                        // tagList={['元认知', '元认知意识', '认知调控', '自指', '自我概念']}
-                        tagList={[]}
+                        tagList={['元认知', '元认知意识', '认知调控', '自指', '自我概念']}
+                        // tagList={[]}
                         onChange={(event, newValue) => setNoteTags(newValue)}
                         sx={{ flex: 1, mr: 1, ml: 1 }}
                         placeholder="请选择笔记所属标签"
@@ -185,6 +193,10 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         sx={{ ml: 1, mr: 1, flex: 1 }}
                         placeholder="请输入笔记简介"
                         variant="standard"
+                        value={noteIntro}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            setNoteIntro(event.target.value)
+                        }
                     />
                 </Box>
                 {/* 自定义字段 */}

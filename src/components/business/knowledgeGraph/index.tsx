@@ -19,8 +19,8 @@ const initialOptions = {
     legend: {
         x: 'center',
         show: true,
-        // data: []
-        data: mockRelations
+        data: []
+        // data: mockRelations
     },
     series: [
         {
@@ -60,10 +60,10 @@ const initialOptions = {
                 }
             },
             grid: { top: 8, right: 8, bottom: 24, left: 36 },
-            // data: [],
-            // links: []
-            data: mockNodeData,
-            links: mockLinkData
+            data: [],
+            links: []
+            // data: mockNodeData,
+            // links: mockLinkData
         }
     ]
 };
@@ -86,7 +86,7 @@ interface KnowledgeGraphState {
     echartsClick?: {};
 }
 
-export const KnowledgeGraph: React.FC<KnowledgeGraphState> = ({
+export const KnowledgeMap: React.FC<KnowledgeGraphState> = ({
     nodeData,
     linkData,
     relations,
@@ -114,43 +114,44 @@ export const KnowledgeGraph: React.FC<KnowledgeGraphState> = ({
     };
 
     // listener: whether graph had changed
-    // useEffect(() => {
-    //     // deep copy
-    //     let currentOptions = JSON.parse(JSON.stringify(options));
-    //     // assignment
-    //     currentOptions.series[0].data = nodeData;
-    //     currentOptions.series[0].links = linkData;
-    //     currentOptions.legend.data = relations;
-    //     currentOptions.backgroundColor = themeColor;
-    //     currentOptions.series[0].lineStyle.normal.type = lineStyleType;
-    //     currentOptions.series[0].lineStyle.normal.color = lineStyleColor;
-    //     currentOptions.series[0].lineStyle.normal.width = lineStyleWidth;
-    //     currentOptions.series[0].lineStyle.normal.opacity = lineStyleOpacity;
-    //     currentOptions.series[0].lineStyle.normal.curveness = lineStyleCurveness;
-    //     currentOptions.series[0].label.normal.textStyle.fontSize = labelFontSize;
-    //     currentOptions.series[0].label.normal.position = labelPosition;
-    //     currentOptions.series[0].edgeLabel.normal.textStyle.fontSize = edgeLabelFontSize;
-    //     currentOptions.series[0].edgeLabel.normal.formatter = showLinkLabel;
-    //     currentOptions.series[0].layout = layout;
-    //     currentOptions.series[0].force.repulsion = forcePower * 10;
-    //     // set State
-    //     setOptions(currentOptions);
-    // }, [
-    //     nodeData,
-    //     linkData,
-    //     relations,
-    //     themeColor,
-    //     lineStyleType,
-    //     lineStyleColor,
-    //     lineStyleWidth,
-    //     lineStyleOpacity,
-    //     lineStyleCurveness,
-    //     labelFontSize,
-    //     labelPosition,
-    //     edgeLabelFontSize,
-    //     layout,
-    //     forcePower
-    // ]);
+    useEffect(() => {
+        // deep copy
+        let currentOptions = JSON.parse(JSON.stringify(options));
+        // assignment
+        currentOptions.series[0].data = nodeData;
+        currentOptions.series[0].links = linkData;
+        currentOptions.legend.data = relations;
+        currentOptions.series[0].edgeLabel.formatter = showLinkLabel;
+        // currentOptions.backgroundColor = themeColor;
+        // currentOptions.series[0].lineStyle.normal.type = lineStyleType;
+        // currentOptions.series[0].lineStyle.normal.color = lineStyleColor;
+        // currentOptions.series[0].lineStyle.normal.width = lineStyleWidth;
+        // currentOptions.series[0].lineStyle.normal.opacity = lineStyleOpacity;
+        // currentOptions.series[0].lineStyle.normal.curveness = lineStyleCurveness;
+        // currentOptions.series[0].label.normal.textStyle.fontSize = labelFontSize;
+        // currentOptions.series[0].label.normal.position = labelPosition;
+        // currentOptions.series[0].edgeLabel.normal.textStyle.fontSize = edgeLabelFontSize;
+        // currentOptions.series[0].edgeLabel.normal.formatter = showLinkLabel;
+        // currentOptions.series[0].layout = layout;
+        // currentOptions.series[0].force.repulsion = forcePower * 10;
+        // set State
+        setOptions(currentOptions);
+    }, [
+        nodeData,
+        linkData,
+        relations
+        // themeColor,
+        // lineStyleType,
+        // lineStyleColor,
+        // lineStyleWidth,
+        // lineStyleOpacity,
+        // lineStyleCurveness,
+        // labelFontSize,
+        // labelPosition,
+        // edgeLabelFontSize,
+        // layout,
+        // forcePower
+    ]);
 
     const chart = React.useMemo(
         () => (

@@ -6,6 +6,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Box from '@mui/system/Box';
+
 export interface ModalState {
     /**
      * 开关参数
@@ -67,7 +68,7 @@ export const Modal: React.FC<ModalState> = (props) => {
                         }}
                         size="small"
                     >
-                        <CloseIcon />
+                        <CloseIcon fontSize="small" />
                     </IconButton>
                 </Box>
             </DialogTitle>

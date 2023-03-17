@@ -116,5 +116,35 @@ export const mockTagContentLists: TagAssociatedItemsProps[] = [
         title: '认知知识的发展',
         type: [{ label: '文本信息', color: 'error' }],
         time: '2021/12/30 18:23:42'
+    },
+    {
+        id: '6',
+        title: '元认知知识',
+        type: [{ label: '知识节点', color: 'warning' }],
+        time: '2021/12/30 18:23:42'
+    },
+    {
+        id: '7',
+        title: '元认知调节',
+        type: [{ label: '知识节点', color: 'warning' }],
+        time: '2021/12/30 18:23:42'
+    },
+    {
+        id: '8',
+        title: '自指',
+        type: [{ label: '知识关联', color: 'info' }],
+        time: '2021/12/30 18:23:42'
+    },
+    {
+        id: '9',
+        title: '认知知识的内涵',
+        type: [{ label: '知识笔记', color: 'success' }],
+        time: '2021/12/30 18:23:42'
+    },
+    {
+        id: '10',
+        title: '认知知识的发展',
+        type: [{ label: '文本信息', color: 'error' }],
+        time: '2021/12/30 18:23:42'
     }
 ];
