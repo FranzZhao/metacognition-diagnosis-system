@@ -1,12 +1,12 @@
 import React from 'react';
 import DraggableBoard from '@/components/common/draggableBoard';
-
-const LearningPortfolio = () => {
+const ProgressManagement = () => {
     return (
         <div>
-            <DraggableBoard />
+            ProgressManagement
+            {/* <DraggableBoard /> */}
         </div>
     );
 };
 
-export default LearningPortfolio;
+export default ProgressManagement;

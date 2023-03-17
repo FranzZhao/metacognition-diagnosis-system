@@ -44,13 +44,19 @@ const KnowledgeNote = () => {
                         text="所有笔记"
                         icon={<AllInboxIcon sx={{ mr: '10px' }} />}
                         isClick={view === '所有笔记'}
-                        onClick={() => setView('所有笔记')}
+                        onClick={() => {
+                            setView('所有笔记');
+                            setIsNoteDetail(false);
+                        }}
                     />
                     <ViewButton
                         text="重要笔记"
                         icon={<StarIcon sx={{ mr: '10px' }} />}
                         isClick={view === '重要笔记'}
-                        onClick={() => setView('重要笔记')}
+                        onClick={() => {
+                            setView('重要笔记');
+                            setIsNoteDetail(false);
+                        }}
                     />
                 </Box>
                 <Button

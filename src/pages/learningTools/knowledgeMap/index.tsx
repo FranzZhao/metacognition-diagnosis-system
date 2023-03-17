@@ -57,25 +57,37 @@ const KnowledgeMap = () => {
                         text="所有知识地图"
                         icon={<AllInboxIcon sx={{ mr: '10px' }} />}
                         isClick={view === '所有知识地图'}
-                        onClick={() => setView('所有知识地图')}
+                        onClick={() => {
+                            setView('所有知识地图');
+                            setIsKnowledgeMapDetail(false);
+                        }}
                     />
                     <ViewButton
                         text="重要知识地图"
                         icon={<StarIcon sx={{ mr: '10px' }} />}
                         isClick={view === '重要知识地图'}
-                        onClick={() => setView('重要知识地图')}
+                        onClick={() => {
+                            setView('重要知识地图');
+                            setIsKnowledgeMapDetail(false);
+                        }}
                     />
                     <ViewButton
                         text="所有知识节点"
                         icon={<ScatterPlotIcon sx={{ mr: '10px' }} />}
                         isClick={view === '所有知识节点'}
-                        onClick={() => setView('所有知识节点')}
+                        onClick={() => {
+                            setView('所有知识节点');
+                            setIsKnowledgeMapDetail(false);
+                        }}
                     />
                     <ViewButton
                         text="所有知识关联"
                         icon={<ShareIcon sx={{ mr: '10px' }} />}
                         isClick={view === '所有知识关联'}
-                        onClick={() => setView('所有知识关联')}
+                        onClick={() => {
+                            setView('所有知识关联');
+                            setIsKnowledgeMapDetail(false);
+                        }}
                     />
                 </Box>
                 <Button
