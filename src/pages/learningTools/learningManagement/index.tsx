@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider';
 // icon
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import CrisisAlertIcon from '@mui/icons-material/CrisisAlert';
 // custom components
 import ManagementTools from './managementTools';
 import { ViewButton } from '@/components/common';
@@ -32,6 +32,14 @@ const LearningManagement = () => {
                 </Typography>
                 <Divider />
                 <ViewButton
+                    text="学习目标"
+                    icon={<CrisisAlertIcon sx={{ mr: '10px' }} />}
+                    isClick={view === '学习目标'}
+                    onClick={() => {
+                        setView('学习目标');
+                    }}
+                />
+                <ViewButton
                     text="反思日志"
                     icon={<NoteAltIcon sx={{ mr: '10px' }} />}
                     isClick={view === '反思日志'}
@@ -45,14 +53,6 @@ const LearningManagement = () => {
                     isClick={view === '任务列表'}
                     onClick={() => {
                         setView('任务列表');
-                    }}
-                />
-                <ViewButton
-                    text="进度管理"
-                    icon={<AccountTreeIcon sx={{ mr: '10px' }} />}
-                    isClick={view === '进度管理'}
-                    onClick={() => {
-                        setView('进度管理');
                     }}
                 />
             </Card>

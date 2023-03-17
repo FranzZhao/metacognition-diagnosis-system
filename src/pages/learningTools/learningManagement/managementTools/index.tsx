@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 // custom components
 import Diary from './diary';
 import TodoList from './todoList';
-import ProgressManagement from './progressManagement';
+import LearningObject from './learningObject';
 
 const ManagementTools = ({ view }) => {
     return (
@@ -26,9 +26,9 @@ const ManagementTools = ({ view }) => {
                 }
             }}
         >
+            {view === '学习目标' && <LearningObject />}
             {view === '反思日志' && <Diary />}
             {view === '任务列表' && <TodoList />}
-            {view === '进度管理' && <ProgressManagement />}
         </Card>
     );
 };
