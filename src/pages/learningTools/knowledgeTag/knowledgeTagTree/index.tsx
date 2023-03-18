@@ -7,15 +7,25 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import TextField from '@mui/material/TextField';
 // custom components
 import TagTree from '@/components/business/tagTree';
+import { Modal } from '@/components/common';
 
 interface KnowledgeTagTreeProps {
     tagList: TagListProps[];
+    handleSelectedTag: (tagID: string) => void;
 }
 
-const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList }) => {
+const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSelectedTag }) => {
+    // 左侧标签树
     const [tagTree, setTagTree] = useState<TagTreeProps[]>([]);
+    // 添加标签模态框
+    const [isAddNewTag, setIsAddNewTag] = useState(false);
+    // 选中的标签
+    const [selectedTag, setSelectedTag] = useState();
+    // 新建标签内容
+    const [newTagContent, setNewTagContent] = useState();
 
     useEffect(() => {
         let newTagTree = handleTagListToTree();
@@ -76,16 +86,60 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList }) => {
                 知识标签列表
             </Typography>
             <Divider />
-            <TagTree data={tagTree} />
+            <TagTree data={tagTree} handleSelectedTag={handleSelectedTag} />
             <Divider />
             <Button
                 variant="contained"
                 sx={{ width: '100%', m: '10px 0' }}
                 disableElevation
                 startIcon={<AddBoxIcon />}
+                onClick={() => setIsAddNewTag(true)}
             >
                 添加标签
             </Button>
+            {/* 添加标签模态框 */}
+            <Modal
+                maxWidth="xs"
+                open={isAddNewTag}
+                onClose={() => setIsAddNewTag(false)}
+                title={'添加子目标'}
+                content={
+                    <>
+                        <TextField
+                            variant="standard"
+                            label="标签名称"
+                            placeholder="请输入标签名称"
+                            sx={{ width: '100%' }}
+                            // value={newSubGoal}
+                            // onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                            //     setNewSubGoal(event.target.value)
+                            // }
+                        />
+                    </>
+                }
+                actions={
+                    <>
+                        <Button
+                            variant="contained"
+                            size="small"
+                            disableElevation
+                            onClick={() => {
+                                // setAddNewNode(newSubGoal);
+                                setIsAddNewTag(false);
+                            }}
+                        >
+                            确认
+                        </Button>
+                        <Button
+                            size="small"
+                            color="secondary"
+                            onClick={() => setIsAddNewTag(false)}
+                        >
+                            取消
+                        </Button>
+                    </>
+                }
+            />
         </Box>
     );
 };

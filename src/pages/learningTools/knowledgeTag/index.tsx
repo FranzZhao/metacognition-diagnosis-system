@@ -7,8 +7,29 @@ import KnowledgeTagTree from './knowledgeTagTree';
 import KnowledgeTagContent from './knowledgeTagContent';
 // mock data
 import { mockTagLists } from '@/utils/mock/mockTagTree';
+// type
+import { TagListProps } from '@/utils/types/knowledgeTag';
 
 const KnowledgeTag = () => {
+    // 标签数组
+    const [tagList, setTagList] = useState(mockTagLists);
+    // 选择的标签内容
+    const [selectedTag, setSelectedTag] = useState<TagListProps>(mockTagLists[0]);
+
+    // 设定选中标签
+    const handleSelectedTag = (tagID: string) => {
+        // console.log('selected ID =>', tagID);
+        let select;
+        // 依据ID找到tag内容
+        tagList.map((tag, index) => {
+            if (tag.id === tagID) {
+                select = tag;
+            }
+        });
+        // TODO: 一个页面上不好看的bug, 添加了setSelectedTag之后, tagTree总是会重新渲染, 导致第一个也会处于hover状态，但点击外面就恢复了
+        setSelectedTag(select);
+    };
+
     return (
         <Box sx={{ display: 'flex' }}>
             {/* 左侧tag标签数 */}
@@ -21,7 +42,7 @@ const KnowledgeTag = () => {
                     minWidth: '250px'
                 }}
             >
-                <KnowledgeTagTree tagList={mockTagLists} />
+                <KnowledgeTagTree tagList={tagList} handleSelectedTag={handleSelectedTag} />
             </Card>
             {/* 右侧tag标签内容 */}
             <Card
@@ -42,7 +63,7 @@ const KnowledgeTag = () => {
                     }
                 }}
             >
-                <KnowledgeTagContent />
+                <KnowledgeTagContent selectedTagContent={selectedTag} />
             </Card>
         </Box>
     );

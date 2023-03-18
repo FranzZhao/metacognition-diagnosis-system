@@ -13,6 +13,8 @@ export interface TagListProps {
     labelIcon: React.ElementType<SvgIconProps>;
     /** tag 数量标识 */
     labelInfo: string;
+    /** tag 标签内容 */
+    content: string;
 }
 
 // 树状的tag标签树

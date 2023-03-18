@@ -5,15 +5,16 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Slider from '@mui/material/Slider';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 // icon
 import SaveIcon from '@mui/icons-material/Save';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-// custom components
-import { Modal } from '@/components/common';
-import LearningObjectFlow from '@/components/business/learningObjectFlow';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 
 const LearningObject = () => {
     // 是否编辑核心目标
@@ -21,15 +22,58 @@ const LearningObject = () => {
     // 核心目标内容
     const [coreLearningObject, setCoreLearningObject] =
         useState<string>('运用复杂系统理论构想未来教育评价样态');
-    // 添加新的子目标
-    const [isAddNewSubGoal, setIsAddNewSubGoal] = useState(false);
-    const [newSubGoal, setNewSubGoal] = useState('');
-    // 将新建的子目标传送到reactflow中
-    const [addNewNode, setAddNewNode] = useState('');
+    // 子任务
+    const [subGoals, setSubGoals] = useState([
+        { id: '1', text: '子目标1', progress: 50 },
+        { id: '2', text: '子目标2', progress: 20 },
+        { id: '3', text: '子目标3', progress: 60 }
+    ]);
 
     useEffect(() => {
         setIsEditCoreLearningObject(coreLearningObject.length === 0);
     }, []);
+
+    // 修改目标文本内容
+    const handleChangeGoalText = ({ id, value }) => {
+        let newSubGoals = [...subGoals];
+        subGoals.map((goal, idx) => {
+            if (goal.id === id) {
+                newSubGoals[idx].text = value;
+            }
+        });
+        setSubGoals(newSubGoals);
+    };
+
+    // 修改目标进度
+    const handleChangeGoalNumber = ({ id, value }) => {
+        let newSubGoals = [...subGoals];
+        subGoals.map((goal, idx) => {
+            if (goal.id === id) {
+                newSubGoals[idx].progress = value;
+            }
+        });
+        setSubGoals(newSubGoals);
+    };
+
+    // 删除目标
+    const handleDeleteSubGoalByID = (id) => {
+        let newSubGoals = [...subGoals];
+        subGoals.map((goal, idx) => {
+            if (goal.id === id) {
+                newSubGoals.splice(idx, 1);
+            }
+        });
+        setSubGoals(newSubGoals);
+    };
+
+    // 添加子目标
+    let var_id = 100;
+    const handleAddNewGoal = () => {
+        let newSubGoals = [...subGoals];
+        newSubGoals.push({ id: var_id.toString(), text: '', progress: 0 });
+        var_id++;
+        setSubGoals(newSubGoals);
+    };
 
     return (
         <Box>
@@ -107,63 +151,86 @@ const LearningObject = () => {
                             size="small"
                             disableElevation
                             startIcon={<AddBoxIcon />}
-                            onClick={() => setIsAddNewSubGoal(true)}
+                            onClick={handleAddNewGoal}
                         >
                             添加子目标
                         </Button>
-                        <Modal
-                            maxWidth="xs"
-                            open={isAddNewSubGoal}
-                            onClose={() => setIsAddNewSubGoal(false)}
-                            title={'添加子目标'}
-                            content={
-                                <>
-                                    <TextField
-                                        variant="standard"
-                                        label="子目标内容"
-                                        placeholder="请输入子目标的内容描述"
-                                        sx={{ width: '100%' }}
-                                        value={newSubGoal}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                            setNewSubGoal(event.target.value)
-                                        }
-                                    />
-                                </>
-                            }
-                            actions={
-                                <>
-                                    <Button
-                                        variant="contained"
-                                        size="small"
-                                        disableElevation
-                                        onClick={() => {
-                                            setAddNewNode(newSubGoal);
-                                            setIsAddNewSubGoal(false);
-                                        }}
-                                    >
-                                        确认
-                                    </Button>
-                                    <Button
-                                        size="small"
-                                        color="secondary"
-                                        onClick={() => setIsAddNewSubGoal(false)}
-                                    >
-                                        取消
-                                    </Button>
-                                </>
-                            }
-                        />
                     </Box>
                 </Box>
-                {/* react flow */}
-                <Box sx={{ height: 'calc(100vh - 300px)', m: '10px 0' }}>
-                    <LearningObjectFlow
-                        coreLearningObject={coreLearningObject}
-                        newNodeLabel={addNewNode}
-                    />
+                <Box>
+                    {subGoals.map((goal) => {
+                        return (
+                            <SubGoalPaper
+                                key={goal.id}
+                                data={goal}
+                                handleChangeGoal={handleChangeGoalText}
+                                handleChangeProgress={handleChangeGoalNumber}
+                                handleDeleteSubGoalByID={handleDeleteSubGoalByID}
+                            />
+                        );
+                    })}
                 </Box>
             </Paper>
         </Box>
+    );
+};
+
+const SubGoalPaper = ({
+    data,
+    handleChangeGoal,
+    handleChangeProgress,
+    handleDeleteSubGoalByID
+}) => {
+    const [goalText, setGoalText] = useState(data.text);
+    const [number, setNumber] = useState(data.progress);
+
+    const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setGoalText(event.target.value);
+        handleChangeGoal(data.id, event.target.value);
+    };
+
+    const handleChangeNumber = (event: Event, newValue: number | number[]) => {
+        setNumber(newValue);
+        handleChangeProgress(data.id, newValue);
+    };
+
+    return (
+        <Paper variant="outlined" sx={{ p: '10px 15px', m: '10px 0' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box>
+                    <Tooltip title="删除子任务" arrow>
+                        <IconButton
+                            size="small"
+                            sx={{ borderRadius: '5px' }}
+                            onClick={() => handleDeleteSubGoalByID(data.id)}
+                        >
+                            <IndeterminateCheckBoxIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+                <TextField
+                    variant="standard"
+                    value={goalText}
+                    onChange={handleChangeText}
+                    sx={{ width: '60%', ml: 1 }}
+                    placeholder="请输入子目标内容"
+                />
+                <Box sx={{ ml: 'auto' }}>
+                    完成进度：<b>{number}%</b>
+                </Box>
+            </Box>
+            <Box sx={{ width: '100%', mt: 1 }}>
+                <Slider
+                    value={number}
+                    onChange={handleChangeNumber}
+                    step={5}
+                    marks
+                    min={0}
+                    max={100}
+                    size="small"
+                />
+            </Box>
+        </Paper>
     );
 };
 

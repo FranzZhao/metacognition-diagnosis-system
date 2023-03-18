@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 // type
-import { TagTreeProps } from '@/utils/types/knowledgeTag';
+import { TagTreeProps, TagListProps } from '@/utils/types/knowledgeTag';
 // mui5
 import { styled } from '@mui/material/styles';
 import { SvgIconProps } from '@mui/material/SvgIcon';
@@ -19,13 +19,6 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 
-declare module 'react' {
-    interface CSSProperties {
-        '--tree-view-color'?: string;
-        '--tree-view-bg-color'?: string;
-    }
-}
-
 type StyledTreeItemProps = TreeItemProps & {
     bgColor?: string;
     color?: string;
@@ -34,67 +27,44 @@ type StyledTreeItemProps = TreeItemProps & {
     labelText: string;
 };
 
-const StyledTreeItemRoot = styled(TreeItem)(({ theme }) => ({
-    color: theme.palette.text.secondary,
-    [`& .${treeItemClasses.content}`]: {
-        color: theme.palette.text.secondary,
-        borderRadius: theme.spacing(1),
-        paddingRight: theme.spacing(1),
-        fontWeight: theme.typography.fontWeightMedium,
-        '&.Mui-expanded': {
-            fontWeight: theme.typography.fontWeightRegular
-        },
-        '&:hover': {
-            backgroundColor: theme.palette.action.hover
-        },
-        '&.Mui-focused, &.Mui-selected, &.Mui-selected.Mui-focused': {
-            backgroundColor: `var(--tree-view-bg-color, ${theme.palette.action.selected})`,
-            color: 'var(--tree-view-color)'
-        },
-        [`& .${treeItemClasses.label}`]: {
-            fontWeight: 'inherit',
-            color: 'inherit'
-        }
-    },
-    [`& .${treeItemClasses.group}`]: {
-        marginLeft: 0,
-        [`& .${treeItemClasses.content}`]: {
-            paddingLeft: theme.spacing(2)
-        }
-    }
-}));
-
-function StyledTreeItem(props: StyledTreeItemProps) {
-    const { bgColor, color, labelIcon: LabelIcon, labelInfo, labelText, ...other } = props;
-
-    return (
-        <StyledTreeItemRoot
-            label={
-                <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
-                    <Box component={LabelIcon} color="inherit" sx={{ mr: 1, fontSize: '16px' }} />
-                    <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
-                        {labelText}
-                    </Typography>
-                    <Typography variant="caption" color="inherit">
-                        {labelInfo}
-                    </Typography>
-                </Box>
-            }
-            style={{
-                '--tree-view-color': color,
-                '--tree-view-bg-color': bgColor
-            }}
-            {...other}
-        />
-    );
-}
-
 interface TagTreeComponentProps {
     data: TagTreeProps[];
+    handleSelectedTag: (tagID: string) => void;
 }
 
 // TODO: 添加层级
-const TagTree: React.FC<TagTreeComponentProps> = ({ data }) => {
+const TagTree: React.FC<TagTreeComponentProps> = ({ data, handleSelectedTag }) => {
+    // 标签项样式设置
+    function StyledTreeItem(props: StyledTreeItemProps) {
+        const { bgColor, color, labelIcon: LabelIcon, labelInfo, labelText, ...other } = props;
+
+        return (
+            <TreeItem
+                onClick={() => {
+                    console.log(other.nodeId);
+                    handleSelectedTag(other.nodeId);
+                }}
+                label={
+                    <Box sx={{ display: 'flex', alignItems: 'center', p: 0.5, pr: 0 }}>
+                        <Box
+                            component={LabelIcon}
+                            color="inherit"
+                            sx={{ mr: 1, fontSize: '16px' }}
+                        />
+                        <Typography variant="body2" sx={{ fontWeight: 'inherit', flexGrow: 1 }}>
+                            {labelText}
+                        </Typography>
+                        <Typography variant="caption" color="inherit">
+                            {labelInfo}
+                        </Typography>
+                    </Box>
+                }
+                {...other}
+            />
+        );
+    }
+
+    // 递归渲染
     const renderTree = (node: TagTreeProps) => {
         return (
             <StyledTreeItem
@@ -103,8 +73,9 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data }) => {
                 labelText={node.labelText}
                 labelIcon={node.labelIcon}
                 labelInfo={node.labelInfo}
-                color="#3c8039"
-                bgColor="#e6f4ea"
+                // onClick={(event) => {
+                //     console.log('here =>', event);
+                // }}
             >
                 {node.children?.length === 0 ? null : node.children?.map((tag) => renderTree(tag))}
             </StyledTreeItem>
@@ -113,8 +84,6 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data }) => {
 
     return (
         <TreeView
-            aria-label="gmail"
-            defaultExpanded={['3']}
             defaultCollapseIcon={<ArrowDropDownIcon />}
             defaultExpandIcon={<ArrowRightIcon />}
             defaultEndIcon={<div style={{ width: 24 }} />}
@@ -140,14 +109,14 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data }) => {
             }}
         >
             {data.map((tag) => renderTree(tag))}
-            <StyledTreeItem
+            {/* <StyledTreeItem
                 nodeId="无标签项目"
                 labelText="无标签项目"
                 labelIcon={BookmarkBorderIcon}
                 labelInfo="10"
                 color="#3c8039"
                 bgColor="#e6f4ea"
-            />
+            /> */}
         </TreeView>
     );
 };

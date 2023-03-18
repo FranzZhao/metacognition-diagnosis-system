@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Paper from '@mui/material/Paper';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -7,18 +7,27 @@ import InputBase from '@mui/material/InputBase';
 import SaveIcon from '@mui/icons-material/Save';
 import TextField from '@mui/material/TextField';
 import CustomTable from '@/components/common/table';
+// type
+import { TagListProps } from '@/utils/types/knowledgeTag';
 // mock
 import { mockTagContentLists } from '@/utils/mock/mockTagTree';
 
-export default function KnowledgeTagContent() {
+interface KnowledgeTagContentProps {
+    selectedTagContent: TagListProps;
+}
+
+const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagContent }) => {
     // 编辑修改标签内容
     const [isEdit, setIsEdit] = useState(false);
     // 标签标题
-    const [tagTitle, setTagTitle] = useState('元认知');
+    const [tagTitle, setTagTitle] = useState(selectedTagContent.labelText);
     // 标签内容
-    const [tagContent, setTagContent] = useState(
-        '元认知是认知系统中的高阶认知主体（higher-order cognitive agent），是认知系统实现自指（self-reference）的认知组件（cognitive components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。'
-    );
+    const [tagContent, setTagContent] = useState(selectedTagContent.content);
+
+    useEffect(() => {
+        setTagTitle(selectedTagContent.labelText);
+        setTagContent(selectedTagContent.content);
+    }, [selectedTagContent]);
 
     return (
         <Paper sx={{ boxShadow: 'none' }}>
@@ -96,4 +105,5 @@ export default function KnowledgeTagContent() {
             />
         </Paper>
     );
-}
+};
+export default KnowledgeTagContent;
