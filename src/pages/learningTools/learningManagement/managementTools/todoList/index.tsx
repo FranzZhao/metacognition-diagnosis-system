@@ -22,14 +22,17 @@ const TodoList = () => {
 
     // 新增任务button
     const handleAddNewTodoItem = () => {
-        let newTodoList = [...todoList];
-        newTodoList.push({
-            id: newTodoItem,
-            content: newTodoItem,
-            isFinish: false
-        });
-        setTodoList([...newTodoList]);
-        setNewTodoItem('');
+        // TODO: 新输入的内容为空时, 用SnackBar提示不能为空, 要把SnackBar做成一个函数, 不需要引入组件, 直接使用函数就能调用
+        if (newTodoItem.length !== 0) {
+            let newTodoList = [...todoList];
+            newTodoList.push({
+                id: newTodoItem,
+                content: newTodoItem,
+                isFinish: false
+            });
+            setTodoList([...newTodoList]);
+            setNewTodoItem('');
+        }
     };
 
     // 点击todo item修改其状态

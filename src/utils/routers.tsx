@@ -4,7 +4,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import MapIcon from '@mui/icons-material/Map';
 import LocalLibraryIcon from '@mui/icons-material/LocalLibrary';
 import DnsIcon from '@mui/icons-material/Dns';
-import MoodIcon from '@mui/icons-material/Mood';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
 import EventIcon from '@mui/icons-material/Event';
 import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
@@ -64,9 +64,9 @@ export const routes = [
                 // 学习画像
                 path: '/learningPortfolio',
                 element: <LearningPortfolio />,
-                name: '学习画像',
+                name: '分析面板',
                 module: '学习工具',
-                icon: <MoodIcon />
+                icon: <EqualizerIcon />
             },
             {
                 // 学习管理

@@ -4,3 +4,4 @@ export * from './toolCard';
 export * from './snackbar';
 export * from './bundledEditor';
 export * from './tagSelector';
+export * from './charts';
