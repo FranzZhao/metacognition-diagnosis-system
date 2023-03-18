@@ -13,7 +13,7 @@ import ManagementTools from './managementTools';
 import { ViewButton } from '@/components/common';
 
 const LearningManagement = () => {
-    const [view, setView] = useState('反思日志');
+    const [view, setView] = useState('学习目标');
 
     return (
         <Box sx={{ display: 'flex' }}>
