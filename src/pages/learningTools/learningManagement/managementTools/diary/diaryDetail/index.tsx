@@ -33,6 +33,7 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
     const handleChangeText = (newText) => {
         setDiaryContent(newText);
     };
+    
     return (
         <Box>
             {/* 笔记标题 */}

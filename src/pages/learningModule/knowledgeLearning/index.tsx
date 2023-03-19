@@ -35,7 +35,7 @@ const KnowledgeLearning = () => {
                         fontWeight="bold"
                         style={{ userSelect: 'none' }}
                     >
-                        复杂科学与学习理论
+                        知识学习：复杂科学与学习理论
                     </Typography>
                     {isChapterDetail && (
                         <Box sx={{ ml: 'auto' }}>

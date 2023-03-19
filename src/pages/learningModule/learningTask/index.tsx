@@ -1,127 +1,125 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepButton from '@mui/material/StepButton';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
+import DesignServicesIcon from '@mui/icons-material/DesignServices';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+// custom components
+import Task1 from './task1';
+import Task2 from './task2';
+import Task3 from './task3';
+// img
+import learningBG from '@/assets/img/learning-bg.jpg';
 
-const steps = ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: number;
+    value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+function a11yProps(index: number) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`
+    };
+}
 
 export default function LearningTask() {
-    const [activeStep, setActiveStep] = React.useState(0);
-    const [completed, setCompleted] = React.useState<{
-        [k: number]: boolean;
-    }>({});
+    const [step, setStep] = React.useState(0);
+    // 选择的任务内容
+    const [selectedTask, setSelectedTask] = useState('');
 
-    const totalSteps = () => {
-        return steps.length;
-    };
-
-    const completedSteps = () => {
-        return Object.keys(completed).length;
-    };
-
-    const isLastStep = () => {
-        return activeStep === totalSteps() - 1;
-    };
-
-    const allStepsCompleted = () => {
-        return completedSteps() === totalSteps();
-    };
-
-    const handleNext = () => {
-        const newActiveStep =
-            isLastStep() && !allStepsCompleted()
-                ? // It's the last step, but not all steps have been completed,
-                  // find the first step that has been completed
-                  steps.findIndex((step, i) => !(i in completed))
-                : activeStep + 1;
-        setActiveStep(newActiveStep);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleStep = (step: number) => () => {
-        setActiveStep(step);
-    };
-
-    const handleComplete = () => {
-        const newCompleted = completed;
-        newCompleted[activeStep] = true;
-        setCompleted(newCompleted);
-        handleNext();
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-        setCompleted({});
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setStep(newValue);
     };
 
     return (
         <Box>
-            <Paper variant="outlined" sx={{ p: 2 }}>
+            <Box sx={{ padding: '5px 0' }}>
+                <img
+                    alt=""
+                    src={learningBG}
+                    style={{ width: '100%', height: '100px', marginTop: '5px', objectFit: 'cover' }}
+                />
+                <Box sx={{ margin: '-50px 15px 25px 15px', display: 'flex' }}>
+                    <Typography
+                        variant="h5"
+                        color="white"
+                        fontWeight="bold"
+                        style={{ userSelect: 'none' }}
+                    >
+                        学习任务
+                    </Typography>
+                </Box>
+            </Box>
+            <Paper variant="outlined" sx={{ p: '10px 20px' }}>
                 <Box sx={{ width: '100%' }}>
-                    <Stepper nonLinear activeStep={activeStep}>
-                        {steps.map((label, index) => (
-                            <Step key={label} completed={completed[index]}>
-                                <StepButton color="inherit" onClick={handleStep(index)}>
-                                    {label}
-                                </StepButton>
-                            </Step>
-                        ))}
-                    </Stepper>
-                    <div>
-                        {allStepsCompleted() ? (
-                            <React.Fragment>
-                                <Typography sx={{ mt: 2, mb: 1 }}>
-                                    All steps completed - you&apos;re finished
-                                </Typography>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                    <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleReset}>Reset</Button>
-                                </Box>
-                            </React.Fragment>
-                        ) : (
-                            <React.Fragment>
-                                <Typography sx={{ mt: 2, mb: 1, py: 1 }}>
-                                    Step {activeStep + 1}
-                                </Typography>
-                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                                    <Button
-                                        color="inherit"
-                                        disabled={activeStep === 0}
-                                        onClick={handleBack}
-                                        sx={{ mr: 1 }}
-                                    >
-                                        Back
-                                    </Button>
-                                    <Box sx={{ flex: '1 1 auto' }} />
-                                    <Button onClick={handleNext} sx={{ mr: 1 }}>
-                                        Next
-                                    </Button>
-                                    {activeStep !== steps.length &&
-                                        (completed[activeStep] ? (
-                                            <Typography
-                                                variant="caption"
-                                                sx={{ display: 'inline-block' }}
-                                            >
-                                                Step {activeStep + 1} already completed
-                                            </Typography>
-                                        ) : (
-                                            <Button onClick={handleComplete}>
-                                                {completedSteps() === totalSteps() - 1
-                                                    ? 'Finish'
-                                                    : 'Complete Step'}
-                                            </Button>
-                                        ))}
-                                </Box>
-                            </React.Fragment>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={step} onChange={handleChange} aria-label="basic tabs example">
+                            <Tab
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <TroubleshootIcon sx={{ mr: 1 }} />
+                                        <Typography>任务分析与选择</Typography>
+                                    </Box>
+                                }
+                                {...a11yProps(0)}
+                            />
+                            {/* DesignServicesIcon */}
+                            <Tab
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <DesignServicesIcon sx={{ mr: 1 }} />
+                                        <Typography>任务解决方案撰写</Typography>
+                                    </Box>
+                                }
+                                {...a11yProps(1)}
+                            />
+                            <Tab
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <AssessmentIcon sx={{ mr: 1 }} />
+                                        <Typography>方案评价与迭代</Typography>
+                                    </Box>
+                                }
+                                {...a11yProps(2)}
+                            />
+                        </Tabs>
+                    </Box>
+                    <Box sx={{ padding: '15px 10px' }}>
+                        {step === 0 && (
+                            <Task1
+                                handleGetTask={(task) => {
+                                    setSelectedTask(task);
+                                }}
+                            />
                         )}
-                    </div>
+                        {step === 1 && <Task2 task={selectedTask} />}
+                        {step === 2 && <Task3 />}
+                    </Box>
                 </Box>
             </Paper>
         </Box>
