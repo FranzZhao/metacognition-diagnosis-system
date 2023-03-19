@@ -27,18 +27,18 @@ export const routes = [
         path: '/',
         element: <MainLayout />,
         children: [
-            {
-                index: true,
-                path: '/',
-                element: <Home />,
-                name: '个人空间',
-                module: '主页',
-                icon: <HomeIcon />
-            },
+            // {
+            //     index: true,
+            //     path: '/',
+            //     element: <Home />,
+            //     name: '个人空间',
+            //     module: '主页',
+            //     icon: <HomeIcon />
+            // },
             {
                 // 学习概览
-                index: false,
-                path: '/learningIntroduction',
+                index: true,
+                path: '/',
                 element: <LearningIntroduction />,
                 name: '学习概览',
                 module: '学习模块',
