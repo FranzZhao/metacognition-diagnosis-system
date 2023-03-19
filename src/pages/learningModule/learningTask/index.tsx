@@ -62,16 +62,16 @@ export default function LearningTask() {
                 <img
                     alt=""
                     src={learningBG}
-                    style={{ width: '100%', height: '100px', marginTop: '5px', objectFit: 'cover' }}
+                    style={{ width: '100%', height: '90px', marginTop: '5px', objectFit: 'cover' }}
                 />
-                <Box sx={{ margin: '-50px 15px 25px 15px', display: 'flex' }}>
+                <Box sx={{ margin: '-55px 15px 30px 15px', display: 'flex' }}>
                     <Typography
                         variant="h5"
                         color="white"
                         fontWeight="bold"
                         style={{ userSelect: 'none' }}
                     >
-                        学习任务
+                        学习任务：复杂系统在教育中的应用
                     </Typography>
                 </Box>
             </Box>
