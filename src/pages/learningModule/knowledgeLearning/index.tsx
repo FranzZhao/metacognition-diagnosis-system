@@ -13,6 +13,7 @@ import ChapterDetail from './chapterDetail';
 
 const KnowledgeLearning = () => {
     const [isChapterDetail, setIsChapterDetail] = useState(false);
+    const [openSession, setOpenSession] = useState<any>();
 
     return (
         <Box
@@ -35,7 +36,11 @@ const KnowledgeLearning = () => {
                         fontWeight="bold"
                         style={{ userSelect: 'none' }}
                     >
-                        知识学习：复杂科学与学习理论
+                        {isChapterDetail ? (
+                            <>{openSession.chapter}</>
+                        ) : (
+                            '知识学习：复杂科学与学习理论'
+                        )}
                     </Typography>
                     {isChapterDetail && (
                         <Box sx={{ ml: 'auto' }}>
@@ -53,10 +58,13 @@ const KnowledgeLearning = () => {
             </Box>
             {isChapterDetail ? (
                 // 知识章节详细内容
-                <ChapterDetail />
+                <ChapterDetail session={openSession.id} />
             ) : (
                 // 知识章节列表
-                <ChapterList handleOpenChapterDetail={() => setIsChapterDetail(true)} />
+                <ChapterList
+                    handleOpenChapterDetail={() => setIsChapterDetail(true)}
+                    handleOpenSession={(session) => setOpenSession(session)}
+                />
             )}
         </Box>
     );

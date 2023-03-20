@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 // mui5
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ const ItemStyle = {
     '&:hover': { background: '#ebebeb', cursor: 'pointer', borderRadius: '5px' }
 };
 
-const ChapterList = ({ handleOpenChapterDetail }) => {
+const ChapterList = ({ handleOpenChapterDetail, handleOpenSession }) => {
     const theme = useTheme();
     let currentChapter = '';
     interface ChapterInfoListProps {
@@ -40,7 +40,7 @@ const ChapterList = ({ handleOpenChapterDetail }) => {
         {
             id: '2',
             chapter: '第一章 复杂性理论',
-            title: '第二节 复杂自适应系统',
+            title: '第二节 复杂系统及其内涵',
             progress: '0',
             isFinish: false,
             color: theme.palette.primary.main,
@@ -67,7 +67,7 @@ const ChapterList = ({ handleOpenChapterDetail }) => {
         {
             id: '5',
             chapter: '第二章 认知动力主义',
-            title: '第二节 认知动力主义的行程',
+            title: '第二节 认知动力主义的本质',
             progress: '0',
             isFinish: true,
             color: theme.palette.success.main,
@@ -85,7 +85,7 @@ const ChapterList = ({ handleOpenChapterDetail }) => {
         {
             id: '7',
             chapter: '第三章 情境认知理论',
-            title: '第一节 情境认知理论的提出与内涵',
+            title: '第一节 情境认知理论的内涵',
             progress: '0',
             isFinish: false,
             color: theme.palette.error.main,
@@ -126,7 +126,13 @@ const ChapterList = ({ handleOpenChapterDetail }) => {
                             >
                                 {item.chapter}
                             </Alert>
-                            <Box sx={{ ...ItemStyle }} onClick={handleOpenChapterDetail}>
+                            <Box
+                                sx={{ ...ItemStyle }}
+                                onClick={() => {
+                                    handleOpenChapterDetail();
+                                    handleOpenSession(item);
+                                }}
+                            >
                                 <CheckCircleIcon
                                     sx={{
                                         fontSize: '32px',
@@ -143,7 +149,14 @@ const ChapterList = ({ handleOpenChapterDetail }) => {
                     );
                 } else {
                     return (
-                        <Box key={item.id} sx={{ ...ItemStyle }} onClick={handleOpenChapterDetail}>
+                        <Box
+                            key={item.id}
+                            sx={{ ...ItemStyle }}
+                            onClick={() => {
+                                handleOpenChapterDetail();
+                                handleOpenSession(item);
+                            }}
+                        >
                             {item.isFinish ? (
                                 <CheckCircleIcon
                                     sx={{ fontSize: '32px', mr: 1, color: item.color }}
