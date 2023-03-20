@@ -30,10 +30,10 @@ const DiaryList = ({ handleOpenDiaryDetail }) => {
             </Box>
             <CustomTable
                 columns={[
-                    { id: 'id', label: '#', minWidth: 50 },
-                    { id: 'title', label: '标题', minWidth: 200 },
-                    { id: 'tags', label: '标签', minWidth: 200 },
-                    { id: 'time', label: '更新时间', minWidth: 150 }
+                    { id: 'id', label: '#' },
+                    { id: 'title', label: '标题' },
+                    { id: 'tags', label: '标签' },
+                    { id: 'time', label: '更新时间' }
                 ]}
                 rows={mockDiaryList}
                 hasActions={

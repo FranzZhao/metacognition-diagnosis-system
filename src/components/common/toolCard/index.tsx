@@ -33,7 +33,7 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
     const theme = useTheme();
 
     return (
-        <Card sx={{ width: cardWidth, '& svg': { color: theme.palette.grey[100] } }}>
+        <Card sx={{ width: cardWidth }}>
             <CardHeader
                 avatar={icon}
                 title={title}
@@ -48,7 +48,7 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
                     >
                         <HighlightOffIcon
                             sx={{
-                                // color: theme.palette.grey[300],
+                                color: theme.palette.grey[300],
                                 fontSize: '18px'
                             }}
                         />
@@ -61,7 +61,21 @@ const ToolCard: React.FC<ToolCardProps> = (props) => {
                     ...titleSX
                 }}
             />
-            <CardContent sx={{ ...contentSX, height: '200px' }}>
+            <CardContent
+                sx={{
+                    // height: '300px',
+                    overflow: 'overlay',
+                    '&::-webkit-scrollbar': {
+                        width: 4,
+                        height: 4
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: '#a4b7c670',
+                        borderRadius: '4px'
+                    },
+                    ...contentSX
+                }}
+            >
                 {content}
             </CardContent>
         </Card>

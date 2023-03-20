@@ -14,7 +14,8 @@ const ManagementTools = ({ view }) => {
                 boxShadow: 'rgb(50 50 93 / 2%) 0px 2px 5px -1px, rgb(0 0 0 / 5%) 0px 1px 3px -1px',
                 p: '15px 20px',
                 ml: 2,
-                width: 'calc(100vw)',
+                // width: 'calc(100vw)',
+                width: '100%',
                 height: 'calc(100vh - 110px)',
                 overflow: 'overlay',
                 '&::-webkit-scrollbar': {

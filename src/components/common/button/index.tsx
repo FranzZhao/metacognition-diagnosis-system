@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '@mui/material/styles';
 import { Button, ButtonProps, Tooltip, IconButton, IconButtonProps, Fab } from '@mui/material';
 import Box from '@mui/material/Box';
 import AddIcon from '@mui/icons-material/Add';
@@ -24,8 +25,13 @@ export const ViewButton: React.FC<ViewButtonProps> = ({
     sx = {},
     ...props
 }) => {
+    const theme = useTheme();
+
     const viewButtonStyle = {
         display: 'flex',
+        '& svg': {
+            color: theme.palette.grey[800]
+        },
         width: '100%',
         borderRadius: '5px',
         padding: '5px 10px',
@@ -39,6 +45,9 @@ export const ViewButton: React.FC<ViewButtonProps> = ({
 
     const viewButtonClickStyle = {
         color: '#ff5757',
+        '& svg': {
+            color: '#ff5757'
+        },
         fontWeight: 'bold',
         display: 'flex',
         width: '100%',

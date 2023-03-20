@@ -78,7 +78,7 @@ const MainLayout = () => {
         return {
             position: 'fixed',
             bottom: '50px',
-            right: openTools[target] ? '10px' : '-400px',
+            right: openTools[target] ? '10px' : '-1000px',
             transition: 'right 200ms linear'
         };
     };

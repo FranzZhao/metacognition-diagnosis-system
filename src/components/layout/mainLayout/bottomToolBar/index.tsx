@@ -103,17 +103,17 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
                 // alignItems: 'center'
             }}
         >
-            <Tooltip title="学习画像小工具" placement="top" arrow>
+            {/* <Tooltip title="学习画像小工具" placement="top" arrow>
                 <BlueCircleToolIconButton
                     sx={{ ml: 'auto' }}
                     onClick={() => handleOpenToolCared('learningPortfolioTool')}
                 >
                     <MoodIcon sx={{ fontSize: '16px' }} />
                 </BlueCircleToolIconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip title="学习管理小工具" placement="top" arrow>
                 <OrangeCircleToolIconButton
-                    sx={{ ml: 3 }}
+                    sx={{ ml: 'auto' }}
                     onClick={() => handleOpenToolCared('learningManagementTool')}
                 >
                     <EventIcon sx={{ fontSize: '16px' }} />
