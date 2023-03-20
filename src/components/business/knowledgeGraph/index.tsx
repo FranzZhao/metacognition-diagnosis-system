@@ -69,6 +69,7 @@ const initialOptions = {
 };
 
 interface KnowledgeGraphState {
+    canvasHeight?: string;
     nodeData: any[];
     linkData: any[];
     relations: any[];
@@ -87,6 +88,7 @@ interface KnowledgeGraphState {
 }
 
 export const KnowledgeMap: React.FC<KnowledgeGraphState> = ({
+    canvasHeight = 'calc(100vh - 150px)',
     nodeData,
     linkData,
     relations,
@@ -159,7 +161,7 @@ export const KnowledgeMap: React.FC<KnowledgeGraphState> = ({
                 echarts={echarts}
                 option={options}
                 style={{
-                    height: 'calc(100vh - 150px)',
+                    height: canvasHeight,
                     width: '100%'
                 }}
                 onEvents={echartsClick}

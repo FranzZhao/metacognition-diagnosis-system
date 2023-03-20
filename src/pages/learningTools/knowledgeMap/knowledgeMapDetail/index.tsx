@@ -32,9 +32,14 @@ interface MapProps {
 interface KnowledgeMapDetailProp {
     mapInfo: any;
     handleOpenList: () => void;
+    canvasHeight?: string;
 }
 
-const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ mapInfo, handleOpenList }) => {
+const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
+    mapInfo,
+    handleOpenList,
+    canvasHeight = 'calc(100vh - 150px)'
+}) => {
     // map state
     const [map, setMap] = useState<MapProps>({
         mapInfo: mapInfo,
@@ -245,48 +250,58 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({ mapInfo, handleO
                     linkData={map.link}
                     relations={map.relations}
                     echartsClick={echartsClick}
+                    canvasHeight={canvasHeight}
                 />
                 {/* 信息面板 */}
-                {open === 'mapInfo' && (
-                    <MapInfo
-                        mapInfo={map.mapInfo}
-                        open={open === 'mapInfo'}
-                        handleClosePanel={() => setOpen(null)}
-                        handleUpdateMapInfo={handleUpdateMapInfo}
-                    />
-                )}
-                {open === 'addNewNode' && (
-                    <AddNewNode
-                        open={open === 'addNewNode'}
-                        handleClosePanel={() => setOpen(null)}
-                        handleAddNewNode={handleAddNewNode}
-                    />
-                )}
-                {open === 'addNewLink' && (
-                    <AddNewLink
-                        open={open === 'addNewLink'}
-                        nodeList={map.node}
-                        handleClosePanel={() => setOpen(null)}
-                        handleAddNewLink={handleAddNewLink}
-                    />
-                )}
-                {open === 'nodeInfo' && (
-                    <NodeInfo
-                        nodeInfo={nodeInfo}
-                        open={open === 'nodeInfo'}
-                        handleClosePanel={() => setOpen(null)}
-                        handleUpdateData={handleChangeMap}
-                    />
-                )}
-                {open === 'linkInfo' && (
-                    <LinkInfo
-                        linkInfo={linkInfo}
-                        open={open === 'linkInfo'}
-                        nodeList={map.node}
-                        handleClosePanel={() => setOpen(null)}
-                        handleUpdateData={handleChangeMap}
-                    />
-                )}
+                <Box
+                    sx={{
+                        '&>div': {
+                            height: canvasHeight
+                            // overflow: 'overlay'
+                        }
+                    }}
+                >
+                    {open === 'mapInfo' && (
+                        <MapInfo
+                            mapInfo={map.mapInfo}
+                            open={open === 'mapInfo'}
+                            handleClosePanel={() => setOpen(null)}
+                            handleUpdateMapInfo={handleUpdateMapInfo}
+                        />
+                    )}
+                    {open === 'addNewNode' && (
+                        <AddNewNode
+                            open={open === 'addNewNode'}
+                            handleClosePanel={() => setOpen(null)}
+                            handleAddNewNode={handleAddNewNode}
+                        />
+                    )}
+                    {open === 'addNewLink' && (
+                        <AddNewLink
+                            open={open === 'addNewLink'}
+                            nodeList={map.node}
+                            handleClosePanel={() => setOpen(null)}
+                            handleAddNewLink={handleAddNewLink}
+                        />
+                    )}
+                    {open === 'nodeInfo' && (
+                        <NodeInfo
+                            nodeInfo={nodeInfo}
+                            open={open === 'nodeInfo'}
+                            handleClosePanel={() => setOpen(null)}
+                            handleUpdateData={handleChangeMap}
+                        />
+                    )}
+                    {open === 'linkInfo' && (
+                        <LinkInfo
+                            linkInfo={linkInfo}
+                            open={open === 'linkInfo'}
+                            nodeList={map.node}
+                            handleClosePanel={() => setOpen(null)}
+                            handleUpdateData={handleChangeMap}
+                        />
+                    )}
+                </Box>
             </Box>
         </Box>
     );

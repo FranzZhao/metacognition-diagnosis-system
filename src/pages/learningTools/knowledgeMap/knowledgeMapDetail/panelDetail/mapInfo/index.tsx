@@ -28,7 +28,7 @@ const MapInfo = ({ open, mapInfo, handleClosePanel, handleUpdateMapInfo }) => {
                 right: 0,
                 width: '300px',
                 background: '#d5e7eff0',
-                height: 'calc(100vh - 150px)',
+                // height: 'calc(100vh - 150px)',
                 p: 2,
                 overflowY: 'overlay',
                 overflowX: 'hidden',
