@@ -8,9 +8,14 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import TextField from '@mui/material/TextField';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 // custom components
 import TagTree from '@/components/business/tagTree';
 import { Modal } from '@/components/common';
+import { mockTagLists } from '@/utils/mock';
 
 interface KnowledgeTagTreeProps {
     tagList: TagListProps[];
@@ -25,7 +30,17 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
     // 选中的标签
     const [selectedTag, setSelectedTag] = useState();
     // 新建标签内容
-    const [newTagContent, setNewTagContent] = useState();
+    const [newTag, setNewTag] = useState({
+        labelText: '',
+        parentID: '',
+        content: ''
+    });
+
+    const [age, setAge] = React.useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setAge(event.target.value);
+    };
 
     useEffect(() => {
         let newTagTree = handleTagListToTree();
@@ -110,10 +125,50 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                             label="标签名称"
                             placeholder="请输入标签名称"
                             sx={{ width: '100%' }}
-                            // value={newSubGoal}
-                            // onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                            //     setNewSubGoal(event.target.value)
-                            // }
+                            value={newTag.labelText}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                setNewTag({
+                                    ...newTag,
+                                    labelText: event.target.value
+                                })
+                            }
+                        />
+                        <FormControl variant="standard" sx={{ width: '100%', mt: 2 }}>
+                            <InputLabel>选择父标签</InputLabel>
+                            <Select
+                                value={newTag.parentID}
+                                onChange={(event: SelectChangeEvent) => {
+                                    setNewTag({
+                                        ...newTag,
+                                        parentID: event.target.value
+                                    });
+                                }}
+                                label="选择父标签"
+                            >
+                                <MenuItem value="null">该标签为顶级父标签</MenuItem>
+                                <Divider />
+                                {mockTagLists.map((tag) => {
+                                    return (
+                                        <MenuItem key={tag.id} value={tag.id}>
+                                            {tag.labelText}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            variant="standard"
+                            label="标签内容"
+                            placeholder="请输入标签内容"
+                            sx={{ width: '100%', mt: 2 }}
+                            value={newTag.content}
+                            multiline
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                                setNewTag({
+                                    ...newTag,
+                                    content: event.target.value
+                                })
+                            }
                         />
                     </>
                 }
@@ -124,7 +179,7 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                             size="small"
                             disableElevation
                             onClick={() => {
-                                // setAddNewNode(newSubGoal);
+                                console.log('new tag =>', newTag);
                                 setIsAddNewTag(false);
                             }}
                         >
