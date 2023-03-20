@@ -21,20 +21,13 @@ import KnowledgeMap from '@/pages/learningTools/knowledgeMap';
 import KnowledgeTag from '@/pages/learningTools/knowledgeTag';
 import KnowledgeNote from '@/pages/learningTools/knowledgeNote';
 import BlankPage404 from '@/pages/temp/404';
+import LoginPage from '@/pages/temp/login';
 
 export const routes = [
     {
         path: '/',
         element: <MainLayout />,
         children: [
-            // {
-            //     index: true,
-            //     path: '/',
-            //     element: <Home />,
-            //     name: '个人空间',
-            //     module: '主页',
-            //     icon: <HomeIcon />
-            // },
             {
                 // 学习概览
                 index: true,
@@ -99,6 +92,13 @@ export const routes = [
                 name: '知识笔记',
                 module: '学习工具',
                 icon: <NoteAltIcon />
+            },
+            {
+                path: '/login',
+                element: <LoginPage />,
+                name: '用户管理',
+                module: '用户管理',
+                icon: <HomeIcon />
             },
             { path: '*', element: <BlankPage404 />, name: '空页面', module: '辅助页面' }
             // {
