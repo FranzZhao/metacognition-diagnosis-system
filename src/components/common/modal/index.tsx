@@ -72,7 +72,21 @@ export const Modal: React.FC<ModalState> = (props) => {
                     </IconButton>
                 </Box>
             </DialogTitle>
-            <DialogContent>{content}</DialogContent>
+            <DialogContent
+                sx={{
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                    '&::-webkit-scrollbar': {
+                        width: 5
+                    },
+                    '&::-webkit-scrollbar-thumb': {
+                        background: 'orange',
+                        borderRadius: '4px'
+                    }
+                }}
+            >
+                {content}
+            </DialogContent>
             <DialogActions>{actions}</DialogActions>
         </Dialog>
     );
