@@ -91,7 +91,7 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data, handleSelectedTag }) =
                 m: '5px 0',
                 flexGrow: 1,
                 minWidth: 200,
-                height: 'calc(100vh - 230px)',
+                // height: 'calc(100vh - 230px)',
                 overflow: 'overlay',
                 '&::-webkit-scrollbar': {
                     width: 0

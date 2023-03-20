@@ -96,22 +96,25 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
     };
 
     return (
-        <Box>
+        <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
             <Typography margin="10px" fontWeight="bold">
                 知识标签列表
             </Typography>
             <Divider />
             <TagTree data={tagTree} handleSelectedTag={handleSelectedTag} />
-            <Divider />
-            <Button
-                variant="contained"
-                sx={{ width: '100%', m: '10px 0' }}
-                disableElevation
-                startIcon={<AddBoxIcon />}
-                onClick={() => setIsAddNewTag(true)}
-            >
-                添加标签
-            </Button>
+            <Box sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
+                <Divider />
+                <Button
+                    variant="contained"
+                    sx={{ width: '100%', m: '10px 0' }}
+                    disableElevation
+                    startIcon={<AddBoxIcon />}
+                    onClick={() => setIsAddNewTag(true)}
+                >
+                    添加标签
+                </Button>
+            </Box>
+
             {/* 添加标签模态框 */}
             <Modal
                 maxWidth="xs"
