@@ -1,0 +1,26 @@
+<cognitivePrompt target="认知调节" context="学习过程监控">
+    <!-- 支持程度: 方向 -->
+    <direction>
+        <step sequence="1">学习状态感知</step>
+        <step sequence="2">活动策略调节</step>
+    </direction>
+    <!-- 支持程度: 框架 -->
+    <framework>
+        <step sequence="1">请对自己当前的学习情况、学习成果、情感体验进行反思</step>
+        <step sequence="2">针对你所感知到的问题，思考可以如何对学习活动策略和方向的调整</step>
+    </framework>
+    <!-- 支持程度: 指示 -->
+    <instruction>
+        <step sequence="1">
+            分析自己在当前活动中的情感体验是如何的，是对当前的任务或学习的内容感到困惑、感到兴奋、感到过于复杂而难以把握等，请做清晰的分析
+        </step>
+        <step sequence="">
+            基于你所感知到的消极情绪和不满，思考一下，可以如何调整你的学习进度和学习方法，重新帮助自己达成想要的目标，获得成功、喜悦的学习体验
+        </step>
+    </instruction>
+    <!-- 支持程度: 样例 -->
+    <modeling>
+        我发现我在阅读这部分知识的时候，产生了很多疑问。特别是关于情境认知的，和我之前的理解有很大的出入。
+        所以，我打算重新对我原有的知识结构进行调整，把原来的理解表征出来，然后对比我现在学到的知识，然后修改我的思维框架和知识结构。
+    </modeling>
+</cognitivePrompt>

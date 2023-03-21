@@ -1,4 +1,4 @@
-<cognitivePrompt target="认知计划" context="学习目标设定" time="即时">
+<cognitivePrompt target="认知计划" context="学习目标设定">
     <!-- 支持程度: 方向 -->
     <direction>
         <step sequence="1">能力基础</step>
