@@ -6,13 +6,25 @@ import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
 // img
 import img3_1 from '@/assets/img/img3-1.png';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { updateChapterLearningProcess } from '@/store/slices';
 
 const Chapter3Session2 = () => {
-    const [number, setNumber] = useState<number | number[]>(0);
+    const dispatch = useAppDispatch();
+    const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
+    const [number, setNumber] = useState<number | number[]>(parseInt(ChapterInfoList[7].progress));
 
     const handleChangeNumber = (event: Event, newValue: number | number[]) => {
         setNumber(newValue);
+        dispatch(
+            updateChapterLearningProcess({
+                chapterId: '8',
+                process: newValue + ''
+            })
+        );
     };
+
     return (
         <Box>
             <Paper variant="outlined" sx={{ mt: 2, p: '20px 30px', '& *': { lineHeight: '27px' } }}>

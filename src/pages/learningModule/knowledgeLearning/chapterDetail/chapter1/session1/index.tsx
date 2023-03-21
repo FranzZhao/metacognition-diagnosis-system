@@ -4,15 +4,25 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
-
 // img
 import img1_1 from '@/assets/img/img1-1.png';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { updateChapterLearningProcess } from '@/store/slices';
 
 const Chapter1Session1 = () => {
-    const [number, setNumber] = useState<number | number[]>(0);
+    const dispatch = useAppDispatch();
+    const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
+    const [number, setNumber] = useState<number | number[]>(parseInt(ChapterInfoList[0].progress));
 
     const handleChangeNumber = (event: Event, newValue: number | number[]) => {
         setNumber(newValue);
+        dispatch(
+            updateChapterLearningProcess({
+                chapterId: '1',
+                process: newValue + ''
+            })
+        );
     };
 
     return (

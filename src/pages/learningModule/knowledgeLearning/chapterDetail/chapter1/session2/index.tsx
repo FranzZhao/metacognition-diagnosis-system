@@ -7,12 +7,23 @@ import Slider from '@mui/material/Slider';
 // img
 import img2_1 from '@/assets/img/img2-1.gif';
 import img2_2 from '@/assets/img/img2-2.gif';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { updateChapterLearningProcess } from '@/store/slices';
 
 const Chapter1Session2 = () => {
-    const [number, setNumber] = useState<number | number[]>(0);
+    const dispatch = useAppDispatch();
+    const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
+    const [number, setNumber] = useState<number | number[]>(parseInt(ChapterInfoList[1].progress));
 
     const handleChangeNumber = (event: Event, newValue: number | number[]) => {
         setNumber(newValue);
+        dispatch(
+            updateChapterLearningProcess({
+                chapterId: '2',
+                process: newValue + ''
+            })
+        );
     };
 
     return (

@@ -203,6 +203,7 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                 size="small"
                                 color="secondary"
                                 disableElevation
+                                sx={{ ml: 'auto' }}
                                 onClick={() => {
                                     handleClose();
                                     console.log(step);
