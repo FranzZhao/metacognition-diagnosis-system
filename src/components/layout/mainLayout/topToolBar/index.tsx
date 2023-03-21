@@ -7,74 +7,20 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MuiButton from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
-import Fade from '@mui/material/Fade';
 // custom components
 import AgentCard from '@/components/business/agent';
 import AgentMsg from '@/components/business/agentMsg';
-// icon
-import NightlightIcon from '@mui/icons-material/Nightlight';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import PublicIcon from '@mui/icons-material/Public';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import MenuBookIcon from '@mui/icons-material/MenuBook'; // 知识能力提示
-import TrackChangesIcon from '@mui/icons-material/TrackChanges'; // 目标计划提示
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'; // 思维成果提示
-import SquareFootIcon from '@mui/icons-material/SquareFoot'; // 评价调节提示
+import Typography from '@mui/material/Typography';
 // img
 import franz from '@/assets/img/Franz.png';
 import bot1 from '@/assets/img/ai.png';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { changeCurrentTheme } from '@/store/slices';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import { setCurrentOpenAgentMsg } from '@/store/slices';
 
 const buttonSize = '32px';
-
-const BlueToolIconButton = styled(MuiButton)(({ theme }) => ({
-    minWidth: buttonSize,
-    maxWidth: buttonSize,
-    maxHeight: buttonSize,
-    minHeight: buttonSize,
-    borderRadius: '10px',
-    backgroundColor: '#2d93ff69',
-    color: '#b4d9ff',
-    '&:hover': {
-        backgroundColor: '#2d93ff55'
-    }
-}));
-
-const OrangeToolIconButton = styled(MuiButton)(({ theme }) => ({
-    minWidth: buttonSize,
-    maxWidth: buttonSize,
-    maxHeight: buttonSize,
-    minHeight: buttonSize,
-    borderRadius: '10px',
-    backgroundColor: '#ff8e0ba8',
-    color: '#ffc888',
-    '&:hover': {
-        backgroundColor: '#ff8e0b94'
-    }
-}));
-
-const GreenToolIconButton = styled(MuiButton)(({ theme }) => ({
-    minWidth: buttonSize,
-    maxWidth: buttonSize,
-    maxHeight: buttonSize,
-    minHeight: buttonSize,
-    borderRadius: '10px',
-    backgroundColor: '#2cc14573',
-    color: '#93d59e',
-    '&:hover': {
-        backgroundColor: '#2cc14563'
-    }
-}));
 
 const AvatarToolIconButton = styled(MuiButton)(({ theme }) => ({
     minWidth: buttonSize,
@@ -101,6 +47,9 @@ const TopToolBar = () => {
     const dispatch = useAppDispatch();
     const theme = useTheme();
     const currentTheme = useAppSelector((state) => state.system.currentTheme);
+    const agentMsgList = useAppSelector((state) => state.agent.msgList);
+    const currentAgentMsg = useAppSelector((state) => state.agent.currentMsg);
+    const [currentOpenAgentId, setCurrentOpenAgentId] = useState(0);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const openMenu = Boolean(anchorEl);
 
@@ -165,7 +114,13 @@ const TopToolBar = () => {
                 </AvatarToolIconButton>
             </Tooltip>
 
-            {openAgent && <AgentCard open={openAgent} handleClose={() => setOpenAgent(false)} />}
+            {openAgent && (
+                <AgentCard
+                    msg={currentAgentMsg}
+                    open={openAgent}
+                    handleClose={() => setOpenAgent(false)}
+                />
+            )}
 
             {/* <Tooltip title="账户设置" placement="bottom" arrow>
                 <AvatarToolIconButton sx={{ ml: 2 }} onClick={handleClick}>
@@ -203,7 +158,8 @@ const TopToolBar = () => {
                             transform: 'translateY(-50%) rotate(45deg)',
                             zIndex: 0
                         },
-                        height: '300px',
+                        maxHeight: '300px',
+                        width: '200px',
                         overflowY: 'overlay',
                         '&::-webkit-scrollbar': {
                             width: 3
@@ -220,48 +176,21 @@ const TopToolBar = () => {
                 <Typography fontSize="0.9rem" marginLeft="15px" marginBottom="4px" color="gray">
                     元认知提示信息
                 </Typography>
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知条件提示"
-                    msg="请根据目标和内容，分析你所拥有的知识会如何运用到学习当中"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知标准提示"
-                    msg="请注意时刻回复自己顶下的目标哦"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知制品提示"
-                    msg="在制作知识地图的时候，你可以不断地修改完善你的知识结构"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知评价提示"
-                    msg="现在请根据你定下的目标，评价你的达成情况"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知标准提示"
-                    msg="请注意时刻回复自己顶下的目标哦"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知制品提示"
-                    msg="在制作知识地图的时候，你可以不断地修改完善你的知识结构"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
-                <Divider sx={{ margin: '0px !important' }} />
-                <AgentMsg
-                    type="认知评价提示"
-                    msg="现在请根据你定下的目标，评价你的达成情况"
-                    handleClickItem={() => setOpenAgent(true)}
-                />
+                {agentMsgList.map((msg) => {
+                    return (
+                        <Box key={msg.id}>
+                            <Divider sx={{ margin: '0px !important' }} />
+                            <AgentMsg
+                                msg={msg}
+                                handleClickItem={() => {
+                                    setOpenAgent(true);
+                                    // setCurrentOpenAgentId(msg.id);
+                                    dispatch(setCurrentOpenAgentMsg(msg));
+                                }}
+                            />
+                        </Box>
+                    );
+                })}
             </Menu>
         </Toolbar>
     );

@@ -8,29 +8,56 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Fade from '@mui/material/Fade';
 import bot1 from '../../../assets/img/ai.png';
-// import bot2 from '../../../assets/img/bot.png';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
-import MuiButton from '@mui/material/Button';
+import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 // xml
-import X2JS from 'x2js';
-import xml2js from 'xml2js';
-import { xmlText } from '@/utils/agentXML/cognitiveEvaluation/learningProcessMonitoring.js';
-import test from './test.xml';
+import { CELearningProcessMonitoringXML } from '@/utils/agentXML/cognitiveEvaluation/learningProcessMonitoring';
 
-const AgentCard = ({ open, handleClose }) => {
+interface AgentMsgStep {
+    step: string;
+    promptTitle: string;
+    promptContent: string;
+    answer: string;
+}
+
+const AgentCard = ({ msg, open, handleClose }) => {
     const theme = useTheme();
     // const [open, setOpen] = useState(false);
+    const [step, setStep] = useState<AgentMsgStep[]>([]);
+    const [currentStep, setCurrentStep] = useState(1);
 
-    const handleGetXML = () => {
-        var parseString = require('xml2js').parseString;
-        parseString(xmlText, function (err, result) {
-            console.log(result.cognitivePrompt);
-        });
+    useEffect(() => {
+        setStep([...msg.msgList]);
+        // console.log('current msg =>', msg);
+        // var parseString = require('xml2js').parseString;
+        // parseString(CELearningProcessMonitoringXML, function (err, result) {
+        //     // console.log(result.cognitivePrompt.direction[0].step[0]['_']);
+        //     let agentPromptTitles = result.cognitivePrompt.direction[0].step;
+        //     let agentPromptContents = result.cognitivePrompt.framework[0].step;
+        //     let agentMsg: AgentMsgStep[] = [];
+        //     agentPromptTitles.map((item, index) => {
+        //         agentMsg.push({
+        //             step: index,
+        //             promptTitle: agentPromptTitles[index]['_'],
+        //             promptContent: agentPromptContents[index]['_'],
+        //             answer: ''
+        //         });
+        //     });
+        //     setStep(agentMsg);
+        // });
+    }, [msg]);
+
+    const nextStep = () => {
+        setCurrentStep(currentStep + 1);
+    };
+
+    const stepBack = () => {
+        setCurrentStep(currentStep - 1);
     };
 
     return (
@@ -116,22 +143,85 @@ const AgentCard = ({ open, handleClose }) => {
                             }
                         }}
                     >
-                        学习提示：在进行学习计划之前，首选需要确定自己已经掌握的知识有哪些，已经具备什么能力。接着思考这样的能力和知识能够帮助自己如何学习。最后确定自己希望通过这样的学习了解到什么、解决什么问题。记住，确定完目标不是计划的结束，你还需要在做的过程中反复思考自己的目标是否合适、是否需要调整。
+                        <Box>
+                            {step.length > 0 ? (
+                                step[currentStep - 1].promptTitle +
+                                '：' +
+                                step[currentStep - 1].promptContent
+                            ) : (
+                                <></>
+                            )}
+                        </Box>
+                        <Box>
+                            {step.length > 0 && (
+                                <InputBase
+                                    placeholder="请输入你的回复"
+                                    multiline
+                                    sx={{
+                                        width: '100%',
+                                        borderBottom: '1px solid white',
+                                        color: 'white',
+                                        mt: 1
+                                    }}
+                                    value={step[currentStep - 1].answer}
+                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                        let newStepContent: AgentMsgStep[] = [];
+                                        step.map((item, index) => {
+                                            let answer = '';
+                                            if (item.step === step[currentStep - 1].step) {
+                                                answer = event.target.value;
+                                            } else {
+                                                answer = item.answer;
+                                            }
+                                            newStepContent.push({
+                                                ...item,
+                                                answer: answer
+                                            });
+                                        });
+                                        setStep(newStepContent);
+                                    }}
+                                />
+                            )}
+                        </Box>
                     </CardContent>
                     <CardActions>
-                        <Button
-                            variant="text"
-                            size="small"
-                            color="secondary"
-                            disableElevation
-                            sx={{ ml: 'auto' }}
-                            onClick={handleGetXML}
-                        >
-                            保存回复信息
-                        </Button>
-                        {/* <Button variant="contained" size="small" color="secondary" disableElevation>
-                            确认
-                        </Button> */}
+                        {currentStep !== 1 && (
+                            <Button
+                                variant="text"
+                                size="small"
+                                color="secondary"
+                                disableElevation
+                                sx={{ ml: 'auto' }}
+                                onClick={stepBack}
+                            >
+                                上一步
+                            </Button>
+                        )}
+                        {currentStep === step.length ? (
+                            <Button
+                                variant="contained"
+                                size="small"
+                                color="secondary"
+                                disableElevation
+                                onClick={() => {
+                                    handleClose();
+                                    console.log(step);
+                                }}
+                            >
+                                完成
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="contained"
+                                size="small"
+                                color="secondary"
+                                disableElevation
+                                sx={{ ml: 'auto' }}
+                                onClick={nextStep}
+                            >
+                                下一步
+                            </Button>
+                        )}
                     </CardActions>
                 </Card>
             </Fade>

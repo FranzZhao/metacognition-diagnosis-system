@@ -2,7 +2,7 @@ import { combineReducers, configureStore, ThunkAction, Action } from '@reduxjs/t
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 // slices
-import { UserSlice, SystemSlice } from './slices';
+import { UserSlice, SystemSlice, AgentSlice } from './slices';
 
 // 持久化配置信息
 const persistConfig = {
@@ -17,7 +17,8 @@ const persistConfig = {
 // 将所有的Reducer捆绑起来
 const rootReducer = combineReducers({
     user: UserSlice.reducer,
-    system: SystemSlice.reducer
+    system: SystemSlice.reducer,
+    agent: AgentSlice.reducer
 });
 
 // 将原有的reducer加强为可持续久化的

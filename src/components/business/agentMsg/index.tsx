@@ -13,62 +13,46 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'; // 认知制品
 import SquareFootIcon from '@mui/icons-material/SquareFoot'; // 认知评价提示
 
 interface AgentMsgProps {
-    type: '认知条件提示' | '认知标准提示' | '认知制品提示' | '认知评价提示';
-    msg: string;
+    msg: any;
     handleClickItem: () => void;
 }
 
-const AgentMsg: React.FC<AgentMsgProps> = ({ type, msg, handleClickItem }) => {
+const AgentMsg: React.FC<AgentMsgProps> = ({ msg, handleClickItem }) => {
     const theme = useTheme();
 
     return (
         <MenuItem onClick={handleClickItem}>
             <ListItemIcon>
-                {type === '认知条件提示' && (
-                    <Avatar sx={{ background: theme.palette.primary.main }}>
-                        <MenuBookIcon fontSize="small" />
-                    </Avatar>
-                )}
-                {type === '认知标准提示' && (
-                    <Avatar sx={{ background: theme.palette.secondary.main }}>
-                        <TrackChangesIcon fontSize="small" />
-                    </Avatar>
-                )}
-                {type === '认知制品提示' && (
-                    <Avatar sx={{ background: theme.palette.success.main }}>
-                        <EmojiObjectsIcon fontSize="small" />
-                    </Avatar>
-                )}
-                {type === '认知评价提示' && (
+                {msg.id % 4 === 0 && (
                     <Avatar sx={{ background: theme.palette.error.main }}>
                         <SquareFootIcon fontSize="small" />
                     </Avatar>
                 )}
+                {msg.id % 4 === 1 && (
+                    <Avatar sx={{ background: theme.palette.primary.main }}>
+                        <MenuBookIcon fontSize="small" />
+                    </Avatar>
+                )}
+                {msg.id % 4 === 2 && (
+                    <Avatar sx={{ background: theme.palette.secondary.main }}>
+                        <TrackChangesIcon fontSize="small" />
+                    </Avatar>
+                )}
+                {msg.id % 4 === 3 && (
+                    <Avatar sx={{ background: theme.palette.success.main }}>
+                        <EmojiObjectsIcon fontSize="small" />
+                    </Avatar>
+                )}
             </ListItemIcon>
             <Box>
-                {type === '认知条件提示' && (
-                    <Typography variant="caption" fontWeight="bold">
-                        认知条件提示
-                    </Typography>
-                )}
-                {type === '认知标准提示' && (
-                    <Typography variant="caption" fontWeight="bold">
-                        认知标准提示
-                    </Typography>
-                )}
-                {type === '认知制品提示' && (
-                    <Typography variant="caption" fontWeight="bold">
-                        认知制品提示
-                    </Typography>
-                )}
-                {type === '认知评价提示' && (
-                    <Typography variant="caption" fontWeight="bold">
-                        认知评价提示
-                    </Typography>
-                )}
+                <Typography variant="caption" fontWeight="bold">
+                    {msg.msgTitle}
+                </Typography>
                 <br />
                 <Typography variant="caption">
-                    {msg.length <= 10 ? msg : msg.slice(0, 10) + '...'}
+                    {msg.msgList[0].promptContent.length <= 10
+                        ? msg.msgList[0].promptContent
+                        : msg.msgList[0].promptContent.slice(0, 10) + '...'}
                 </Typography>
             </Box>
         </MenuItem>

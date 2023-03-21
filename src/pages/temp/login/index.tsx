@@ -4,13 +4,25 @@ import Paper from '@mui/material/Paper';
 import TextFiled from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+// redux
+import { useAppDispatch } from '@/store';
+import { setNewAgentMsg } from '@/store/slices';
 
 const LoginPage = () => {
+    const dispatch = useAppDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     return (
         <Box>
+            <Button
+                variant="contained"
+                onClick={() => {
+                    dispatch(setNewAgentMsg());
+                }}
+            >
+                新增msg
+            </Button>
             <Paper sx={{ p: '10px 20px', width: '450px' }}>
                 <Typography
                     width="100%"

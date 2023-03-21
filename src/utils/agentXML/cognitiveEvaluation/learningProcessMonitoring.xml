@@ -1,4 +1,3 @@
-export const xmlText = `
 <cognitivePrompt target="认知评价" context="学习过程监控">
     <direction>
         <step sequence="1">学习状态感知</step>
@@ -25,4 +24,3 @@ export const xmlText = `
         我发现我在阅读这部分知识的时候，产生了很多疑问。特别是关于情境认知的，和我之前的理解有很大的出入，我之前只是把情境认知理解为一种强调学习活动情境的理论，却没有思考到其系统、实践与共同体层面的意义。接下来我需要重新对自己的知识结构和思维过程做一定的调整。
     </modeling>
 </cognitivePrompt>
-`;
