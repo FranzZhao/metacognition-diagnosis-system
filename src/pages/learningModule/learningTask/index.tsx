@@ -110,14 +110,8 @@ export default function LearningTask() {
                         </Tabs>
                     </Box>
                     <Box sx={{ padding: '15px 10px' }}>
-                        {step === 0 && (
-                            <Task1
-                                handleGetTask={(task) => {
-                                    setSelectedTask(task);
-                                }}
-                            />
-                        )}
-                        {step === 1 && <Task2 task={selectedTask} />}
+                        {step === 0 && <Task1 />}
+                        {step === 1 && <Task2 />}
                         {step === 2 && <Task3 />}
                     </Box>
                 </Box>

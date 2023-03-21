@@ -12,12 +12,18 @@ import ProjectEvaluatedScale from '@/components/business/scale';
 // mock
 import { mockScaleList } from '@/utils/mock';
 import { TextField } from '@mui/material';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { openScaleById } from '@/store/slices';
 
 const ScaleList = ({ handleOpenDetail }) => {
+    const dispatch = useAppDispatch();
+    const scaleList = useAppSelector((state) => state.learningTask.scaleList);
     // 查看量规-模态框
     const [isOpenScaleModal, setIsOpenScaleModal] = useState(false);
     // 新建评价-模态框
     const [isNewAssessment, setIsNewAssessment] = useState(false);
+
     return (
         <Box>
             <Box sx={{ mb: 2 }}>
@@ -64,12 +70,22 @@ const ScaleList = ({ handleOpenDetail }) => {
                     { id: 'score', label: '方案得分', minWidth: 200 },
                     { id: 'time', label: '评价时间', minWidth: 150 }
                 ]}
-                rows={mockScaleList}
-                hasActions={
-                    <Button size="small" variant="outlined" onClick={handleOpenDetail}>
-                        详情
-                    </Button>
-                }
+                rows={scaleList}
+                needAction={true}
+                openDetail={(id) => {
+                    dispatch(openScaleById(id)).then(() => {
+                        handleOpenDetail();
+                    });
+                    // console.log(id);
+                }}
+                // hasActions={
+                //     <Button size="small" variant="outlined" onClick={()=>{
+                //         // dispatch(openScaleById())
+                //         handleOpenDetail();
+                //     }}>
+                //         详情
+                //     </Button>
+                // }
                 renderTags={'type'}
             />
             <Modal

@@ -8,23 +8,35 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { saveTaskAnalysis, updateTaskSelect } from '@/store/slices';
+import { Button } from '@mui/material';
 
 const task1 =
     '陈老师是一位小学5年级的英语老师，她发现虽然她的学生们已经掌握了基础的语言知识，但在语言表达和语言思维等方面能力不足。陈老师发现原因主要在于课文过于强调单一语言情境以及缺乏实践训练的问题。现在请你依据已经学到的知识，将复杂性理论与教学实践进行结合，设计针对性的课堂学习环境与活动，可以从硬件环境、软件系统、学习活动、教学指导、外部支持等多个角度进行设计，请你充分地发挥所学习的知识帮助陈老师解决问题';
 const task2 =
     '传统的考试总是以测评单一知识与技能，而且往往是脱离情境的。导致很多学生为了应付考试而一味地记忆、刷题。最终所培养出的学生是难以适应真实社会情境下的复杂问题。通过知识学习你也已经了解到了这个世界的复杂性特征，以及人类发展的动态性、非线性。现在请你敞开想象、合理地构思设计一下，如果未来的考试是以复杂性理论为指导思想的，那么这种考试形式会是如何的？要如何对学生进行评价？请以数学中的概率统计为主题进行构想与设计';
 
-const Task1 = ({ handleGetTask }) => {
+const Task1 = () => {
     const theme = useTheme();
-    const [selectedTask, setSelectedTask] = useState<any>(task1);
-
-    useEffect(() => {
-        handleGetTask(selectedTask);
-    }, [selectedTask]);
+    const dispatch = useAppDispatch();
+    const currentTask = useAppSelector((state) => state.learningTask.taskContent);
+    const currentTaskAnalysis = useAppSelector((state) => state.learningTask.taskAnalysis);
+    // 选择任务
+    const [selectedTask, setSelectedTask] = useState<any>(currentTask);
+    // 任务分析
+    const [taskAnalysis, setTaskAnalysis] = useState(currentTaskAnalysis);
 
     const handleChangeTask = (event: React.ChangeEvent<HTMLInputElement>) => {
         let currentTask = (event.target as HTMLInputElement).value;
         setSelectedTask(currentTask);
+        dispatch(updateTaskSelect(currentTask));
+    };
+
+    const handleSaveTaskAnalysis = (event: React.ChangeEvent<HTMLInputElement>) => {
+        let newTaskAnalysis = event.target.value;
+        setTaskAnalysis(newTaskAnalysis);
     };
 
     return (
@@ -88,10 +100,31 @@ const Task1 = ({ handleGetTask }) => {
                     />
                 </RadioGroup>
             </FormControl>
-            <Typography fontWeight="bold" color={theme.palette.primary.main}>
-                请在此写下你对你所选择的任务的分析：
-            </Typography>
-            <TextField label="任务分析" multiline rows={5} sx={{ width: '100%', mt: 2 }} />
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography fontWeight="bold" color={theme.palette.primary.main}>
+                    请在此写下你对你所选择的任务的分析：
+                </Typography>
+                <Box sx={{ ml: 'auto' }}>
+                    <Button
+                        variant="contained"
+                        disableElevation
+                        onClick={() => {
+                            dispatch(saveTaskAnalysis(taskAnalysis));
+                        }}
+                    >
+                        保存任务分析
+                    </Button>
+                </Box>
+            </Box>
+
+            <TextField
+                label="任务分析"
+                multiline
+                rows={5}
+                sx={{ width: '100%', mt: 2 }}
+                value={taskAnalysis}
+                onChange={handleSaveTaskAnalysis}
+            />
         </Box>
     );
 };

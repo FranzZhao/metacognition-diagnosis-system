@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -29,9 +29,33 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     }
 }));
 
-export default function ProjectEvaluatedScale({ isNotEditable }) {
+interface ProjectEvaluatedScaleProps {
+    isNotEditable: boolean;
+    data?: number[];
+    handleChangeNumber?: (data: number[], total: number) => void;
+}
+
+const ProjectEvaluatedScale: React.FC<ProjectEvaluatedScaleProps> = ({
+    isNotEditable,
+    data = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    handleChangeNumber
+}) => {
     // 11个指标
-    const [score, setScore] = useState<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+    const [score, setScore] = useState<number[]>(data);
+    const [total, setTotal] = useState(0);
+
+    useEffect(() => {
+        setScore(data);
+    }, [data]);
+
+    useEffect(() => {
+        let res = 0;
+        score.map((data) => (res += data));
+        setTotal(res);
+        if (handleChangeNumber) {
+            handleChangeNumber([...score], res);
+        }
+    }, [score]);
 
     return (
         <TableContainer component={Paper}>
@@ -406,7 +430,7 @@ export default function ProjectEvaluatedScale({ isNotEditable }) {
                                 }}
                                 align="center"
                             >
-                                {score[0] +
+                                {/* {score[0] +
                                     score[1] +
                                     score[2] +
                                     score[3] +
@@ -416,7 +440,8 @@ export default function ProjectEvaluatedScale({ isNotEditable }) {
                                     score[7] +
                                     score[8] +
                                     score[9] +
-                                    score[10]}
+                                    score[10]} */}
+                                {total}
                             </StyledTableCell>
                         </StyledTableRow>
                     )}
@@ -424,4 +449,6 @@ export default function ProjectEvaluatedScale({ isNotEditable }) {
             </Table>
         </TableContainer>
     );
-}
+};
+
+export default ProjectEvaluatedScale;

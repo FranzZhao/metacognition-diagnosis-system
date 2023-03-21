@@ -18,6 +18,10 @@ interface CustomTableProps {
     rows: any;
     /** 表格是否有操作按钮 */
     hasActions?: any;
+    /** 是否需要详情action */
+    needAction?: boolean;
+    /** 详情action的function */
+    openDetail?: (id: any) => void;
     /** 将内容渲染为chip小标签, 输入需要渲染为tag标签的列id, 同时要求需要渲染tag的那一列的数据是对象数组[{}], 对象字段为{label, color} */
     // TODO: 目前仅支持对一列进行处理, 暂不考虑多列
     renderTags?: any;
@@ -25,7 +29,15 @@ interface CustomTableProps {
     sx?: any;
 }
 
-const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, renderTags, sx }) => {
+const CustomTable: React.FC<CustomTableProps> = ({
+    columns,
+    rows,
+    hasActions,
+    needAction = false,
+    openDetail,
+    renderTags,
+    sx
+}) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -77,7 +89,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, re
                                     {column.label}
                                 </TableCell>
                             ))}
-                            {hasActions && (
+                            {(hasActions || needAction) && (
                                 <TableCell
                                     align="center"
                                     sx={{
@@ -94,7 +106,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, re
                     <TableBody>
                         {rows
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row) => {
+                            .map((row: any) => {
                                 return (
                                     <TableRow
                                         hover
@@ -103,7 +115,7 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, re
                                         key={row.id}
                                         sx={{ '& td': { p: hasActions ? '8px' : '13px' } }}
                                     >
-                                        {columns.map((column) => {
+                                        {columns.map((column: any) => {
                                             const value = row[column.id];
                                             if (column.id === renderTags) {
                                                 const RenderChips = () => {
@@ -137,6 +149,21 @@ const CustomTable: React.FC<CustomTableProps> = ({ columns, rows, hasActions, re
                                         })}
                                         {hasActions && (
                                             <TableCell align="center">{hasActions}</TableCell>
+                                        )}
+                                        {needAction && (
+                                            <TableCell align="center">
+                                                <Button
+                                                    size="small"
+                                                    variant="outlined"
+                                                    onClick={() => {
+                                                        if (openDetail) {
+                                                            openDetail(row['id']);
+                                                        }
+                                                    }}
+                                                >
+                                                    详情
+                                                </Button>
+                                            </TableCell>
                                         )}
                                     </TableRow>
                                 );
