@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import { styled, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
@@ -16,33 +16,22 @@ import IconButton from '@mui/material/IconButton';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
-
-const buttonSize = '35px';
-
-const AvatarToolIconButton = styled(MuiButton)(({ theme }) => ({
-    minWidth: buttonSize,
-    maxWidth: buttonSize,
-    maxHeight: buttonSize,
-    minHeight: buttonSize,
-    borderRadius: '10px',
-    // backgroundColor: '#2cc14573',
-    // color: '#93d59e',
-    '& div': {
-        width: buttonSize,
-        height: buttonSize,
-        borderRadius: '10px'
-    },
-    '&:hover': {
-        cursor: 'pointer',
-        // 图片变灰+200ms的渐变效果
-        filter: 'brightness(0.9)',
-        transition: 'filter 200ms linear'
-    }
-}));
+// xml
+import X2JS from 'x2js';
+import xml2js from 'xml2js';
+import { xmlText } from '@/utils/agentXML/cognitiveEvaluation/learningProcessMonitoring.js';
+import test from './test.xml';
 
 const AgentCard = ({ open, handleClose }) => {
     const theme = useTheme();
     // const [open, setOpen] = useState(false);
+
+    const handleGetXML = () => {
+        var parseString = require('xml2js').parseString;
+        parseString(xmlText, function (err, result) {
+            console.log(result.cognitivePrompt);
+        });
+    };
 
     return (
         <Box
@@ -136,12 +125,13 @@ const AgentCard = ({ open, handleClose }) => {
                             color="secondary"
                             disableElevation
                             sx={{ ml: 'auto' }}
+                            onClick={handleGetXML}
                         >
-                            取消
+                            保存回复信息
                         </Button>
-                        <Button variant="contained" size="small" color="secondary" disableElevation>
+                        {/* <Button variant="contained" size="small" color="secondary" disableElevation>
                             确认
-                        </Button>
+                        </Button> */}
                     </CardActions>
                 </Card>
             </Fade>
