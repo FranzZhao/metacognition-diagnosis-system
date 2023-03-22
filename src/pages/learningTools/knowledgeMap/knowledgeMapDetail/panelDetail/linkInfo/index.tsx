@@ -18,7 +18,14 @@ import TagSelector from '@/components/common/tagSelector';
 // mock data
 import { mockNodeData } from '@/utils/mock';
 
-const LinkInfo = ({ open, nodeList, handleClosePanel, linkInfo, handleUpdateData }) => {
+const LinkInfo = ({
+    open,
+    nodeList,
+    handleClosePanel,
+    linkInfo,
+    handleUpdateData,
+    handleDeleteLink
+}) => {
     // 关联名称
     const [linkName, setLinkName] = useState('');
     // 关联简介
@@ -166,6 +173,9 @@ const LinkInfo = ({ open, nodeList, handleClosePanel, linkInfo, handleUpdateData
                     variant="text"
                     color="secondary"
                     sx={{ width: '49%', ml: 'auto' }}
+                    onClick={() => {
+                        handleDeleteLink(linkInfo);
+                    }}
                 >
                     删除关联
                 </Button>

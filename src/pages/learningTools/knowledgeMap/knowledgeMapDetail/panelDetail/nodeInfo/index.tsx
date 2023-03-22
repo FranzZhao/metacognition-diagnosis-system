@@ -41,7 +41,7 @@ const materialColor = [
     '#607d8b'
 ];
 
-const NodeInfo = ({ open, handleClosePanel, nodeInfo, handleUpdateData }) => {
+const NodeInfo = ({ open, handleClosePanel, nodeInfo, handleUpdateData, handleDeleteNode }) => {
     // 节点名称
     const [nodeName, setNodeName] = useState('');
     // 节点简介
@@ -178,6 +178,9 @@ const NodeInfo = ({ open, handleClosePanel, nodeInfo, handleUpdateData }) => {
                     variant="text"
                     color="secondary"
                     sx={{ width: '49%', ml: 'auto' }}
+                    onClick={() => {
+                        handleDeleteNode(nodeInfo);
+                    }}
                 >
                     删除节点
                 </Button>

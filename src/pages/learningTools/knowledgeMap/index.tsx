@@ -16,8 +16,12 @@ import TagSelector from '@/components/common/tagSelector';
 import { ViewButton, Modal } from '@/components/common';
 import KnowledgeMapList from './knowledgeMapList';
 import KnowledgeMapDetail from './knowledgeMapDetail';
+// redux
+import { useAppDispatch } from '@/store';
+import { newMap } from '@/store/slices';
 
 const KnowledgeMap = () => {
+    const dispatch = useAppDispatch();
     // 打开新建知识地图模态框
     const [openModal, setOpenModal] = useState(false);
     // 新建知识地图的信息
@@ -161,8 +165,10 @@ const KnowledgeMap = () => {
                                 disableElevation
                                 size="small"
                                 onClick={() => {
-                                    setIsKnowledgeMapDetail(!isKnowledgeMapDetail);
-                                    setOpenModal(false);
+                                    dispatch(newMap(newMapInfo)).then(() => {
+                                        setOpenModal(false);
+                                    });
+                                    // setIsKnowledgeMapDetail(!isKnowledgeMapDetail);
                                 }}
                             >
                                 确定

@@ -3,7 +3,7 @@ export let mockRelations = ['关系1', '关系2', '关系3'];
 export let mockNodeData = [
     {
         id: 'node1',
-        name: '知识点1：函数的求导',
+        name: '知识点1',
         draggable: true, // 节点是否可拖拽，只在使用力引导布局的时候有用。
         symbolSize: [100, 100],
         itemStyle: {
@@ -77,21 +77,33 @@ export let mockLinkData = [
 
 export const mockKnowledgeMapList = [
     {
-        id: '1',
+        id: 1,
         title: '元认知知识地图',
+        intro: '',
         tags: ['元认知', '自指'],
-        time: '2021/12/30 18:23:42'
+        time: '2021/12/30 18:23:42',
+        nodes: mockNodeData,
+        links: mockLinkData,
+        relations: mockRelations
     },
     {
-        id: '2',
+        id: 2,
         title: '复杂系统科学知识地图',
+        intro: '',
         tags: ['系统科学', '自组织'],
-        time: '2021/12/30 18:23:42'
+        time: '2021/12/30 18:23:42',
+        nodes: [],
+        links: [],
+        relations: []
     },
     {
-        id: '3',
+        id: 3,
         title: '语言学知识地图',
-        tags: ['语言学', '认知语言学', '认知语用学'],
-        time: '2021/12/30 18:23:42'
+        intro: '',
+        tags: ['认知语言学', '认知语用学'],
+        time: '2021/12/30 18:23:42',
+        nodes: [],
+        links: [],
+        relations: []
     }
 ];

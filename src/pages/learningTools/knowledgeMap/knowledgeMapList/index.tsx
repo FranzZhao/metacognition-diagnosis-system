@@ -7,12 +7,18 @@ import Button from '@mui/material/Button';
 import CustomTable from '@/components/common/table';
 // mock
 import { mockKnowledgeMapList } from '@/utils/mock';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { getMapById } from '@/store/slices';
 
 interface KnowledgeMapListProps {
     handleOpenDetail: () => void;
 }
 
 const KnowledgeMapList: React.FC<KnowledgeMapListProps> = ({ handleOpenDetail }) => {
+    const dispatch = useAppDispatch();
+    const mapList = useAppSelector((state) => state.map.mapList);
+
     return (
         <Box>
             <Typography fontWeight="bold" fontSize="1.2rem" marginBottom="15px">
@@ -26,12 +32,18 @@ const KnowledgeMapList: React.FC<KnowledgeMapListProps> = ({ handleOpenDetail })
                     { id: 'tags', label: '标签', minWidth: 200 },
                     { id: 'time', label: '更新时间', minWidth: 150 }
                 ]}
-                rows={mockKnowledgeMapList}
-                hasActions={
-                    <Button size="small" variant="outlined" onClick={handleOpenDetail}>
-                        详情
-                    </Button>
-                }
+                rows={mapList}
+                // hasActions={
+                //     <Button size="small" variant="outlined" onClick={handleOpenDetail}>
+                //         详情
+                //     </Button>
+                // }
+                needAction={true}
+                openDetail={(id: any) => {
+                    dispatch(getMapById(id)).then(() => {
+                        handleOpenDetail();
+                    });
+                }}
                 renderTags={'tags'}
                 sx={{
                     height: 'calc(100vh - 234px)'
