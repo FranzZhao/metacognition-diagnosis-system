@@ -7,3 +7,4 @@ export * from './knowledgeNoteSlice';
 export * from './knowledgeTagSlice';
 export * from './todoListSlice';
 export * from './learningObjectSlice';
+export * from './diarySlice';

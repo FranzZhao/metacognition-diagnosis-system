@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 // icon
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
@@ -16,16 +17,32 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 // custom components
+import { Modal } from '@/components/common';
 import TagSelector from '@/components/common/tagSelector';
 import { Editor } from '@tinymce/tinymce-react';
+// redux
+import { useAppSelector, useAppDispatch } from '@/store';
+import { saveDiary, deleteDiaryById } from '@/store/slices';
 
 const DiaryDetail = ({ handleOpenDiaryList }) => {
+    const dispatch = useAppDispatch();
+    const currentDiaryInfo = useAppSelector((state) => state.diary.currentSelectDiary);
     // 笔记标题
     const [diaryTitle, setDiaryTitle] = useState('');
     // 标签字段
-    const [diaryTags, setDiaryTags] = useState([]);
+    const [diaryTags, setDiaryTags] = useState<string[]>([]);
     // 文本编辑器内容
     const [diaryContent, setDiaryContent] = useState('文本文字');
+    // 删除日志modal
+    const [openDiaryModal, setOpenDiaryModal] = useState(false);
+
+    useEffect(() => {
+        if (currentDiaryInfo) {
+            setDiaryTitle(currentDiaryInfo.title);
+            setDiaryTags(currentDiaryInfo.tags);
+            setDiaryContent(currentDiaryInfo.content);
+        }
+    }, [currentDiaryInfo]);
 
     /**
      * TinyMCE Function
@@ -33,7 +50,18 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
     const handleChangeText = (newText) => {
         setDiaryContent(newText);
     };
-    
+
+    // save diary
+    const handleSaveDiary = () => {
+        let newDiary = {
+            id: currentDiaryInfo?.id,
+            title: diaryTitle,
+            tags: diaryTags,
+            content: diaryContent
+        };
+        dispatch(saveDiary(newDiary));
+    };
+
     return (
         <Box>
             {/* 笔记标题 */}
@@ -57,20 +85,18 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                         aria-label="delete"
                         size="small"
                         sx={{ ml: 'auto' }}
-                        onClick={() => {
-                            let noteInfo = {
-                                diaryTitle: diaryTitle,
-                                diaryTags: diaryTags,
-                                diaryContent: diaryContent
-                            };
-                            console.log(noteInfo);
-                        }}
+                        onClick={handleSaveDiary}
                     >
                         <SaveIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="删除日志" arrow>
-                    <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}>
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        sx={{ ml: 1 }}
+                        onClick={() => setOpenDiaryModal(true)}
+                    >
                         <DeleteIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
@@ -84,6 +110,33 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                         <KeyboardReturnIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
+                {/* 删除日志modal */}
+                <Modal
+                    maxWidth="xs"
+                    open={openDiaryModal}
+                    onClose={() => setOpenDiaryModal(false)}
+                    title={'删除日志确认'}
+                    content={<Box sx={{ fontWeight: 'bold' }}>请确认是否删除日志！</Box>}
+                    actions={
+                        <Box>
+                            <Button sx={{ mr: 1 }} onClick={() => setOpenDiaryModal(false)}>
+                                取消
+                            </Button>
+                            <Button
+                                variant="contained"
+                                disableElevation
+                                onClick={() => {
+                                    if (currentDiaryInfo) {
+                                        dispatch(deleteDiaryById(currentDiaryInfo.id));
+                                        handleOpenDiaryList();
+                                    }
+                                }}
+                            >
+                                确认
+                            </Button>
+                        </Box>
+                    }
+                />
             </Box>
             {/* 笔记标签 */}
             <Divider sx={{ mt: 3, mb: 2 }} />

@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import StarIcon from '@mui/icons-material/Star';
+import { TextField } from '@mui/material';
 // custom component
 import KnowledgeNoteList from './knowledgeNoteList';
 import KnowledgeNoteDetail from './knowledgeNoteDetail';
@@ -15,7 +16,6 @@ import { ViewButton, Modal } from '@/components/common';
 // redux
 import { useAppDispatch } from '@/store';
 import { addNewNote } from '@/store/slices';
-import { TextField } from '@mui/material';
 
 const KnowledgeNote = () => {
     const dispatch = useAppDispatch();
@@ -100,7 +100,9 @@ const KnowledgeNote = () => {
                     }
                     actions={
                         <Box>
-                            <Button size="small">取消</Button>
+                            <Button size="small" onClick={() => setOpenNewNoteModal(false)}>
+                                取消
+                            </Button>
                             <Button
                                 variant="contained"
                                 disableElevation
