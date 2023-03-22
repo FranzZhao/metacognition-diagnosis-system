@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // echarts
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts/core';
@@ -52,8 +52,30 @@ const initOption = {
     ]
 };
 
-const BarChart = () => {
+const BarChart = ({ mapList, nodeList, linkList }) => {
     const [barChartOption, setBarChartOption] = useState(initOption);
+
+    useEffect(() => {
+        setBarChartOption({
+            ...barChartOption,
+            yAxis: {
+                type: 'category',
+                data: mapList
+            },
+            series: [
+                {
+                    name: '知识节点数量',
+                    type: 'bar',
+                    data: nodeList
+                },
+                {
+                    name: '知识关联数量',
+                    type: 'bar',
+                    data: linkList
+                }
+            ]
+        });
+    }, [mapList, nodeList, linkList]);
 
     return (
         <ReactECharts
