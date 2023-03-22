@@ -4,6 +4,8 @@ import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
+// redux
+import { useAppSelector } from '@/store';
 
 interface TagSelectorProps {
     value: any;
@@ -14,10 +16,12 @@ interface TagSelectorProps {
 }
 
 const TagSelector: React.FC<TagSelectorProps> = ({ value, onChange, tagList, placeholder, sx }) => {
+    const fullTagList = useAppSelector((state) => state.knowledgeTag.tagList);
+
     return (
         <Autocomplete
             multiple
-            options={tagList.map((tag) => tag)}
+            options={fullTagList.map((tag) => tag.labelText)}
             value={value}
             onChange={onChange}
             renderTags={(value: readonly string[], getTagProps) =>
