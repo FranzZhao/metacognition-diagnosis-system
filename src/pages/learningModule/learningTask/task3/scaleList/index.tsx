@@ -14,7 +14,7 @@ import { mockScaleList } from '@/utils/mock';
 import { TextField } from '@mui/material';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { openScaleById } from '@/store/slices';
+import { addScale, openScaleById } from '@/store/slices';
 
 const ScaleList = ({ handleOpenDetail }) => {
     const dispatch = useAppDispatch();
@@ -23,6 +23,8 @@ const ScaleList = ({ handleOpenDetail }) => {
     const [isOpenScaleModal, setIsOpenScaleModal] = useState(false);
     // 新建评价-模态框
     const [isNewAssessment, setIsNewAssessment] = useState(false);
+    // 新建评价的名称
+    const [newAssessmentTitle, setNewAssessmentTitle] = useState('');
 
     return (
         <Box>
@@ -56,9 +58,11 @@ const ScaleList = ({ handleOpenDetail }) => {
                             variant="contained"
                             disableElevation
                             size="small"
-                            onClick={() => setIsNewAssessment(true)}
+                            onClick={() => {
+                                setIsNewAssessment(true);
+                            }}
                         >
-                            开始新的评价
+                            创建新的评价
                         </Button>
                     </Box>
                 </Box>
@@ -98,10 +102,18 @@ const ScaleList = ({ handleOpenDetail }) => {
                 maxWidth={'sm'}
                 open={isNewAssessment}
                 onClose={() => setIsNewAssessment(false)}
-                title={'开始新的方案评价'}
+                title={'初始化新的方案评价'}
                 content={
                     <Box>
-                        <TextField label="评价方案名称" variant="standard" sx={{ width: '100%' }} />
+                        <TextField
+                            value={newAssessmentTitle}
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setNewAssessmentTitle(event.target.value);
+                            }}
+                            label="评价方案名称"
+                            variant="standard"
+                            sx={{ width: '100%' }}
+                        />
                     </Box>
                 }
                 actions={
@@ -112,8 +124,9 @@ const ScaleList = ({ handleOpenDetail }) => {
                             size="small"
                             sx={{ mr: 1 }}
                             onClick={() => {
-                                setIsNewAssessment(false);
-                                handleOpenDetail();
+                                dispatch(addScale(newAssessmentTitle)).then((res: any) => {
+                                    setIsNewAssessment(false);
+                                });
                             }}
                         >
                             确认

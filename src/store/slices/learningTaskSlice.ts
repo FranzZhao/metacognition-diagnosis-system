@@ -39,7 +39,7 @@ interface LearningTaskProps {
     taskContent: string;
     taskAnalysis: string;
     project: string;
-    currentScaleId: number;
+    nextScaleId: number;
     selectScaleId: number;
     scaleList: Scale[];
 }
@@ -49,7 +49,7 @@ const initialLearningTask: LearningTaskProps = {
     taskContent: task1,
     taskAnalysis: '',
     project: '',
-    currentScaleId: 3,
+    nextScaleId: 3,
     selectScaleId: 1,
     scaleList: [
         {
@@ -116,6 +116,11 @@ export const openScaleById = createAsyncThunk('learningTask/openScale', (scaleId
     return scaleId;
 });
 
+// 新建scale
+export const addScale = createAsyncThunk('learningTask/addScale', (newScaleTitle: string) => {
+    return newScaleTitle;
+});
+
 // 根据id保存scale
 export const saveScaleById = createAsyncThunk(
     'learningTask/saveScale',
@@ -169,7 +174,7 @@ export const LearningTaskSlice = createSlice({
             state.taskAnalysis = action.payload;
         },
         [openScaleById.fulfilled.type]: (state, action) => {
-            console.log('slice ', action.payload);
+            // console.log('slice ', action.payload);
             state.selectScaleId = action.payload;
         },
         [saveScaleById.fulfilled.type]: (state, action) => {
@@ -192,6 +197,28 @@ export const LearningTaskSlice = createSlice({
                     newScaleList[index].score = newScaleContent.score;
                 }
             });
+        },
+        [addScale.fulfilled.type]: (state, action) => {
+            let newScaleList = [...state.scaleList];
+            newScaleList.push({
+                id: state.nextScaleId,
+                title: action.payload,
+                time: getDate(),
+                normative1: 0,
+                normative2: 0,
+                normative3: 0,
+                purpose1: 0,
+                purpose2: 0,
+                purpose3: 0,
+                science1: 0,
+                science2: 0,
+                science3: 0,
+                innovation1: 0,
+                innovation2: 0,
+                score: 0
+            });
+            state.scaleList = [...newScaleList];
+            state.nextScaleId += 1;
         }
     }
 });
