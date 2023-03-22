@@ -46,7 +46,7 @@ export const KnowledgeTagSlice = createSlice({
         [selectTagById.fulfilled.type]: (state, action) => {
             state.tagList.map((tag) => {
                 if (tag.id === action.payload) {
-                    console.log('select tag =>', tag);
+                    // console.log('select tag =>', tag);
                     state.currentSelectTag = tag;
                 }
             });

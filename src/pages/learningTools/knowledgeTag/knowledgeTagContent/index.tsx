@@ -28,11 +28,84 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
     const [tagTitle, setTagTitle] = useState('');
     // 标签内容
     const [tagContent, setTagContent] = useState('');
+    // 关联项目table data
+    const [tableData, setTableData] = useState<any>([]);
 
     useEffect(() => {
         if (currentSelectedTag) {
             setTagTitle(currentSelectedTag.labelText);
             setTagContent(currentSelectedTag.content);
+        }
+    }, [currentSelectedTag]);
+
+    // 获取到该知识标签下的所有知识笔记、知识地图、反思日志、知识节点和知识关联
+    const notesInfo = useAppSelector((state) => state.knowledgeNote.noteList);
+    const mapsInfo = useAppSelector((state) => state.map.mapList);
+    const diariesInfo = useAppSelector((state) => state.diary.diaryList);
+    useEffect(() => {
+        let num = 1;
+        if (currentSelectedTag) {
+            let tag = currentSelectedTag.labelText;
+            // 知识笔记
+            let tagItems: any[] = [];
+            notesInfo.map((note) => {
+                if (note.tags.includes(tag)) {
+                    tagItems.push({
+                        id: num,
+                        title: note.title,
+                        type: ['知识笔记'],
+                        time: note.time
+                    });
+                    num += 1;
+                }
+            });
+            // 知识地图
+            mapsInfo.map((map) => {
+                if (map.tags.includes(tag)) {
+                    tagItems.push({
+                        id: num,
+                        title: map.title,
+                        type: ['知识地图'],
+                        time: map.time
+                    });
+                    num += 1;
+                    map.nodes.map((node) => {
+                        if (node.extraInfo.tags.includes(tag)) {
+                            tagItems.push({
+                                id: num,
+                                title: node.name,
+                                type: ['知识节点'],
+                                time: '无'
+                            });
+                            num += 1;
+                        }
+                    });
+                    map.links.map((link) => {
+                        if (link.extraInfo.tags.includes(tag)) {
+                            tagItems.push({
+                                id: num,
+                                title: link.value,
+                                type: ['知识关联'],
+                                time: '无'
+                            });
+                            num += 1;
+                        }
+                    });
+                }
+            });
+            // 反思日志
+            diariesInfo.map((diary) => {
+                if (diary.tags.includes(tag)) {
+                    tagItems.push({
+                        id: num,
+                        title: diary.title,
+                        type: ['反思日志'],
+                        time: diary.time
+                    });
+                    num += 1;
+                }
+            });
+            setTableData(tagItems);
         }
     }, [currentSelectedTag]);
 
@@ -138,7 +211,7 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                             { id: 'type', label: '类型', minWidth: 150 },
                             { id: 'time', label: '更新时间', minWidth: 150 }
                         ]}
-                        rows={mockTagContentLists}
+                        rows={tableData}
                         hasActions={
                             <Button size="small" variant="outlined">
                                 详情
