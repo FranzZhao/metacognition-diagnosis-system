@@ -10,7 +10,8 @@ import {
     LearningTaskSlice,
     KnowledgeNoteSlice,
     KnowledgeTagSlice,
-    TodoListSlice
+    TodoListSlice,
+    LearningObjectSlice
 } from './slices';
 
 // 持久化配置信息
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
     learningTask: LearningTaskSlice.reducer,
     knowledgeNote: KnowledgeNoteSlice.reducer,
     knowledgeTag: KnowledgeTagSlice.reducer,
-    todoList: TodoListSlice.reducer
+    todoList: TodoListSlice.reducer,
+    learningObject: LearningObjectSlice.reducer
 });
 
 // 将原有的reducer加强为可持续久化的

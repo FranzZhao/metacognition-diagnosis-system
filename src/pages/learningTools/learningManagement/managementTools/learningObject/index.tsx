@@ -15,44 +15,68 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import ModeStandbyIcon from '@mui/icons-material/ModeStandby';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+// redux
+import { useAppSelector, useAppDispatch } from '@/store';
+import {
+    LearningObjectSlice,
+    updateCoreLearningObject,
+    updateSubLearningObjects
+} from '@/store/slices/learningObjectSlice';
 
 const LearningObject = () => {
+    const dispatch = useAppDispatch();
+    const currentCoreLearningObject = useAppSelector(
+        (state) => state.learningObject.coreLearningObject
+    );
+    const currentSubGoals = useAppSelector((state) => state.learningObject.subLearningObjects);
+    const nextSubGoalId = useAppSelector((state) => state.learningObject.nextSubLearningObjectId);
     // 是否编辑核心目标
     const [isEditCoreLearningObject, setIsEditCoreLearningObject] = useState(false);
     // 核心目标内容
-    const [coreLearningObject, setCoreLearningObject] =
-        useState<string>('运用复杂系统理论构想未来教育评价样态');
+    const [coreLearningObject, setCoreLearningObject] = useState<string>('');
     // 子任务
-    const [subGoals, setSubGoals] = useState([
-        { id: '1', text: '子目标1', progress: 50 },
-        { id: '2', text: '子目标2', progress: 20 },
-        { id: '3', text: '子目标3', progress: 60 }
-    ]);
+    const [subGoals, setSubGoals] = useState<any>([]);
 
     useEffect(() => {
-        setIsEditCoreLearningObject(coreLearningObject.length === 0);
+        setCoreLearningObject(currentCoreLearningObject);
+        setIsEditCoreLearningObject(currentCoreLearningObject.length === 0);
+        let list: any = [];
+        currentSubGoals.map((goal) => {
+            list.push({
+                id: goal.id,
+                text: goal.text,
+                progress: goal.progress
+            });
+        });
+        setSubGoals([...list]);
     }, []);
 
     // 修改目标文本内容
-    const handleChangeGoalText = ({ id, value }) => {
-        let newSubGoals = [...subGoals];
-        subGoals.map((goal, idx) => {
-            if (goal.id === id) {
-                newSubGoals[idx].text = value;
-            }
+    const handleChangeGoalText = (id, value) => {
+        let newSubGoals: any[] = [];
+        subGoals.map((goal) => {
+            newSubGoals.push({
+                id: goal.id,
+                text: goal.id === id ? value : goal.text,
+                progress: goal.progress
+            });
         });
         setSubGoals(newSubGoals);
+        dispatch(updateSubLearningObjects(newSubGoals));
     };
 
     // 修改目标进度
-    const handleChangeGoalNumber = ({ id, value }) => {
-        let newSubGoals = [...subGoals];
-        subGoals.map((goal, idx) => {
-            if (goal.id === id) {
-                newSubGoals[idx].progress = value;
-            }
+    const handleChangeGoalNumber = (id, value) => {
+        let newSubGoals: any[] = [];
+        subGoals.map((goal) => {
+            newSubGoals.push({
+                id: goal.id,
+                text: goal.text,
+                progress: goal.id === id ? value : goal.progress
+            });
         });
         setSubGoals(newSubGoals);
+        dispatch(updateSubLearningObjects(newSubGoals));
     };
 
     // 删除目标
@@ -64,15 +88,16 @@ const LearningObject = () => {
             }
         });
         setSubGoals(newSubGoals);
+        dispatch(updateSubLearningObjects(newSubGoals));
     };
 
     // 添加子目标
-    let var_id = 100;
     const handleAddNewGoal = () => {
         let newSubGoals = [...subGoals];
-        newSubGoals.push({ id: var_id.toString(), text: '', progress: 0 });
-        var_id++;
+        newSubGoals.push({ id: nextSubGoalId + '', text: '', progress: 0 });
         setSubGoals(newSubGoals);
+        dispatch(updateSubLearningObjects(newSubGoals));
+        dispatch(LearningObjectSlice.actions.increaseNextId());
     };
 
     return (
@@ -126,9 +151,10 @@ const LearningObject = () => {
                             variant="standard"
                             sx={{ width: '100%' }}
                             value={coreLearningObject}
-                            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                                setCoreLearningObject(event.target.value)
-                            }
+                            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                setCoreLearningObject(event.target.value);
+                                dispatch(updateCoreLearningObject(event.target.value));
+                            }}
                         />
                     ) : (
                         <Typography margin="9px 0">{coreLearningObject}</Typography>
@@ -181,8 +207,13 @@ const SubGoalPaper = ({
     handleChangeProgress,
     handleDeleteSubGoalByID
 }) => {
-    const [goalText, setGoalText] = useState(data.text);
-    const [number, setNumber] = useState(data.progress);
+    const [goalText, setGoalText] = useState('');
+    const [number, setNumber] = useState<number | number[]>(0);
+
+    useEffect(() => {
+        setGoalText(data.text);
+        setNumber(data.progress);
+    }, [data]);
 
     const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
         setGoalText(event.target.value);

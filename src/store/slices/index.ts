@@ -6,3 +6,4 @@ export * from './learningTaskSlice';
 export * from './knowledgeNoteSlice';
 export * from './knowledgeTagSlice';
 export * from './todoListSlice';
+export * from './learningObjectSlice';
