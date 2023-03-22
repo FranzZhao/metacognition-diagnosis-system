@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // echarts
 import ReactECharts from 'echarts-for-react';
 import * as echarts from 'echarts/core';
@@ -66,8 +66,44 @@ const initOption = {
     ]
 };
 
-const PieChart = () => {
-    const [pieChartOption, setPieChartOption] = useState(initOption);
+const PieChart = ({ data }) => {
+    const [pieChartOption, setPieChartOption] = useState<any>(initOption);
+
+    useEffect(() => {
+        let totalNum = 0;
+        // 等于0的数据不出现
+        let showData: any[] = [];
+        data.map((tag) => {
+            totalNum += tag.value;
+            if (tag.value !== 0) {
+                showData.push(tag);
+            }
+        });
+        // echart option
+        setPieChartOption({
+            ...pieChartOption,
+            series: {
+                ...pieChartOption.series,
+                data: [
+                    ...showData,
+                    {
+                        // make an record to fill the bottom 50%
+                        value: totalNum,
+                        itemStyle: {
+                            // stop the chart from rendering this piece
+                            color: 'none',
+                            decal: {
+                                symbol: 'none'
+                            }
+                        },
+                        label: {
+                            show: false
+                        }
+                    }
+                ]
+            }
+        });
+    }, [data]);
 
     return (
         <ReactECharts

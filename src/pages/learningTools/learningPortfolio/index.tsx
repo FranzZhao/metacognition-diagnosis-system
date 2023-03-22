@@ -88,6 +88,54 @@ const LearningPortfolio = () => {
     }, []);
 
     // TODO: 知识标签统计
+    const diaryList = useAppSelector((state) => state.diary.diaryList);
+    const [tagPieChart, setTagPieChart] = useState<any[]>([]);
+    useEffect(() => {
+        let tagValueList: any[] = [];
+        tagList.map((tag) => {
+            tagValueList.push({
+                name: tag.labelText,
+                value: 0
+            });
+        });
+        // console.log(tagValueList);
+        tagValueList.map((tag, index) => {
+            let totalNotes = 0;
+            let totalMap = 0;
+            let totalNodes = 0;
+            let totalLinks = 0;
+            let totalDiary = 0;
+            noteList.map((note) => {
+                if (note.tags.includes(tag.name)) {
+                    totalNotes += 1;
+                }
+            });
+            mapList.map((map) => {
+                if (map.tags.includes(tag.name)) {
+                    totalMap += 1;
+                }
+                map.nodes.map((node) => {
+                    if (node.extraInfo.tags.includes(tag.name)) {
+                        totalNodes += 1;
+                    }
+                });
+                map.links.map((node) => {
+                    if (node.extraInfo.tags.includes(tag.name)) {
+                        totalLinks += 1;
+                    }
+                });
+            });
+            diaryList.map((diary) => {
+                if (diary.tags.includes(tag.name)) {
+                    totalDiary += 1;
+                }
+            });
+            tagValueList[index].value =
+                totalNotes + totalMap + totalNodes + totalLinks + totalDiary;
+        });
+        setTagPieChart(tagValueList);
+        console.log(tagValueList);
+    }, [tagList]);
 
     // 知识地图统计
     const [mapNameList, setMapNameList] = useState<string[]>([]);
@@ -109,14 +157,6 @@ const LearningPortfolio = () => {
 
     return (
         <Box>
-            {/* 学习画像：章节学习进度、任务完成进度、知识标签数量、知识笔记数量（以标签为分类）、知识地图数量（以标签为分类）、知识节点数量（以知识地图为分类）、知识关联数量（以知识地图为分类）
-            <div>仪表盘：章节学习进度、任务完成进度、任务完成百分比</div>
-            <div>
-                数字统计：知识标签、知识笔记、知识地图、知识节点、知识关联数量、任务数量+任务完成百分比
-            </div>
-            <div>分类统计/扇形图：所有知识标签的使用比例</div>
-            <div>知识标签统计（分类柱状图）：归属于不同知识标签的知识笔记和知识地图的数量</div>
-            <div>知识地图统计（分类柱状图）：不同知识地图的节点、关联的数量</div> */}
             {/* 标题 */}
             <Paper
                 variant="outlined"
@@ -231,52 +271,20 @@ const LearningPortfolio = () => {
                             }
                         }}
                     >
-                        <Chip
-                            label={'元认知-20'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-                        <Chip
-                            label={'自适应-10'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-                        <Chip
-                            label={'自我反思-23'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-                        <Chip
-                            label={'自指-11'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-                        <Chip
-                            label={'自我反思-43'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-                        <Chip
-                            label={'认知调节-2'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
-
-                        <Chip
-                            label={'认知系统-6'}
-                            color="primary"
-                            size="small"
-                            sx={{ mr: 1, mb: 1 }}
-                        />
+                        {tagPieChart.map((tag) => {
+                            return (
+                                <Chip
+                                    key={tag.name}
+                                    label={tag.name + '-' + tag.value}
+                                    color="primary"
+                                    size="small"
+                                    sx={{ mr: 1, mb: 1 }}
+                                />
+                            );
+                        })}
                     </Paper>
                     <Box sx={{ width: '65%', mb: '-60px' }}>
-                        <PieChart />
+                        <PieChart data={tagPieChart} />
                     </Box>
                 </Box>
             </Paper>
