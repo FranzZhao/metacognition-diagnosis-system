@@ -41,7 +41,7 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data, handleSelectedTag }) =
         return (
             <TreeItem
                 onClick={() => {
-                    console.log(other.nodeId);
+                    // console.log(other.nodeId);
                     handleSelectedTag(other.nodeId);
                 }}
                 label={

@@ -26,7 +26,6 @@ const KnowledgeTag = () => {
                 select = tag;
             }
         });
-        // TODO: 一个页面上不好看的bug, 添加了setSelectedTag之后, tagTree总是会重新渲染, 导致第一个也会处于hover状态，但点击外面就恢复了
         setSelectedTag(select);
     };
 

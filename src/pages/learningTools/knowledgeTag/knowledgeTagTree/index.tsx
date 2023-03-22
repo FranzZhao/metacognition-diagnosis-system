@@ -16,6 +16,9 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TagTree from '@/components/business/tagTree';
 import { Modal } from '@/components/common';
 import { mockTagLists } from '@/utils/mock';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { addNewTag, selectTagById } from '@/store/slices/knowledgeTagSlice';
 
 interface KnowledgeTagTreeProps {
     tagList: TagListProps[];
@@ -23,6 +26,8 @@ interface KnowledgeTagTreeProps {
 }
 
 const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSelectedTag }) => {
+    const dispatch = useAppDispatch();
+    const currentTagList = useAppSelector((state) => state.knowledgeTag.tagList);
     // 左侧标签树
     const [tagTree, setTagTree] = useState<TagTreeProps[]>([]);
     // 添加标签模态框
@@ -36,17 +41,10 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
         content: ''
     });
 
-    const [age, setAge] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
-    };
-
     useEffect(() => {
-        let newTagTree = handleTagListToTree();
-        // console.log('tag tree =>', newTagTree);
+        let newTagTree = handleTagListToTree(currentTagList);
         setTagTree(newTagTree);
-    }, [tagList]);
+    }, [currentTagList]);
 
     // 递归
     const recursionTagList = (item: TagListProps, list: TagListProps[]): TagTreeProps[] => {
@@ -68,11 +66,11 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
     };
 
     // 将数组转化为树结构
-    const handleTagListToTree = () => {
-        let tempTagList: TagListProps[] = [...tagList];
+    const handleTagListToTree = (list) => {
+        let tempTagList: TagListProps[] = [...list];
         let rootTag: TagListProps[] = [];
         // 1. 先放置parentText为null的
-        tagList.map((item) => {
+        list.map((item) => {
             if (item.parentID === null) {
                 rootTag.push(item);
             } else {
@@ -87,12 +85,10 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                 labelText: item.labelText,
                 labelIcon: item.labelIcon,
                 labelInfo: item.labelInfo,
-                children: recursionTagList(item, tagList)
+                children: recursionTagList(item, list)
             });
         });
         return newTagTree;
-        // setTagTree([...newTagTree]);
-        // console.log(newTagTree);
     };
 
     return (
@@ -101,7 +97,13 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                 知识标签列表
             </Typography>
             <Divider />
-            <TagTree data={tagTree} handleSelectedTag={handleSelectedTag} />
+            <TagTree
+                data={tagTree}
+                handleSelectedTag={(tagId: string) => {
+                    // console.log('select id =>', tagId);
+                    dispatch(selectTagById(tagId));
+                }}
+            />
             <Box sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
                 <Divider />
                 <Button
@@ -182,8 +184,14 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                             size="small"
                             disableElevation
                             onClick={() => {
-                                console.log('new tag =>', newTag);
-                                setIsAddNewTag(false);
+                                dispatch(addNewTag(newTag)).then(() => {
+                                    setIsAddNewTag(false);
+                                    setNewTag({
+                                        labelText: '',
+                                        parentID: '',
+                                        content: ''
+                                    });
+                                });
                             }}
                         >
                             确认
