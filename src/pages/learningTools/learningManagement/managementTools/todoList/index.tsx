@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -12,26 +12,53 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import TodoListItems from './todoListItem';
 // mock data
 import { mockTodoList } from '@/utils/mock';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { updateTodoList, TodoListSlice } from '@/store/slices';
+
+interface todoItemProps {
+    id: string;
+    content: string;
+    isFinish: boolean;
+}
 
 const TodoList = () => {
     const theme = useTheme();
+    const dispatch = useAppDispatch();
+    const currentTodoList = useAppSelector((state) => state.todoList.todoList);
+    const nextTodoListId = useAppSelector((state) => state.todoList.nextTodoListId);
     // 任务列表
-    const [todoList, setTodoList] = useState(mockTodoList);
+    const [todoList, setTodoList] = useState<any[]>([]);
     // 新增任务
     const [newTodoItem, setNewTodoItem] = useState('');
+
+    useEffect(() => {
+        let newList: any[] = [];
+        currentTodoList.map((item) => {
+            newList.push({
+                id: item.id,
+                content: item.content,
+                isFinish: item.isFinish
+            });
+        });
+        setTodoList([...newList]);
+    }, [currentTodoList]);
 
     // 新增任务button
     const handleAddNewTodoItem = () => {
         // TODO: 新输入的内容为空时, 用SnackBar提示不能为空, 要把SnackBar做成一个函数, 不需要引入组件, 直接使用函数就能调用
         if (newTodoItem.length !== 0) {
-            let newTodoList = [...todoList];
+            let newTodoList: any[] = [...todoList];
             newTodoList.push({
-                id: newTodoItem,
+                id: nextTodoListId,
                 content: newTodoItem,
                 isFinish: false
             });
             setTodoList([...newTodoList]);
             setNewTodoItem('');
+            dispatch(updateTodoList(newTodoList));
+            // next id 递增
+            dispatch(TodoListSlice.actions.increaseNextId());
         }
     };
 
@@ -44,6 +71,7 @@ const TodoList = () => {
             }
         });
         setTodoList([...newTodoList]);
+        dispatch(updateTodoList(newTodoList));
     };
 
     // 删除任务
@@ -55,6 +83,7 @@ const TodoList = () => {
             }
         });
         setTodoList([...newTodoList]);
+        dispatch(updateTodoList(newTodoList));
     };
 
     // 修改任务
@@ -66,6 +95,7 @@ const TodoList = () => {
             }
         });
         setTodoList([...newTodoList]);
+        dispatch(updateTodoList(newTodoList));
     };
 
     return (
