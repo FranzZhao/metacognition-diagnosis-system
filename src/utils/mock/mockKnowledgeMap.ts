@@ -79,29 +79,19 @@ export const mockKnowledgeMapList = [
     {
         id: '1',
         title: '元认知知识地图',
-        tags: [
-            { label: '元认知', color: 'success' },
-            { label: '自指', color: 'warning' }
-        ],
+        tags: ['元认知', '自指'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '2',
         title: '复杂系统科学知识地图',
-        tags: [
-            { label: '系统科学', color: 'error' },
-            { label: '自组织', color: 'info' }
-        ],
+        tags: ['系统科学', '自组织'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '3',
         title: '语言学知识地图',
-        tags: [
-            { label: '语言学', color: 'success' },
-            { label: '认知语言学', color: 'info' },
-            { label: '认知语用学', color: 'info' }
-        ],
+        tags: ['语言学', '认知语言学', '认知语用学'],
         time: '2021/12/30 18:23:42'
     }
 ];

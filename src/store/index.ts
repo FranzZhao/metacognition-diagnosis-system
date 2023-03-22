@@ -7,7 +7,8 @@ import {
     SystemSlice,
     AgentSlice,
     KnowledgeLearningSlice,
-    LearningTaskSlice
+    LearningTaskSlice,
+    KnowledgeNoteSlice
 } from './slices';
 
 // 持久化配置信息
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     system: SystemSlice.reducer,
     agent: AgentSlice.reducer,
     knowledgeLearning: KnowledgeLearningSlice.reducer,
-    learningTask: LearningTaskSlice.reducer
+    learningTask: LearningTaskSlice.reducer,
+    knowledgeNote: KnowledgeNoteSlice.reducer
 });
 
 // 将原有的reducer加强为可持续久化的

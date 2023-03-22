@@ -121,12 +121,12 @@ const CustomTable: React.FC<CustomTableProps> = ({
                                                 const RenderChips = () => {
                                                     return (
                                                         <>
-                                                            {value?.map((tag) => (
+                                                            {value?.map((tag, index) => (
                                                                 <Chip
-                                                                    key={tag.label}
-                                                                    color={tag.color}
+                                                                    key={index}
+                                                                    color="secondary"
                                                                     size="small"
-                                                                    label={tag.label}
+                                                                    label={tag}
                                                                     sx={{ mr: 1 }}
                                                                 />
                                                             ))}

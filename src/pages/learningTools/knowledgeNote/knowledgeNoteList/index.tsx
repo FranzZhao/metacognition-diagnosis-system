@@ -7,12 +7,18 @@ import Button from '@mui/material/Button';
 import CustomTable from '@/components/common/table';
 // mock
 import { mockNoteList } from '@/utils/mock';
+// redux
+import { useAppSelector, useAppDispatch } from '@/store';
+import { openNoteById } from '@/store/slices';
 
 interface KnowledgeNoteListProps {
     handleOpenDetail: () => void;
 }
 
 const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail }) => {
+    const dispatch = useAppDispatch();
+    const noteList = useAppSelector((state) => state.knowledgeNote.noteList);
+
     return (
         <Box>
             <Typography fontWeight="bold" fontSize="1.2rem" marginBottom="15px">
@@ -26,12 +32,14 @@ const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail 
                     { id: 'tags', label: '标签', minWidth: 200 },
                     { id: 'time', label: '更新时间', minWidth: 150 }
                 ]}
-                rows={mockNoteList}
-                hasActions={
-                    <Button size="small" variant="outlined" onClick={handleOpenDetail}>
-                        详情
-                    </Button>
-                }
+                rows={noteList}
+                needAction={true}
+                openDetail={(id) => {
+                    // console.log('note id =>', id);
+                    dispatch(openNoteById(id)).then(() => {
+                        handleOpenDetail();
+                    });
+                }}
                 renderTags={'tags'}
                 sx={{
                     height: 'calc(100vh - 234px)'

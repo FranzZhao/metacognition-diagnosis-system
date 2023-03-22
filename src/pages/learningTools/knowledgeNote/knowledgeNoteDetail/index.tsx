@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import Box from '@mui/material/Box';
 import InputBase from '@mui/material/InputBase';
@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 // icon
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
@@ -16,8 +17,12 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 // custom components
+import { Modal } from '@/components/common';
 import TagSelector from '@/components/common/tagSelector';
 import { Editor } from '@tinymce/tinymce-react';
+// redux
+import { useAppSelector, useAppDispatch } from '@/store';
+import { deleteNoteById, saveNoteById } from '@/store/slices';
 
 interface FeatureProps {
     id: number;
@@ -30,16 +35,29 @@ interface KnowledgeNoteDetailProps {
 }
 
 const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNoteList }) => {
+    const dispatch = useAppDispatch();
+    const currentNoteContent = useAppSelector((state) => state.knowledgeNote.currentOpenNote);
     // 笔记标题
     const [noteTitle, setNoteTitle] = useState('');
     // 标签字段
-    const [noteTags, setNoteTags] = useState([]);
+    const [noteTags, setNoteTags] = useState<string[]>([]);
     // 笔记简介字段
     const [noteIntro, setNoteIntro] = useState('');
     // 自定义字段
     const [extraFeature, setExtraFeature] = useState<FeatureProps[]>([]);
     // 文本编辑器内容
-    const [text, setText] = useState('文本文字');
+    const [text, setText] = useState('');
+    // 删除笔记
+    const [openDeleteNoteModal, setOpenDeleteNoteModal] = useState(false);
+
+    useEffect(() => {
+        if (currentNoteContent) {
+            setNoteTitle(currentNoteContent.title);
+            setNoteTags(currentNoteContent.tags);
+            setNoteIntro(currentNoteContent.intro);
+            setText(currentNoteContent.content);
+        }
+    }, [currentNoteContent]);
 
     /**
      * 自定义字段 Function
@@ -117,20 +135,27 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         sx={{ ml: 'auto' }}
                         onClick={() => {
                             let noteInfo = {
-                                noteTitle: noteTitle,
-                                noteTags: noteTags,
-                                noteIntro: noteIntro,
-                                extraFeature: extraFeature,
-                                noteContent: text
+                                id: currentNoteContent?.id,
+                                title: noteTitle,
+                                tags: noteTags,
+                                intro: noteIntro,
+                                // extraFeature: extraFeature,
+                                content: text
                             };
                             console.log(noteInfo);
+                            dispatch(saveNoteById(noteInfo));
                         }}
                     >
                         <SaveIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="删除笔记" arrow>
-                    <IconButton aria-label="delete" size="small" sx={{ ml: 1 }}>
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        sx={{ ml: 1 }}
+                        onClick={() => setOpenDeleteNoteModal(true)}
+                    >
                         <DeleteIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
@@ -144,6 +169,33 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         <KeyboardReturnIcon fontSize="small" />
                     </IconButton>
                 </Tooltip>
+                {/* 删除笔记modal */}
+                <Modal
+                    maxWidth="xs"
+                    open={openDeleteNoteModal}
+                    onClose={() => setOpenDeleteNoteModal(false)}
+                    title={'删除笔记确认'}
+                    content={<Box sx={{ fontWeight: 'bold' }}>请确认是否删除笔记！</Box>}
+                    actions={
+                        <Box>
+                            <Button sx={{ mr: 1 }} onClick={() => setOpenDeleteNoteModal(false)}>
+                                取消
+                            </Button>
+                            <Button
+                                variant="contained"
+                                disableElevation
+                                onClick={() => {
+                                    if (currentNoteContent) {
+                                        dispatch(deleteNoteById(currentNoteContent.id));
+                                        handleOpenNoteList();
+                                    }
+                                }}
+                            >
+                                确认
+                            </Button>
+                        </Box>
+                    }
+                />
             </Box>
             {/* 笔记标签 */}
             {/* <Divider sx={{ mt: 2, mb: 2 }} /> */}
@@ -200,7 +252,7 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                     />
                 </Box>
                 {/* 自定义字段 */}
-                {extraFeature.map((feature) => (
+                {/* {extraFeature.map((feature) => (
                     <Box
                         sx={{ display: 'flex', alignItems: 'center', margin: '8px 5px' }}
                         key={feature.id}
@@ -240,10 +292,10 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                             onChange={handleChangeExtraFeatureContent(feature.id, 'content')}
                         />
                     </Box>
-                ))}
+                ))} */}
 
                 {/* 新添加自定义字段 */}
-                <Box sx={{ display: 'flex', alignItems: 'center', margin: '8px 5px' }}>
+                {/* <Box sx={{ display: 'flex', alignItems: 'center', margin: '8px 5px' }}>
                     <Box
                         sx={{
                             display: 'flex',
@@ -259,7 +311,7 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         <AddCircleOutlineIcon fontSize="small" />
                         <Typography marginLeft={1}>添加自定义字段</Typography>
                     </Box>
-                </Box>
+                </Box> */}
             </Box>
             <Divider sx={{ mt: 2, mb: 2 }} />
             {/* 笔记内容-文本编辑器 */}
@@ -267,7 +319,7 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                 <Editor
                     tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     init={{
-                        height: 380,
+                        height: 420,
                         menubar: false,
                         plugins: [
                             'advlist',

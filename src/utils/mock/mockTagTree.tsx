@@ -44,7 +44,8 @@ export const mockTagLists: TagListProps[] = [
         labelText: '元认知',
         labelIcon: BookmarkIcon,
         labelInfo: '2',
-        content: '元认知是认知系统中的高阶认知主体（higher-order cognitive agent），是认知系统实现自指（self-reference）的认知组件（cognitive components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。'
+        content:
+            '元认知是认知系统中的高阶认知主体（higher-order cognitive agent），是认知系统实现自指（self-reference）的认知组件（cognitive components），即以认知系统自身为对象进行表征与计算，涉及与认知相关的知识（认知知识，对认知状态的表征）和指向认知的调控（认知调控，包含意识、自愿控制等，对认知状态的计算），其目的在于通过对认知系统中的要素与过程进行感知、调节与规范，使认知系统适应各类复杂认知情境。'
     },
     {
         id: '6',
@@ -101,61 +102,61 @@ export const mockTagContentLists: TagAssociatedItemsProps[] = [
     {
         id: '1',
         title: '元认知知识',
-        type: [{ label: '知识节点', color: 'warning' }],
+        type: ['知识节点'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '2',
         title: '元认知调节',
-        type: [{ label: '知识节点', color: 'warning' }],
+        type: ['知识节点'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '3',
         title: '自指',
-        type: [{ label: '知识关联', color: 'info' }],
+        type: ['知识关联'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '4',
         title: '认知知识的内涵',
-        type: [{ label: '知识笔记', color: 'success' }],
+        type: ['知识笔记'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '5',
         title: '认知知识的发展',
-        type: [{ label: '文本信息', color: 'error' }],
+        type: ['文本信息'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '6',
         title: '元认知知识',
-        type: [{ label: '知识节点', color: 'warning' }],
+        type: ['知识节点'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '7',
         title: '元认知调节',
-        type: [{ label: '知识节点', color: 'warning' }],
+        type: ['知识节点'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '8',
         title: '自指',
-        type: [{ label: '知识关联', color: 'info' }],
+        type: ['知识关联'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '9',
         title: '认知知识的内涵',
-        type: [{ label: '知识笔记', color: 'success' }],
+        type: ['知识笔记'],
         time: '2021/12/30 18:23:42'
     },
     {
         id: '10',
         title: '认知知识的发展',
-        type: [{ label: '文本信息', color: 'error' }],
+        type: ['文本信息'],
         time: '2021/12/30 18:23:42'
     }
 ];

@@ -11,13 +11,22 @@ import StarIcon from '@mui/icons-material/Star';
 // custom component
 import KnowledgeNoteList from './knowledgeNoteList';
 import KnowledgeNoteDetail from './knowledgeNoteDetail';
-import { ViewButton } from '@/components/common';
+import { ViewButton, Modal } from '@/components/common';
+// redux
+import { useAppDispatch } from '@/store';
+import { addNewNote } from '@/store/slices';
+import { TextField } from '@mui/material';
 
 const KnowledgeNote = () => {
+    const dispatch = useAppDispatch();
     // 切换视图: 所有笔记 & 重要笔记 & 新建笔记 & 笔记内容
     const [view, setView] = useState('所有笔记');
-    // 笔记详情：编辑笔记 & 新建笔记
+    // 笔记详情：编辑笔记
     const [isNoteDetail, setIsNoteDetail] = useState(false);
+    // 新建笔记modal
+    const [openNewNoteModal, setOpenNewNoteModal] = useState(false);
+    // 新建笔记标题
+    const [newNoteTitle, setNewNoteTitle] = useState('');
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -64,10 +73,50 @@ const KnowledgeNote = () => {
                     sx={{ width: '100%', m: '10px 0' }}
                     disableElevation
                     startIcon={<AddBoxIcon />}
-                    onClick={() => setIsNoteDetail(true)}
+                    onClick={() => {
+                        // setIsNoteDetail(true);
+                        setOpenNewNoteModal(true);
+                    }}
                 >
                     新建笔记
                 </Button>
+                <Modal
+                    maxWidth="sm"
+                    open={openNewNoteModal}
+                    onClose={() => setOpenNewNoteModal(false)}
+                    title={'新建笔记'}
+                    content={
+                        <Box>
+                            <TextField
+                                variant="standard"
+                                label="新建笔记标题"
+                                value={newNoteTitle}
+                                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                    setNewNoteTitle(event.target.value);
+                                }}
+                                sx={{ width: '100%' }}
+                            />
+                        </Box>
+                    }
+                    actions={
+                        <Box>
+                            <Button size="small">取消</Button>
+                            <Button
+                                variant="contained"
+                                disableElevation
+                                size="small"
+                                onClick={() => {
+                                    dispatch(addNewNote(newNoteTitle)).then(() => {
+                                        setOpenNewNoteModal(false);
+                                        setNewNoteTitle('');
+                                    });
+                                }}
+                            >
+                                确认
+                            </Button>
+                        </Box>
+                    }
+                />
             </Card>
             {/* 右侧tag标签内容 */}
             <Card
