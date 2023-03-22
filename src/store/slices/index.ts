@@ -9,3 +9,4 @@ export * from './todoListSlice';
 export * from './learningObjectSlice';
 export * from './diarySlice';
 export * from './mapSlice';
+export * from './actionLogSlice';

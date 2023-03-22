@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 // redux
 import { useAppDispatch } from '@/store';
 import { setNewAgentMsg } from '@/store/slices';
+import json from './test.json';
 
 const LoginPage = () => {
     const dispatch = useAppDispatch();
@@ -22,6 +23,18 @@ const LoginPage = () => {
                 }}
             >
                 新增msg
+            </Button>
+            <Button
+                variant="contained"
+                onClick={() => {
+                    // alert('json测试')'
+                    console.log(json);
+                    // fetch('./test.json')
+                    //     .then((response) => response.json())
+                    //     .then((json) => console.log(json));
+                }}
+            >
+                操作行为写入json测试
             </Button>
             <Paper sx={{ p: '10px 20px', width: '450px' }}>
                 <Typography

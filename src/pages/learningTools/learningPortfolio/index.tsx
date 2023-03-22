@@ -11,7 +11,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import HubIcon from '@mui/icons-material/Hub';
 import ScatterPlotIcon from '@mui/icons-material/ScatterPlot';
 import ShareIcon from '@mui/icons-material/Share';
-import TaskAltIcon from '@mui/icons-material/TaskAlt';
+import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
 // charts
 import NumberCard from '@/components/common/charts/numberCard';
 import GaugeGrade from '@/components/common/charts/gaugeGrade';
@@ -37,7 +37,10 @@ const LearningPortfolio = () => {
     const [linkNum, setLinkNum] = useState(0);
     // 待办事项
     const todoList = useAppSelector((state) => state.todoList.todoList);
-    const [todoNum, setTodoNum] = useState(0);
+    // const [todoNum, setTodoNum] = useState(0);
+    // 反思日志
+    const diaryList = useAppSelector((state) => state.diary.diaryList);
+    const [diaryNum, setDiaryNum] = useState(0);
 
     useEffect(() => {
         setTagNum(tagList.length);
@@ -51,7 +54,8 @@ const LearningPortfolio = () => {
         });
         setNodeNum(totalNodeNum);
         setLinkNum(totalLinkNum);
-        setTodoNum(todoList.length);
+        setDiaryNum(diaryList.length);
+        // setTodoNum(todoList.length);
     }, [tagList, noteList, mapList, todoList]);
 
     /** 学习进度 */
@@ -85,10 +89,9 @@ const LearningPortfolio = () => {
             }
         });
         setTodoProgress(todoFinish / todoList.length);
-    }, []);
+    }, [objects, chapters, todoList]);
 
     // TODO: 知识标签统计
-    const diaryList = useAppSelector((state) => state.diary.diaryList);
     const [tagPieChart, setTagPieChart] = useState<any[]>([]);
     useEffect(() => {
         let tagValueList: any[] = [];
@@ -135,7 +138,7 @@ const LearningPortfolio = () => {
         });
         setTagPieChart(tagValueList);
         console.log(tagValueList);
-    }, [tagList]);
+    }, [tagList, mapList, noteList, diaryList]);
 
     // 知识地图统计
     const [mapNameList, setMapNameList] = useState<string[]>([]);
@@ -206,9 +209,9 @@ const LearningPortfolio = () => {
                     color={theme.palette.info.light}
                 />
                 <NumberCard
-                    number={todoNum}
-                    text="待办任务数量"
-                    icon={<TaskAltIcon sx={{ fontSize: '2rem' }} />}
+                    number={diaryNum}
+                    text="反思日志数量"
+                    icon={<PsychologyAltIcon sx={{ fontSize: '2rem' }} />}
                     color={theme.palette.secondary.light}
                 />
             </Box>
@@ -234,7 +237,7 @@ const LearningPortfolio = () => {
                             <GaugeGrade data={[{ value: chapterProgress, name: '章节学习进度' }]} />
                         </Grid>
                         <Grid item sx={{ width: '33.3%' }}>
-                            <GaugeGrade data={[{ value: todoProgress, name: '任务计划进度' }]} />
+                            <GaugeGrade data={[{ value: todoProgress, name: '待办事项进度' }]} />
                         </Grid>
                     </Grid>
                 </Box>

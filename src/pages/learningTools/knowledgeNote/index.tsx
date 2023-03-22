@@ -14,11 +14,12 @@ import KnowledgeNoteList from './knowledgeNoteList';
 import KnowledgeNoteDetail from './knowledgeNoteDetail';
 import { ViewButton, Modal } from '@/components/common';
 // redux
-import { useAppDispatch } from '@/store';
-import { addNewNote } from '@/store/slices';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { addNewNote, getAction } from '@/store/slices';
 
 const KnowledgeNote = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     // 切换视图: 所有笔记 & 重要笔记 & 新建笔记 & 笔记内容
     const [view, setView] = useState('所有笔记');
     // 笔记详情：编辑笔记
@@ -76,6 +77,20 @@ const KnowledgeNote = () => {
                     onClick={() => {
                         // setIsNoteDetail(true);
                         setOpenNewNoteModal(true);
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '新建笔记',
+                                object: 'button',
+                                result: '打开新建笔记弹窗',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '认知知识梳理',
+                                    otherContext: null,
+                                    taskContext: '撰写笔记'
+                                }
+                            })
+                        );
                     }}
                 >
                     新建笔记
@@ -100,7 +115,26 @@ const KnowledgeNote = () => {
                     }
                     actions={
                         <Box>
-                            <Button size="small" onClick={() => setOpenNewNoteModal(false)}>
+                            <Button
+                                size="small"
+                                onClick={() => {
+                                    setOpenNewNoteModal(false);
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '取消新建笔记',
+                                            object: 'button',
+                                            result: '退出新建',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知知识梳理',
+                                                otherContext: null,
+                                                taskContext: '撰写笔记'
+                                            }
+                                        })
+                                    );
+                                }}
+                            >
                                 取消
                             </Button>
                             <Button
@@ -108,6 +142,20 @@ const KnowledgeNote = () => {
                                 disableElevation
                                 size="small"
                                 onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '确认新建笔记',
+                                            object: 'button',
+                                            result: '新建笔记：' + newNoteTitle,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知知识梳理',
+                                                otherContext: null,
+                                                taskContext: '撰写笔记'
+                                            }
+                                        })
+                                    );
                                     dispatch(addNewNote(newNoteTitle)).then(() => {
                                         setOpenNewNoteModal(false);
                                         setNewNoteTitle('');

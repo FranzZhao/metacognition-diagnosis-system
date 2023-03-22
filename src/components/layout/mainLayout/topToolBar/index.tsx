@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import { styled, useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
@@ -54,7 +54,12 @@ const TopToolBar = () => {
     const openMenu = Boolean(anchorEl);
 
     // agent card open
+    const metacognitivePromptOpen = useAppSelector((state) => state.agent.openAgent);
     const [openAgent, setOpenAgent] = useState(false);
+
+    useEffect(() => {
+        setOpenAgent(metacognitivePromptOpen);
+    }, [metacognitivePromptOpen]);
 
     const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);

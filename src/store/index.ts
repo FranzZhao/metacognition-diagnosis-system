@@ -13,7 +13,8 @@ import {
     TodoListSlice,
     LearningObjectSlice,
     DiarySlice,
-    MapSlice
+    MapSlice,
+    ActionLogSlice
 } from './slices';
 
 // 持久化配置信息
@@ -38,7 +39,8 @@ const rootReducer = combineReducers({
     todoList: TodoListSlice.reducer,
     learningObject: LearningObjectSlice.reducer,
     diary: DiarySlice.reducer,
-    map: MapSlice.reducer
+    map: MapSlice.reducer,
+    actionLog: ActionLogSlice.reducer
 });
 
 // 将原有的reducer加强为可持续久化的

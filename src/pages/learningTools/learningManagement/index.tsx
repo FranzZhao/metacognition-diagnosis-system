@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 // custom components
 import ToolTree from './toolsTree';
 import ManagementTools from './managementTools';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { metacognitivePrompt } from '@/store/slices';
 
 const LearningManagement = () => {
+    const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const [view, setView] = useState('学习目标');
+
+    useEffect(() => {
+        dispatch(
+            metacognitivePrompt({
+                promptType: '认知计划-学习目标设定',
+                currentMsgID: currentMsgID
+            })
+        );
+    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>

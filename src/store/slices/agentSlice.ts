@@ -42,6 +42,7 @@ interface AgentMsgSliceProps {
     currentId: number;
     msgList: AgentMsgListProps[];
     currentMsg: AgentMsgListProps;
+    openAgent: boolean;
 }
 
 const initialAgentMsgState: AgentMsgSliceProps = {
@@ -82,7 +83,8 @@ const initialAgentMsgState: AgentMsgSliceProps = {
         id: 6,
         msgTitle: CETaskAnalysisUpdateXML.msgTitle,
         msgList: CETaskAnalysisUpdateXML.msgList
-    }
+    },
+    openAgent: false
 };
 
 // action: 添加新的Agent Msg
@@ -104,11 +106,142 @@ export const setCurrentOpenAgentMsg = createAsyncThunk(
     }
 );
 
+type PromptType =
+    | '认知监控-学习过程监控'
+    | '认知监控-任务解决监控'
+    | '认知调节-学习过程监控'
+    | '认知调节-认知目标更新'
+    | '认知调节-任务分析更新'
+    | '认知计划-学习目标设定'
+    | '认知计划-任务初步分析'
+    | '认知计划-认知目标更新'
+    | '认知计划-任务分析更新'
+    | '认知表征-认知资料整理'
+    | '认知表征-任务方案撰写'
+    | '认知评价-学习过程监控'
+    | '认知评价-任务分析更新'
+    | '认知评价-任务迭代评价';
+
+// action: 在特定的学习环节、学习工具、认知情境下打开特定的agent以激发、显化学习者的元认知活动
+export const metacognitivePrompt = createAsyncThunk(
+    'agent/metacognitivePrompt',
+    (params: { promptType: PromptType; currentMsgID: number }) => {
+        const { promptType, currentMsgID } = params;
+        let promptMsg: AgentMsgListProps;
+        switch (promptType) {
+            case '认知监控-学习过程监控':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CMLearningProcessMonitoringXML.msgList,
+                    msgTitle: CMLearningProcessMonitoringXML.msgTitle
+                };
+                break;
+            case '认知监控-任务解决监控':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CMTaskSolvingMonitoringXML.msgList,
+                    msgTitle: CMTaskSolvingMonitoringXML.msgTitle
+                };
+                break;
+            case '认知调节-学习过程监控':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CRLearningProcessMonitoringXML.msgList,
+                    msgTitle: CRLearningProcessMonitoringXML.msgTitle
+                };
+                break;
+            case '认知调节-认知目标更新':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CRCognitiveGoalUpdateXML.msgList,
+                    msgTitle: CRCognitiveGoalUpdateXML.msgTitle
+                };
+                break;
+            case '认知调节-任务分析更新':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CRTaskAnalysisUpdateXML.msgList,
+                    msgTitle: CRTaskAnalysisUpdateXML.msgTitle
+                };
+                break;
+            case '认知计划-学习目标设定':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CPLearningObjectSettingXML.msgList,
+                    msgTitle: CPLearningObjectSettingXML.msgTitle
+                };
+                break;
+            case '认知计划-任务初步分析':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CPTaskFirstAnalysisXML.msgList,
+                    msgTitle: CPTaskFirstAnalysisXML.msgTitle
+                };
+                break;
+            case '认知计划-认知目标更新':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CPLearningObjectUpdateXML.msgList,
+                    msgTitle: CPLearningObjectUpdateXML.msgTitle
+                };
+                break;
+            case '认知计划-任务分析更新':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CPTaskAnalysisUpdateXML.msgList,
+                    msgTitle: CPTaskAnalysisUpdateXML.msgTitle
+                };
+                break;
+            case '认知表征-认知资料整理':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CRepCognitiveMaterialOrganizeXML.msgList,
+                    msgTitle: CRepCognitiveMaterialOrganizeXML.msgTitle
+                };
+                break;
+            case '认知表征-任务方案撰写':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CRepTaskProjectWriteXML.msgList,
+                    msgTitle: CRepTaskProjectWriteXML.msgTitle
+                };
+                break;
+            case '认知评价-学习过程监控':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CELearningProcessMonitoringXML.msgList,
+                    msgTitle: CELearningProcessMonitoringXML.msgTitle
+                };
+                break;
+            case '认知评价-任务分析更新':
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CETaskAnalysisUpdateXML.msgList,
+                    msgTitle: CETaskAnalysisUpdateXML.msgTitle
+                };
+                break;
+            default:
+                // 最后一个：认知评价-任务迭代评价
+                promptMsg = {
+                    id: currentMsgID,
+                    msgList: CETaskEvaluateUpdateXML.msgList,
+                    msgTitle: CETaskEvaluateUpdateXML.msgTitle
+                };
+                break;
+        }
+        return promptMsg;
+    }
+);
+
 // slice
 export const AgentSlice = createSlice({
     name: 'agent',
     initialState: initialAgentMsgState,
-    reducers: {},
+    reducers: {
+        closeAgent: (state) => {
+            state.openAgent = false;
+        }
+    },
     extraReducers: {
         [setCurrentOpenAgentMsg.fulfilled.type]: (state, action) => {
             state.currentMsg = action.payload;
@@ -119,6 +252,11 @@ export const AgentSlice = createSlice({
                 id: state.currentId
             });
             state.currentId = state.currentId + 1;
+        },
+        [metacognitivePrompt.fulfilled.type]: (state, action) => {
+            state.openAgent = true;
+            state.currentMsg = action.payload;
+            state.currentId += 1;
         }
     }
 });
