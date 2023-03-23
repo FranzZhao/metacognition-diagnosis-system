@@ -98,7 +98,7 @@ const LearningPortfolio = () => {
         setTodoProgress(todoFinish / todoList.length);
     }, [objects, chapters, todoList]);
 
-    // TODO: 知识标签统计
+    // 知识标签统计
     const [tagPieChart, setTagPieChart] = useState<any[]>([]);
     useEffect(() => {
         let tagValueList: any[] = [];

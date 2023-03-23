@@ -113,7 +113,7 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
             });
             setTableData(tagItems);
         }
-    }, [currentSelectedTag]);
+    }, [currentSelectedTag, notesInfo, mapsInfo, diariesInfo]);
 
     return (
         <Paper sx={{ boxShadow: 'none' }}>

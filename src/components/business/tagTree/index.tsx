@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // type
 import { TagTreeProps, TagListProps } from '@/utils/types/knowledgeTag';
 // mui5
@@ -18,6 +18,8 @@ import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
 
 type StyledTreeItemProps = TreeItemProps & {
     bgColor?: string;
@@ -38,6 +40,42 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data, handleSelectedTag }) =
     function StyledTreeItem(props: StyledTreeItemProps) {
         const { bgColor, color, labelIcon: LabelIcon, labelInfo, labelText, ...other } = props;
 
+        // 知识标签统计
+        const noteList = useAppSelector((state) => state.knowledgeNote.noteList);
+        const mapList = useAppSelector((state) => state.map.mapList);
+        const diaryList = useAppSelector((state) => state.diary.diaryList);
+        const [tagNum, setTagNum] = useState(0);
+        useEffect(() => {
+            let tagNumSum = 0;
+            // console.log(tagValueList);
+            noteList.map((note) => {
+                if (note.tags.includes(labelText)) {
+                    tagNumSum += 1;
+                }
+            });
+            mapList.map((map) => {
+                if (map.tags.includes(labelText)) {
+                    tagNumSum += 1;
+                }
+                map.nodes.map((node) => {
+                    if (node.extraInfo.tags.includes(labelText)) {
+                        tagNumSum += 1;
+                    }
+                });
+                map.links.map((node) => {
+                    if (node.extraInfo.tags.includes(labelText)) {
+                        tagNumSum += 1;
+                    }
+                });
+            });
+            diaryList.map((diary) => {
+                if (diary.tags.includes(labelText)) {
+                    tagNumSum += 1;
+                }
+            });
+            setTagNum(tagNumSum);
+        }, [mapList, noteList, diaryList]);
+
         return (
             <TreeItem
                 onClick={() => {
@@ -55,7 +93,7 @@ const TagTree: React.FC<TagTreeComponentProps> = ({ data, handleSelectedTag }) =
                             {labelText}
                         </Typography>
                         <Typography variant="caption" color="inherit">
-                            {labelInfo}
+                            {tagNum}
                         </Typography>
                     </Box>
                 }
