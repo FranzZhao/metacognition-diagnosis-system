@@ -27,7 +27,7 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import { saveMapById } from '@/store/slices';
 // agent help
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 interface MapProps {
     mapInfo: any;
@@ -48,6 +48,7 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
     canvasHeight = 'calc(100vh - 150px)'
 }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentMapInfo = useAppSelector((state) => state.map.currentSelectMap);
     // map state
@@ -91,11 +92,39 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                 // console.log(e);
                 setOpen('nodeInfo');
                 setNodeInfo(e);
+                dispatch(
+                    getAction({
+                        actor: currentActor,
+                        verb: '点击节点',
+                        object: '点击知识节点: ' + e.data.name,
+                        result: '查看知识节点信息',
+                        time: '',
+                        context: {
+                            cognitiveContext: '认知表征',
+                            otherContext: '知识地图：' + mapTitle,
+                            taskContext: null
+                        }
+                    })
+                );
             }
             if (e.dataType === 'edge') {
                 // console.log(e);
                 setOpen('linkInfo');
                 setLinkInfo(e);
+                dispatch(
+                    getAction({
+                        actor: currentActor,
+                        verb: '点击关联',
+                        object: '点击知识关联: ' + e.data.value,
+                        result: '查看知识关联信息',
+                        time: '',
+                        context: {
+                            cognitiveContext: '认知表征',
+                            otherContext: '知识地图：' + mapTitle,
+                            taskContext: null
+                        }
+                    })
+                );
             }
         }
     };
@@ -107,6 +136,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
             mapInfo: newData
         });
         setMapTitle(newData.mapTitle);
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '编辑信息',
+                object: '知识地图信息',
+                result: '编辑知识地图基本信息',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: '知识地图：' + newData.mapTitle,
+                    taskContext: null
+                }
+            })
+        );
     };
 
     // 修改已有节点与关联的信息
@@ -131,6 +174,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                             tags: newData.nodeTag
                         }
                     };
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '编辑信息',
+                            object: '知识节点信息',
+                            result: '修改知识节点信息',
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知表征',
+                                otherContext: '知识节点：' + newData.nodeName,
+                                taskContext: null
+                            }
+                        })
+                    );
                 }
             });
         }
@@ -148,6 +205,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                             tags: newData.linkTag
                         }
                     };
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '编辑信息',
+                            object: '知识关联信息',
+                            result: '修改知识关联信息',
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知表征',
+                                otherContext: '知识关联：' + newData.linkName,
+                                taskContext: null
+                            }
+                        })
+                    );
                 }
             });
         }
@@ -187,6 +258,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
             node: newNodes,
             link: newLinks
         });
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '删除节点',
+                object: '知识节点：' + node.data.name,
+                result: '删除知识节点及其关联',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: null,
+                    taskContext: null
+                }
+            })
+        );
     };
 
     // 删除知识关联
@@ -202,6 +287,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
             ...map,
             link: newLinks
         });
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '删除关联',
+                object: '知识关联：' + link.data.value,
+                result: '删除知识关联',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: null,
+                    taskContext: null
+                }
+            })
+        );
     };
 
     // 新增知识节点
@@ -220,6 +319,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                 tags: newData.nodeTag
             }
         });
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '新增节点',
+                object: '知识节点：' + newData.nodeName,
+                result: '新增知识节点',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: null,
+                    taskContext: null
+                }
+            })
+        );
         setMap({
             ...map,
             node: newNodeList
@@ -246,6 +359,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                 newRelations.push(link.value);
             }
         });
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '新增关联',
+                object: '知识关联：' + newData.linkName,
+                result: '新增知识关联',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: null,
+                    taskContext: null
+                }
+            })
+        );
         setMap({
             ...map,
             link: newLinkList,
@@ -264,6 +391,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                 nodes: map.node,
                 links: map.link,
                 relations: map.relations
+            })
+        );
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '点击按钮',
+                object: '按钮：保存 知识地图id' + currentMapInfo?.id,
+                result: '更新知识地图信息',
+                time: '',
+                context: {
+                    cognitiveContext: '认知表征',
+                    otherContext: null,
+                    taskContext: null
+                }
             })
         );
     };
@@ -296,6 +437,20 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                                         metacognitivePrompt({
                                             promptType: '认知表征-认知资料整理',
                                             currentMsgID: currentMsgID
+                                        })
+                                    );
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '弹出提示框',
+                                            object: '元认识提示 id: ' + currentMsgID,
+                                            result: '弹出元认知提示：认知表征-认知资料整理',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知表征',
+                                                otherContext: null,
+                                                taskContext: '认知表征-认知资料整理'
+                                            }
                                         })
                                     );
                                 }}
@@ -353,7 +508,23 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                                 aria-label="delete"
                                 size="small"
                                 sx={{ mt: '5px' }}
-                                onClick={handleOpenList}
+                                onClick={() => {
+                                    handleOpenList();
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '退出知识地图 id:' + currentMapInfo?.id,
+                                            result: '完成知识地图的查看或编辑并退出',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知表征',
+                                                otherContext: null,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 <KeyboardReturnIcon fontSize="small" />
                             </IconButton>

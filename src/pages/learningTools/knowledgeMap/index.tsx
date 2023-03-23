@@ -17,11 +17,12 @@ import { ViewButton, Modal } from '@/components/common';
 import KnowledgeMapList from './knowledgeMapList';
 import KnowledgeMapDetail from './knowledgeMapDetail';
 // redux
-import { useAppDispatch } from '@/store';
-import { newMap } from '@/store/slices';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { newMap, getAction } from '@/store/slices';
 
 const KnowledgeMap = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     // 打开新建知识地图模态框
     const [openModal, setOpenModal] = useState(false);
     // 新建知识地图的信息
@@ -165,8 +166,27 @@ const KnowledgeMap = () => {
                                 disableElevation
                                 size="small"
                                 onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：新建知识地图',
+                                            result: '创建新的知识地图:' + newMapInfo.mapTitle,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知表征',
+                                                otherContext: null,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
                                     dispatch(newMap(newMapInfo)).then(() => {
                                         setOpenModal(false);
+                                    });
+                                    setNewMapInfo({
+                                        mapTitle: '',
+                                        mapIntro: '',
+                                        mapTags: []
                                     });
                                     // setIsKnowledgeMapDetail(!isKnowledgeMapDetail);
                                 }}

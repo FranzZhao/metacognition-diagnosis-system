@@ -77,20 +77,6 @@ const KnowledgeNote = () => {
                     onClick={() => {
                         // setIsNoteDetail(true);
                         setOpenNewNoteModal(true);
-                        dispatch(
-                            getAction({
-                                actor: currentActor,
-                                verb: '新建笔记',
-                                object: 'button',
-                                result: '打开新建笔记弹窗',
-                                time: '',
-                                context: {
-                                    cognitiveContext: '认知知识梳理',
-                                    otherContext: null,
-                                    taskContext: '撰写笔记'
-                                }
-                            })
-                        );
                     }}
                 >
                     新建笔记
@@ -119,20 +105,6 @@ const KnowledgeNote = () => {
                                 size="small"
                                 onClick={() => {
                                     setOpenNewNoteModal(false);
-                                    dispatch(
-                                        getAction({
-                                            actor: currentActor,
-                                            verb: '取消新建笔记',
-                                            object: 'button',
-                                            result: '退出新建',
-                                            time: '',
-                                            context: {
-                                                cognitiveContext: '认知知识梳理',
-                                                otherContext: null,
-                                                taskContext: '撰写笔记'
-                                            }
-                                        })
-                                    );
                                 }}
                             >
                                 取消
@@ -145,8 +117,8 @@ const KnowledgeNote = () => {
                                     dispatch(
                                         getAction({
                                             actor: currentActor,
-                                            verb: '确认新建笔记',
-                                            object: 'button',
+                                            verb: '新建笔记',
+                                            object: '按钮：新建笔记',
                                             result: '新建笔记：' + newNoteTitle,
                                             time: '',
                                             context: {

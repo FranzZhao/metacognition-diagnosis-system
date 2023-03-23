@@ -9,7 +9,7 @@ import CustomTable from '@/components/common/table';
 import { mockKnowledgeMapList } from '@/utils/mock';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { getMapById } from '@/store/slices';
+import { getMapById, getAction } from '@/store/slices';
 
 interface KnowledgeMapListProps {
     handleOpenDetail: () => void;
@@ -17,6 +17,7 @@ interface KnowledgeMapListProps {
 
 const KnowledgeMapList: React.FC<KnowledgeMapListProps> = ({ handleOpenDetail }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const mapList = useAppSelector((state) => state.map.mapList);
 
     return (
@@ -40,6 +41,20 @@ const KnowledgeMapList: React.FC<KnowledgeMapListProps> = ({ handleOpenDetail })
                 // }
                 needAction={true}
                 openDetail={(id: any) => {
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '点击按钮',
+                            object: '表格按钮：编辑知识地图',
+                            result: '编辑知识地图 id：' + id,
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知表征',
+                                otherContext: null,
+                                taskContext: null
+                            }
+                        })
+                    );
                     dispatch(getMapById(id)).then(() => {
                         handleOpenDetail();
                     });

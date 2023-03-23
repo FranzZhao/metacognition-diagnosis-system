@@ -9,7 +9,7 @@ import CustomTable from '@/components/common/table';
 import { mockNoteList } from '@/utils/mock';
 // redux
 import { useAppSelector, useAppDispatch } from '@/store';
-import { openNoteById } from '@/store/slices';
+import { openNoteById, getAction } from '@/store/slices';
 
 interface KnowledgeNoteListProps {
     handleOpenDetail: () => void;
@@ -17,6 +17,7 @@ interface KnowledgeNoteListProps {
 
 const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const noteList = useAppSelector((state) => state.knowledgeNote.noteList);
 
     return (
@@ -39,6 +40,20 @@ const KnowledgeNoteList: React.FC<KnowledgeNoteListProps> = ({ handleOpenDetail 
                     dispatch(openNoteById(id)).then(() => {
                         handleOpenDetail();
                     });
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '点击按钮',
+                            object: '表格按钮 笔记id：' + id,
+                            result: '查看笔记内容',
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知表征',
+                                otherContext: null,
+                                taskContext: null
+                            }
+                        })
+                    );
                 }}
                 renderTags={'tags'}
                 sx={{

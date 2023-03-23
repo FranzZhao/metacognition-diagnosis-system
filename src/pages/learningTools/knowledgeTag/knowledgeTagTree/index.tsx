@@ -18,6 +18,7 @@ import { Modal } from '@/components/common';
 import { mockTagLists } from '@/utils/mock';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
+import { getAction } from '@/store/slices';
 import { addNewTag, selectTagById } from '@/store/slices/knowledgeTagSlice';
 
 interface KnowledgeTagTreeProps {
@@ -27,6 +28,7 @@ interface KnowledgeTagTreeProps {
 
 const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSelectedTag }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentTagList = useAppSelector((state) => state.knowledgeTag.tagList);
     // 左侧标签树
     const [tagTree, setTagTree] = useState<TagTreeProps[]>([]);
@@ -102,6 +104,20 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                 handleSelectedTag={(tagId: string) => {
                     // console.log('select id =>', tagId);
                     dispatch(selectTagById(tagId));
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '点击列表',
+                            object: '知识标签列表',
+                            result: '选中知识标签 id:' + tagId,
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知表征',
+                                otherContext: null,
+                                taskContext: null
+                            }
+                        })
+                    );
                 }}
             />
             <Box sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
@@ -184,6 +200,20 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                             size="small"
                             disableElevation
                             onClick={() => {
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '添加知识标签',
+                                        result: '添加新的知识标签:' + newTag.labelText,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知表征',
+                                            otherContext: null,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
                                 dispatch(addNewTag(newTag)).then(() => {
                                     setIsAddNewTag(false);
                                     setNewTag({

@@ -18,7 +18,7 @@ import { saveTag } from '@/store/slices';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 interface KnowledgeTagContentProps {
     selectedTagContent: TagListProps;
@@ -26,6 +26,7 @@ interface KnowledgeTagContentProps {
 
 const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagContent }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentSelectedTag = useAppSelector((state) => state.knowledgeTag.currentSelectTag);
     // 编辑修改标签内容
@@ -170,6 +171,24 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                                                 content: tagContent
                                             })
                                         );
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '点击按钮',
+                                                object: '修改标签信息',
+                                                result: '修改知识标签 id:' + currentSelectedTag.id,
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知表征',
+                                                    otherContext:
+                                                        '知识标签：' +
+                                                        tagTitle +
+                                                        ', 内容：' +
+                                                        tagContent,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
                                     }}
                                 >
                                     保存信息
@@ -220,6 +239,20 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                                             metacognitivePrompt({
                                                 promptType: '认知表征-认知资料整理',
                                                 currentMsgID: currentMsgID
+                                            })
+                                        );
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '弹出提示框',
+                                                object: '元认识提示 id: ' + currentMsgID,
+                                                result: '弹出元认知提示：认知表征-认知资料整理',
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知表征',
+                                                    otherContext: null,
+                                                    taskContext: '认知表征-认知资料整理'
+                                                }
                                             })
                                         );
                                     }}

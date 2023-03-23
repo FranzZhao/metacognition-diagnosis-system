@@ -25,7 +25,7 @@ import { useAppSelector, useAppDispatch } from '@/store';
 import { deleteNoteById, saveNoteById } from '@/store/slices';
 // agent help
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 interface FeatureProps {
     id: number;
@@ -39,6 +39,7 @@ interface KnowledgeNoteDetailProps {
 
 const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNoteList }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentNoteContent = useAppSelector((state) => state.knowledgeNote.currentOpenNote);
     // 笔记标题
@@ -143,6 +144,20 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                                         currentMsgID: currentMsgID
                                     })
                                 );
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '弹出提示框',
+                                        object: '元认识提示 id: ' + currentMsgID,
+                                        result: '弹出元认知提示：认知表征-认知资料整理',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知表征',
+                                            otherContext: null,
+                                            taskContext: '认知表征-认知资料整理'
+                                        }
+                                    })
+                                );
                             }}
                         >
                             <HelpIcon fontSize="small" />
@@ -164,6 +179,26 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                                 };
                                 console.log(noteInfo);
                                 dispatch(saveNoteById(noteInfo));
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：保存笔记',
+                                        result: '保存知识笔记：' + noteTitle,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知表征',
+                                            otherContext:
+                                                '笔记标签：' +
+                                                noteTags +
+                                                ', 笔记简介：' +
+                                                noteIntro +
+                                                ', 笔记内容：' +
+                                                text,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
                             }}
                         >
                             <SaveIcon fontSize="small" />
@@ -174,7 +209,9 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                             aria-label="delete"
                             size="small"
                             sx={{ ml: 1 }}
-                            onClick={() => setOpenDeleteNoteModal(true)}
+                            onClick={() => {
+                                setOpenDeleteNoteModal(true);
+                            }}
                         >
                             <DeleteIcon fontSize="small" />
                         </IconButton>
@@ -184,7 +221,23 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                             aria-label="delete"
                             size="small"
                             sx={{ ml: 1 }}
-                            onClick={handleOpenNoteList}
+                            onClick={() => {
+                                handleOpenNoteList();
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：返回列表',
+                                        result: '退出知识笔记：' + noteTitle,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知表征',
+                                            otherContext: null,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             <KeyboardReturnIcon fontSize="small" />
                         </IconButton>
@@ -207,6 +260,20 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                                 disableElevation
                                 onClick={() => {
                                     if (currentNoteContent) {
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '点击按钮',
+                                                object: '按钮：删除笔记',
+                                                result: '删除知识笔记：' + noteTitle,
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知表征',
+                                                    otherContext: null,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
                                         dispatch(deleteNoteById(currentNoteContent.id));
                                         handleOpenNoteList();
                                     }

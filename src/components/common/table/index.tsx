@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // mui5
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -40,6 +40,10 @@ const CustomTable: React.FC<CustomTableProps> = ({
 }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
+
+    useEffect(() => {
+        setPage(0);
+    }, [rows]);
 
     const handleChangePage = (event: unknown, newPage: number) => {
         setPage(newPage);
