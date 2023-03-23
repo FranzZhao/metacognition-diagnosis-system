@@ -75,7 +75,7 @@ const LearningManagementTool: React.FC<LearningManagementToolProps> = ({ handleC
                     )}
                 </Box>
             }
-            contentSX={{ p: '0px', height: '300px' }}
+            contentSX={{ p: '0px', height: '380px' }}
         />
     );
 };

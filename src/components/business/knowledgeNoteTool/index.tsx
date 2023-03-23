@@ -49,8 +49,8 @@ const KnowledgeNoteTool: React.FC<KnowledgeNoteToolProps> = ({ handleClose }) =>
                     )}
                 </Box>
             }
-            contentSX={{ height: '400px' }}
-            cardWidth="500px"
+            contentSX={{ height: '380px' }}
+            cardWidth="600px"
         />
     );
 };

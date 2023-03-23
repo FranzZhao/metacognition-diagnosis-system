@@ -35,7 +35,7 @@ const KnowledgeMapTool: React.FC<KnowledgeMaoToolProps> = ({ handleClose }) => {
     const [openModal, setOpenModal] = useState(false);
 
     return (
-        <>
+        <Box sx={{ zIndex: 100 }}>
             <ToolCard
                 title={
                     <Typography fontSize={'14px'} color={'white'}>
@@ -80,7 +80,7 @@ const KnowledgeMapTool: React.FC<KnowledgeMaoToolProps> = ({ handleClose }) => {
                         )}
                     </Box>
                 }
-                contentSX={{ height: '410px' }}
+                contentSX={{ height: '380px' }}
                 cardWidth="600px"
             />
             {/* 新建标签模态框 */}
@@ -154,7 +154,7 @@ const KnowledgeMapTool: React.FC<KnowledgeMaoToolProps> = ({ handleClose }) => {
                     </Box>
                 }
             />
-        </>
+        </Box>
     );
 };
 

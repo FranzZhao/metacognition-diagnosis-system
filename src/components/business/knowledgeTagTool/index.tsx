@@ -99,7 +99,7 @@ const KnowledgeTagTool: React.FC<KnowledgeTagToolProps> = ({ handleClose }) => {
                     )}
                 </Box>
             }
-            contentSX={{ height: '300px' }}
+            contentSX={{ height: '380px' }}
         />
     );
 };

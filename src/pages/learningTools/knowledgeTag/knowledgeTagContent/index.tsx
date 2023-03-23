@@ -238,11 +238,12 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                             { id: 'time', label: '更新时间', minWidth: 150 }
                         ]}
                         rows={tableData}
-                        hasActions={
-                            <Button size="small" variant="outlined">
-                                详情
-                            </Button>
-                        }
+                        // hasActions={
+                        //     <Button size="small" variant="outlined">
+                        //         详情
+                        //     </Button>
+                        // }
+                        needAction={false}
                         renderTags={'type'}
                     />
                 </Box>

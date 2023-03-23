@@ -83,7 +83,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
                                         minWidth: column.minWidth,
                                         backgroundColor: 'steelblue',
                                         color: 'white',
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        zIndex: 0
                                     }}
                                 >
                                     {column.label}
@@ -95,7 +96,8 @@ const CustomTable: React.FC<CustomTableProps> = ({
                                     sx={{
                                         backgroundColor: 'steelblue',
                                         color: 'white',
-                                        fontWeight: 'bold'
+                                        fontWeight: 'bold',
+                                        zIndex: 0
                                     }}
                                 >
                                     操作
