@@ -85,6 +85,7 @@ const KnowledgeTagTool: React.FC<KnowledgeTagToolProps> = ({ handleClose }) => {
                             <KnowledgeTagTree
                                 tagList={tagList}
                                 handleSelectedTag={handleSelectedTag}
+                                isPositionRelative={false}
                             />
                             <Button
                                 variant="contained"

@@ -27,9 +27,10 @@ interface DiaryProps {
 }
 
 const initialDiaryState: DiaryProps = {
-    diaryList: mockDiaryList,
+    // diaryList: mockDiaryList,
+    diaryList: [],
     currentSelectDiary: null,
-    nextDiaryId: 3
+    nextDiaryId: 1
 };
 
 // 查看diary by id

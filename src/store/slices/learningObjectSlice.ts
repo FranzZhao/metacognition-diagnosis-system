@@ -13,13 +13,13 @@ interface LearningObjectProps {
 }
 
 const initialLearningObject: LearningObjectProps = {
-    coreLearningObject: '运用复杂系统理论构想未来教育评价样态-redux',
+    coreLearningObject: '',
     subLearningObjects: [
-        { id: '1', text: '子目标1', progress: 50 },
-        { id: '2', text: '子目标2', progress: 20 },
-        { id: '3', text: '子目标3', progress: 60 }
+        // { id: '1', text: '子目标1', progress: 50 },
+        // { id: '2', text: '子目标2', progress: 20 },
+        // { id: '3', text: '子目标3', progress: 60 }
     ],
-    nextSubLearningObjectId: 4
+    nextSubLearningObjectId: 1
 };
 
 // 更新核心目标

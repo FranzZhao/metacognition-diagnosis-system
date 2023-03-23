@@ -24,9 +24,14 @@ import { addNewTag, selectTagById } from '@/store/slices/knowledgeTagSlice';
 interface KnowledgeTagTreeProps {
     tagList: TagListProps[];
     handleSelectedTag: (tagID: string) => void;
+    isPositionRelative?: boolean;
 }
 
-const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSelectedTag }) => {
+const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({
+    tagList,
+    handleSelectedTag,
+    isPositionRelative = true
+}) => {
     const dispatch = useAppDispatch();
     const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentTagList = useAppSelector((state) => state.knowledgeTag.tagList);
@@ -93,8 +98,10 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
         return newTagTree;
     };
 
+    const boxPositionStyle = { position: isPositionRelative ? 'relative' : 'unset' };
+    const buttonPositionStyle = { position: isPositionRelative ? 'absolute' : 'unset' };
     return (
-        <Box sx={{ position: 'relative', height: '100%', width: '100%' }}>
+        <Box sx={{ height: '100%', width: '100%', ...boxPositionStyle }}>
             <Typography margin="10px" fontWeight="bold">
                 知识标签列表
             </Typography>
@@ -120,7 +127,7 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                     );
                 }}
             />
-            <Box sx={{ position: 'absolute', bottom: '0', width: '100%' }}>
+            <Box sx={{ ...buttonPositionStyle, bottom: '0', width: '100%' }}>
                 <Divider />
                 <Button
                     variant="contained"
@@ -168,7 +175,7 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({ tagList, handleSele
                             >
                                 <MenuItem value="null">该标签为顶级父标签</MenuItem>
                                 <Divider />
-                                {mockTagLists.map((tag) => {
+                                {currentTagList.map((tag) => {
                                     return (
                                         <MenuItem key={tag.id} value={tag.id}>
                                             {tag.labelText}

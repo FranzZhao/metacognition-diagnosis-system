@@ -30,9 +30,10 @@ interface MapProps {
 }
 
 const initialMapState: MapProps = {
-    mapList: mockKnowledgeMapList,
+    // mapList: mockKnowledgeMapList,
+    mapList: [],
     currentSelectMap: null,
-    nextMapId: 4
+    nextMapId: 1
 };
 
 // 根据ID获取map

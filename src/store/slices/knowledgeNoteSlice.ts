@@ -32,26 +32,9 @@ interface KnowledgeNoteProps {
 }
 
 const initialKnowledgeNote: KnowledgeNoteProps = {
-    noteList: [
-        {
-            id: 1,
-            title: '元认知知识',
-            tags: ['元认知', '元认知知识'],
-            time: '2021/12/30 18:23:42',
-            intro: '元认知知识笔记简介',
-            content: ''
-        },
-        {
-            id: 2,
-            title: '元认知',
-            tags: ['元认知', '自指'],
-            time: '2021/12/30 18:23:42',
-            intro: '元认知笔记简介',
-            content: ''
-        }
-    ],
+    noteList: [],
     currentOpenNote: null,
-    nextNoteId: 3
+    nextNoteId: 1
 };
 
 // 打开对应id的note

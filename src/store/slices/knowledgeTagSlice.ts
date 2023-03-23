@@ -13,9 +13,10 @@ interface KnowledgeTagProps {
 }
 
 const initialKnowledgeTag: KnowledgeTagProps = {
-    tagList: mockTagLists,
+    // tagList: mockTagLists,
+    tagList: [],
     currentSelectTag: null,
-    nextTagId: 12
+    nextTagId: 1
 };
 
 // 选择tag

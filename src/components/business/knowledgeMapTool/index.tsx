@@ -8,13 +8,15 @@ import HubIcon from '@mui/icons-material/Hub';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-
 // custom components
 import { Modal } from '@/components/common';
 import ToolCard from '@/components/common/toolCard';
 import KnowledgeMapList from '@/pages/learningTools/knowledgeMap/knowledgeMapList';
 import KnowledgeMapDetail from '@/pages/learningTools/knowledgeMap/knowledgeMapDetail';
 import TagSelector from '@/components/common/tagSelector';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { newMap, getAction } from '@/store/slices';
 
 interface KnowledgeMaoToolProps {
     /** 关闭工具卡片 */
@@ -23,6 +25,8 @@ interface KnowledgeMaoToolProps {
 
 const KnowledgeMapTool: React.FC<KnowledgeMaoToolProps> = ({ handleClose }) => {
     const theme = useTheme();
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     // 知识地图详情：编辑知识地图 & 新建知识地图
     const [isKnowledgeMapDetail, setIsKnowledgeMapDetail] = useState(false);
     // 新建知识地图的信息
@@ -145,8 +149,29 @@ const KnowledgeMapTool: React.FC<KnowledgeMaoToolProps> = ({ handleClose }) => {
                             disableElevation
                             size="small"
                             onClick={() => {
-                                setIsKnowledgeMapDetail(!isKnowledgeMapDetail);
-                                setOpenModal(false);
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：新建知识地图',
+                                        result: '创建新的知识地图:' + newMapInfo.mapTitle,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知表征',
+                                            otherContext: null,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
+                                dispatch(newMap(newMapInfo)).then(() => {
+                                    setOpenModal(false);
+                                });
+                                setNewMapInfo({
+                                    mapTitle: '',
+                                    mapIntro: '',
+                                    mapTags: []
+                                });
+                                // setIsKnowledgeMapDetail(!isKnowledgeMapDetail);
                             }}
                         >
                             确定

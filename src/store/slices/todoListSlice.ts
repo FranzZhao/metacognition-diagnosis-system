@@ -13,8 +13,9 @@ interface TodoListProps {
 }
 
 const initialTodoList: TodoListProps = {
-    todoList: mockTodoList,
-    nextTodoListId: 8
+    // todoList: mockTodoList,
+    todoList: [],
+    nextTodoListId: 1
 };
 
 // 修改任务列表
