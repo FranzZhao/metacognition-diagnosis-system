@@ -3,21 +3,9 @@ export const CPTaskAnalysisUpdateXML = {
     msgList: [
         {
             step: '1',
-            promptTitle: '任务分析回顾',
-            promptContent: '重新回顾自己最初对任务情境所做的分析',
-            answer: ''
-        },
-        {
-            step: '2',
-            promptTitle: '相关知识提取',
-            promptContent: '剖析对当前任务情境进行解析的时候，需要使用到哪些已经掌握的知识',
-            answer: ''
-        },
-        {
-            step: '3',
-            promptTitle: '分析修正与补充',
+            promptTitle: '问题解决目标更新',
             promptContent:
-                '运用这些新掌握的知识对任务分析进行更新、修正和补充',
+                '你已经对任务分析进行了调整，那么请反思一下，是否需要重新调节你的学习目标和待办事项，具体要如何调整？请到学习管理工作中进行调整吧！',
             answer: ''
         }
     ]

@@ -180,9 +180,9 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                                     修改信息
                                 </Button>
                             )}
-                            <Button size="small" color="secondary" startIcon={<DeleteIcon />}>
+                            {/* <Button size="small" color="secondary" startIcon={<DeleteIcon />}>
                                 删除标签
-                            </Button>
+                            </Button> */}
                         </Box>
                     </Box>
                     {isEdit ? (

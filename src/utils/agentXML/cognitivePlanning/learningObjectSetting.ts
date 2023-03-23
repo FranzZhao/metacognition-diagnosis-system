@@ -4,20 +4,22 @@ export const CPLearningObjectSettingXML = {
         {
             step: '1',
             promptTitle: '能力基础',
-            promptContent: '确定已掌握的知识与能力',
+            promptContent:
+                '思考自己在正式开始学习之前，已经掌握了相关领域中的哪些知识、具备了哪些相关能力，由此了解自己的知识基础',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '学习目标',
-            promptContent: '希望通过学习达成什么目标, 这一目标与自己当前的能力关系是如何的',
+            promptContent:
+                '确定自己将通过何种方法进行学习，最终能够掌握什么知识和技能，由此解决何种问题、实现哪些目标',
             answer: ''
         },
         {
             step: '3',
             promptTitle: '知识应用',
             promptContent:
-                '分析在学习过程中如何应用自已经掌握的知识技能',
+                '分析自己已经掌握的知识将如何帮助自己开展学习，如何帮助自己解决学习过程中可能会出现的困难',
             answer: ''
         }
     ]

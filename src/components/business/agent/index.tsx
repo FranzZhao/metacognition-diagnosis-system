@@ -17,6 +17,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 // xml
 import { CELearningProcessMonitoringXML } from '@/utils/agentXML/cognitiveEvaluation/learningProcessMonitoring';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { savePromptAnswer } from '@/store/slices';
 
 interface AgentMsgStep {
     step: string;
@@ -26,6 +29,8 @@ interface AgentMsgStep {
 }
 
 const AgentCard = ({ msg, open, handleClose }) => {
+    const dispatch = useAppDispatch();
+    const currentPromptId = useAppSelector((state) => state.agent.currentMsg)?.id;
     const theme = useTheme();
     // const [open, setOpen] = useState(false);
     const [step, setStep] = useState<AgentMsgStep[]>([]);
@@ -33,23 +38,6 @@ const AgentCard = ({ msg, open, handleClose }) => {
 
     useEffect(() => {
         setStep([...msg.msgList]);
-        // console.log('current msg =>', msg);
-        // var parseString = require('xml2js').parseString;
-        // parseString(CELearningProcessMonitoringXML, function (err, result) {
-        //     // console.log(result.cognitivePrompt.direction[0].step[0]['_']);
-        //     let agentPromptTitles = result.cognitivePrompt.direction[0].step;
-        //     let agentPromptContents = result.cognitivePrompt.framework[0].step;
-        //     let agentMsg: AgentMsgStep[] = [];
-        //     agentPromptTitles.map((item, index) => {
-        //         agentMsg.push({
-        //             step: index,
-        //             promptTitle: agentPromptTitles[index]['_'],
-        //             promptContent: agentPromptContents[index]['_'],
-        //             answer: ''
-        //         });
-        //     });
-        //     setStep(agentMsg);
-        // });
     }, [msg]);
 
     const nextStep = () => {
@@ -207,6 +195,13 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                 onClick={() => {
                                     handleClose();
                                     console.log(step);
+                                    // 保存到redux中
+                                    dispatch(
+                                        savePromptAnswer({
+                                            id: currentPromptId,
+                                            msgList: step
+                                        })
+                                    );
                                 }}
                             >
                                 完成

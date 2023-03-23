@@ -1,30 +1,31 @@
-export const CPTaskFirstAnalysisXML  = {
+export const CPTaskFirstAnalysisXML = {
     msgTitle: '认知计划-任务初步分析',
     msgList: [
         {
             step: '1',
             promptTitle: '任务特征',
-            promptContent: '剖析任务情境的属性、涉及领域、关键问题等',
+            promptContent:
+                '运用自己"任务属性与策略"相关的知识，分析任务情境所具有的特征、关键问题、属性、相关领域、所需知识等',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '知识、能力与兴趣',
-            promptContent: '分析自己的知识、能力与兴趣，及其与任务之间的关系',
+            promptContent:
+                '分析自己所拥有的知识、能力和兴趣，并基于此分析哪个任务情境和自己的兴趣能力是最相符的',
             answer: ''
         },
         {
             step: '3',
             promptTitle: '任务选择',
-            promptContent:
-                '综合上述分析对任务进行选择',
+            promptContent: '依据对任务和自身的分析，现初步确定自己所想要解决的任务情境',
             answer: ''
         },
         {
             step: '4',
             promptTitle: '任务解决思路',
             promptContent:
-                '剖析问题解决的路径，如涉及的要素、对象、问题、突破点等',
+                '运用自己暂时所用的知识，分析所选择的任务应当如何解决，包括涉及哪些关键对象、哪些核心问题、问题的层次和维度有哪些、哪些要点是突破的关键、有什么知识能够帮助解决这一问题',
             answer: ''
         }
     ]

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 // mui5
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -15,12 +15,18 @@ const LearningManagement = () => {
     const [view, setView] = useState('学习目标');
 
     useEffect(() => {
-        dispatch(
-            metacognitivePrompt({
-                promptType: '认知计划-学习目标设定',
-                currentMsgID: currentMsgID
-            })
-        );
+        // useMemo(
+        //     () => (): void => {
+        //         console.log('here2');
+        //     },
+        //     []
+        // );
+        // dispatch(
+        //     metacognitivePrompt({
+        //         promptType: '认知计划-学习目标设定',
+        //         currentMsgID: currentMsgID
+        //     })
+        // );
     }, []);
 
     return (
@@ -37,7 +43,10 @@ const LearningManagement = () => {
             >
                 <ToolTree
                     currentView={view}
-                    handleGetCurrentView={(currentView) => setView(currentView)}
+                    handleGetCurrentView={(currentView) => {
+                        setView(currentView);
+                        console.log('here');
+                    }}
                 />
             </Card>
             {/* 右侧内容 */}

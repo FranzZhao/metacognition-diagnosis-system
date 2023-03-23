@@ -4,21 +4,24 @@ export const CELearningProcessMonitoringXML = {
         {
             step: '1',
             promptTitle: '学习状态感知',
-            promptContent: '请对自己当前的学习情况、学习成果、情感体验进行反思',
+            promptContent:
+                '分析自己在之前学习活动中的情感体验是如何的，学习结果是如何的，自己对这样的学习情况是否满意',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '学习计划回顾',
-            promptContent: '重新回顾一下自己在进行学习之前所定下的目标、计划和待办事项有什么',
+            promptContent:
+                '请打开“学习管理”工具中的目标与待办事项分析，分析一下你所制定的学习任务有哪些，与当前的学习进度情况的关系是如何的',
             answer: ''
         },
         {
             step: '3',
             promptTitle: '评价与策略调节',
-            promptContent: '现在基于目标和实际情况的差距，对学习过程进行评价、分析和反思，然后选择合适的行动策略',
+            promptContent:
+                '现在请你在状态感知以及学习目标的基础上，仔细分析你产生这种反应、情绪、感受的原因是什么，是因为知识难度过大，还是因为自己没有仔细阅读，还是其他原因。请你做仔细的评价，并分析可能的解决方案是什么。',
             answer: ''
-        },
+        }
     ]
 };
 

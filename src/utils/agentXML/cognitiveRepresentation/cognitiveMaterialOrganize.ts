@@ -4,19 +4,22 @@ export const CRepCognitiveMaterialOrganizeXML = {
         {
             step: '1',
             promptTitle: '知识内容总结',
-            promptContent: '对你刚刚学习过的知识内容和要点进行概括性的总结',
+            promptContent:
+                '依据知识点、内容维度、关键要素等，对知识内容进行粒度分析，抽取出当中的关键要素和内容，与关键的知识标签建立联系，或是新建知识标签',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '知识结构分析',
-            promptContent: '分析这些知识要点直接的结构关系',
+            promptContent:
+                '运用知识地图结构梳理知识点之间的关系。需要注意的是！知识点之间的关联也是一个重要的对象，为什么关联、如何关联、关联的内容是什么等，都是在建立知识结构是需要考虑的',
             answer: ''
         },
         {
             step: '3',
             promptTitle: '新旧知识关联',
-            promptContent: '思考与你自己原有的知识之间的关系，同样整合到你的知识结构中',
+            promptContent:
+                '分析你自己曾经掌握的知识与内容，剖析这些知识要点与新的知识点之间的关联，在关联中梳理他们的关系是互补、完善或是冲突、挑战',
             answer: ''
         }
     ]

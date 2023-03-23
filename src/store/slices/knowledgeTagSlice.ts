@@ -38,6 +38,8 @@ export const saveTag = createAsyncThunk('knowledgeTag/saveTag', (tagContent: any
     return tagContent;
 });
 
+// TODO: 删除标签功能
+
 export const KnowledgeTagSlice = createSlice({
     name: 'knowledgeTag',
     initialState: initialKnowledgeTag,

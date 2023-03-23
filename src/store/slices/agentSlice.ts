@@ -17,7 +17,7 @@ import {
 } from '@/utils/agentXML/cognitiveRepresentation';
 import {
     CRLearningProcessMonitoringXML,
-    CRCognitiveGoalUpdateXML,
+    // CRCognitiveGoalUpdateXML,
     CRTaskAnalysisUpdateXML
 } from '@/utils/agentXML/cognitiveRegulation';
 import {
@@ -41,49 +41,14 @@ interface AgentMsgListProps {
 interface AgentMsgSliceProps {
     currentId: number;
     msgList: AgentMsgListProps[];
-    currentMsg: AgentMsgListProps;
+    currentMsg: AgentMsgListProps | null;
     openAgent: boolean;
 }
 
 const initialAgentMsgState: AgentMsgSliceProps = {
-    currentId: 7,
-    msgList: [
-        {
-            id: 1,
-            msgTitle: CPLearningObjectSettingXML.msgTitle,
-            msgList: CPLearningObjectSettingXML.msgList
-        },
-        {
-            id: 2,
-            msgTitle: CMLearningProcessMonitoringXML.msgTitle,
-            msgList: CMLearningProcessMonitoringXML.msgList
-        },
-        {
-            id: 3,
-            msgTitle: CRCognitiveGoalUpdateXML.msgTitle,
-            msgList: CRCognitiveGoalUpdateXML.msgList
-        },
-        {
-            id: 4,
-            msgTitle: CRepCognitiveMaterialOrganizeXML.msgTitle,
-            msgList: CRepCognitiveMaterialOrganizeXML.msgList
-        },
-        {
-            id: 5,
-            msgTitle: CPTaskAnalysisUpdateXML.msgTitle,
-            msgList: CPTaskAnalysisUpdateXML.msgList
-        },
-        {
-            id: 6,
-            msgTitle: CETaskAnalysisUpdateXML.msgTitle,
-            msgList: CETaskAnalysisUpdateXML.msgList
-        }
-    ],
-    currentMsg: {
-        id: 6,
-        msgTitle: CETaskAnalysisUpdateXML.msgTitle,
-        msgList: CETaskAnalysisUpdateXML.msgList
-    },
+    currentId: 1,
+    msgList: [],
+    currentMsg: null,
     openAgent: false
 };
 
@@ -110,7 +75,7 @@ type PromptType =
     | '认知监控-学习过程监控'
     | '认知监控-任务解决监控'
     | '认知调节-学习过程监控'
-    | '认知调节-认知目标更新'
+    // | '认知调节-认知目标更新'
     | '认知调节-任务分析更新'
     | '认知计划-学习目标设定'
     | '认知计划-任务初步分析'
@@ -123,6 +88,7 @@ type PromptType =
     | '认知评价-任务迭代评价';
 
 // action: 在特定的学习环节、学习工具、认知情境下打开特定的agent以激发、显化学习者的元认知活动
+// 本质是新建agent
 export const metacognitivePrompt = createAsyncThunk(
     'agent/metacognitivePrompt',
     (params: { promptType: PromptType; currentMsgID: number }) => {
@@ -150,13 +116,13 @@ export const metacognitivePrompt = createAsyncThunk(
                     msgTitle: CRLearningProcessMonitoringXML.msgTitle
                 };
                 break;
-            case '认知调节-认知目标更新':
-                promptMsg = {
-                    id: currentMsgID,
-                    msgList: CRCognitiveGoalUpdateXML.msgList,
-                    msgTitle: CRCognitiveGoalUpdateXML.msgTitle
-                };
-                break;
+            // case '认知调节-认知目标更新':
+            //     promptMsg = {
+            //         id: currentMsgID,
+            //         msgList: CRCognitiveGoalUpdateXML.msgList,
+            //         msgTitle: CRCognitiveGoalUpdateXML.msgTitle
+            //     };
+            //     break;
             case '认知调节-任务分析更新':
                 promptMsg = {
                     id: currentMsgID,
@@ -233,6 +199,11 @@ export const metacognitivePrompt = createAsyncThunk(
     }
 );
 
+// action: 保存agent msg中学生的回答
+export const savePromptAnswer = createAsyncThunk('agent/save', (answerInfo: any) => {
+    return answerInfo;
+});
+
 // slice
 export const AgentSlice = createSlice({
     name: 'agent',
@@ -254,9 +225,24 @@ export const AgentSlice = createSlice({
             state.currentId = state.currentId + 1;
         },
         [metacognitivePrompt.fulfilled.type]: (state, action) => {
+            let newAgentMsg = action.payload;
             state.openAgent = true;
-            state.currentMsg = action.payload;
+            state.currentMsg = newAgentMsg;
             state.currentId += 1;
+            let totalAgentMsg: AgentMsgListProps[] = [...state.msgList];
+            totalAgentMsg.push(newAgentMsg);
+            state.msgList = [...totalAgentMsg];
+        },
+        [savePromptAnswer.fulfilled.type]: (state, action) => {
+            let newMsgInfo = action.payload;
+            // console.log('save msg =>', action.payload);
+            let newMsgList: AgentMsgListProps[] = [...state.msgList];
+            state.msgList.map((msg, index) => {
+                if (msg.id === newMsgInfo.id) {
+                    newMsgList[index].msgList = newMsgInfo.msgList;
+                }
+            });
+            state.msgList = [...newMsgList];
         }
     }
 });

@@ -3,26 +3,15 @@ export const CRTaskAnalysisUpdateXML = {
     msgList: [
         {
             step: '1',
-            promptTitle: '任务分析回顾',
-            promptContent: '请重新回顾你之前所写下的任务分析',
+            promptTitle: '更新维度剖析',
+            promptContent: '结合你刚刚所做的评价，提炼更新任务的时候需要从哪几个方面进行',
             answer: ''
         },
         {
             step: '2',
-            promptTitle: '已有知识提取',
-            promptContent: '现在依据你已经学习的知识内容，分析哪些知识与任务分析的领域是相关的',
-            answer: ''
-        },
-        {
-            step: '3',
-            promptTitle: '局限分析',
-            promptContent: '现在基于你掌握的知识，反思当时所做的任务分析存在什么局限',
-            answer: ''
-        },
-        {
-            step: '4',
             promptTitle: '任务分析更新',
-            promptContent: '根据所分析出的局限，对任务分析进行调整，适当情况下也可以重新选择任务情境',
+            promptContent:
+                '现在根据你所发现的问题，重新对任务进行调整，思考从哪些方面能够更好地解决问题，突破当时没有考虑的问题。',
             answer: ''
         }
     ]

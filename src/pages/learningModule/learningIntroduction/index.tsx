@@ -16,9 +16,17 @@ import { Link } from 'react-router-dom';
 // img
 import learningBG from '@/assets/img/learning-bg.jpg';
 import introduction from '@/assets/img/introduction.jpg';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { useAppDispatch, useAppSelector } from '@/store';
+import { metacognitivePrompt } from '@/store/slices';
 
 const LearningIntroduction = () => {
     const theme = useTheme();
+    const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
 
     return (
         <Box>
@@ -46,6 +54,23 @@ const LearningIntroduction = () => {
                         <Box sx={{ display: 'flex', alignItems: 'center', m: '10px 0' }}>
                             <ChromeReaderModeIcon sx={{ m: '0 10px' }} />
                             <Typography fontWeight="bold">学习内容简介</Typography>
+                            {/* Agent */}
+                            <Tooltip title="学习目标设定" arrow>
+                                <IconButton
+                                    size="small"
+                                    sx={{ ml: 'auto' }}
+                                    onClick={() => {
+                                        dispatch(
+                                            metacognitivePrompt({
+                                                promptType: '认知计划-学习目标设定',
+                                                currentMsgID: currentMsgID
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <HelpIcon fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
                         </Box>
                         <Box sx={{ p: '0 10px', lineHeight: '27px' }}>
                             20世纪末以来，随着学习环境愈加复杂、介入教育系统内的主体愈加多样，传统线性、单维、静态的思路与方法已经难以解决复杂学习问题。而同样在20世纪中后期崛起的复杂系统科学则为研究复杂现象、人类复杂活动等提供了有效的理论方向与技术工具。因此，在本次学习中，我们将概览复杂系统科学的全貌，并尝试探究学习科学领域中的复杂系统研究，一起挑战学习科学领域的最前沿吧！

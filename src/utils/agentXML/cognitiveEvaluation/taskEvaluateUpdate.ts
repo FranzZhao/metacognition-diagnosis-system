@@ -4,20 +4,21 @@ export const CETaskEvaluateUpdateXML = {
         {
             step: '1',
             promptTitle: '基于评价量表的分析',
-            promptContent: '请根据我们所提供的评价量规，对自己的方案进行客观评价',
+            promptContent: '请仔细阅读评价量规，分析应当从哪些方面、运用哪些标准对方案进行分析',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '局限与不同的总结',
-            promptContent: '通过评价之后，分析你的方案还存在哪些不足',
+            promptContent:
+                '依据评价量规，分析自己的方案在规范性、目的性、科学性和创新性等方面存在的不足、局限',
             answer: ''
         },
         {
             step: '3',
             promptTitle: '任务迭代',
             promptContent:
-                '现在请你回到“任务解决方案撰写”模块中，重新更新自己的解决方案',
+                '依据自己所分析的不足和局限，重新回到解决方案中，对方案进行迭代更新，记住对着评价量规进行方案调整',
             answer: ''
         }
     ]

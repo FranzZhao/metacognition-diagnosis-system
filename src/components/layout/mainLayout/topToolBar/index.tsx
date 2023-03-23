@@ -17,7 +17,7 @@ import franz from '@/assets/img/Franz.png';
 import bot1 from '@/assets/img/ai.png';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { changeCurrentTheme } from '@/store/slices';
+import { AgentSlice, changeCurrentTheme } from '@/store/slices';
 import { setCurrentOpenAgentMsg } from '@/store/slices';
 
 const buttonSize = '32px';
@@ -58,6 +58,7 @@ const TopToolBar = () => {
     const [openAgent, setOpenAgent] = useState(false);
 
     useEffect(() => {
+        // console.log('open agent', metacognitivePromptOpen);
         setOpenAgent(metacognitivePromptOpen);
     }, [metacognitivePromptOpen]);
 
@@ -123,7 +124,10 @@ const TopToolBar = () => {
                 <AgentCard
                     msg={currentAgentMsg}
                     open={openAgent}
-                    handleClose={() => setOpenAgent(false)}
+                    handleClose={() => {
+                        setOpenAgent(false);
+                        dispatch(AgentSlice.actions.closeAgent());
+                    }}
                 />
             )}
 
@@ -178,9 +182,29 @@ const TopToolBar = () => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <Typography fontSize="0.9rem" marginLeft="15px" marginBottom="4px" color="gray">
+                <Typography
+                    fontSize="0.9rem"
+                    fontWeight="bold"
+                    marginLeft="15px"
+                    marginBottom="4px"
+                    color="gray"
+                >
                     元认知提示信息
                 </Typography>
+                {agentMsgList.length === 0 && (
+                    <Box>
+                        <Divider />
+                        <Typography
+                            fontSize="0.9rem"
+                            marginLeft="15px"
+                            marginBottom="4px"
+                            marginTop="10px"
+                            color="gray"
+                        >
+                            当前暂无提示信息
+                        </Typography>
+                    </Box>
+                )}
                 {agentMsgList.map((msg) => {
                     return (
                         <Box key={msg.id}>

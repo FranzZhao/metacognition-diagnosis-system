@@ -4,13 +4,15 @@ export const CRLearningProcessMonitoringXML = {
         {
             step: '1',
             promptTitle: '学习状态感知',
-            promptContent: '请对自己当前的学习情况、学习成果、情感体验进行反思',
+            promptContent:
+                '请回顾刚刚进行学习时的情感体验、认知体验是如何的，是困惑、兴奋还是纠结，请做简单的阐述',
             answer: ''
         },
         {
             step: '2',
             promptTitle: '活动策略调节',
-            promptContent: '针对你所感知到的问题，思考可以如何对学习活动策略和方向的调整',
+            promptContent:
+                '基于你所感知到的消极情绪和不满，思考一下，可以如何调整你的学习进度和学习方法，重新帮助自己达成想要的目标，获得成功、喜悦的学习体验',
             answer: ''
         }
     ]

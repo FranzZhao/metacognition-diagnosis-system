@@ -4,7 +4,8 @@ export const CMTaskSolvingMonitoringXML = {
         {
             step: '1',
             promptTitle: '任务进展分析',
-            promptContent: '请对自己当前的任务进行情况、问题解决程度等进行反思',
+            promptContent:
+                '分析当前任务方案撰写过程中存在的困难点有哪些、有什么问题是还需要解决的、当前的方案完成程度如何、还需要补充哪些内容等。',
             answer: ''
         }
     ]
