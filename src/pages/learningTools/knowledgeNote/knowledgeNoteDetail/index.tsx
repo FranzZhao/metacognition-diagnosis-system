@@ -23,6 +23,9 @@ import { Editor } from '@tinymce/tinymce-react';
 // redux
 import { useAppSelector, useAppDispatch } from '@/store';
 import { deleteNoteById, saveNoteById } from '@/store/slices';
+// agent help
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 interface FeatureProps {
     id: number;
@@ -36,6 +39,7 @@ interface KnowledgeNoteDetailProps {
 
 const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNoteList }) => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentNoteContent = useAppSelector((state) => state.knowledgeNote.currentOpenNote);
     // 笔记标题
     const [noteTitle, setNoteTitle] = useState('');
@@ -116,7 +120,7 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
             <Box sx={{ display: 'flex' }}>
                 <InputBase
                     sx={{
-                        width: '85%',
+                        width: '70%',
                         fontSize: '1.3rem',
                         fontWeight: 'bold',
                         mt: '-4px',
@@ -128,47 +132,64 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                         setNoteTitle(event.target.value);
                     }}
                 />
-                <Tooltip title="保存笔记" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 'auto' }}
-                        onClick={() => {
-                            let noteInfo = {
-                                id: currentNoteContent?.id,
-                                title: noteTitle,
-                                tags: noteTags,
-                                intro: noteIntro,
-                                // extraFeature: extraFeature,
-                                content: text
-                            };
-                            console.log(noteInfo);
-                            dispatch(saveNoteById(noteInfo));
-                        }}
-                    >
-                        <SaveIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="删除笔记" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 1 }}
-                        onClick={() => setOpenDeleteNoteModal(true)}
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="返回列表" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 1 }}
-                        onClick={handleOpenNoteList}
-                    >
-                        <KeyboardReturnIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
+                <Box sx={{ ml: 'auto' }}>
+                    <Tooltip title="认知表征-认知资料整理" arrow>
+                        <IconButton
+                            size="small"
+                            onClick={() => {
+                                dispatch(
+                                    metacognitivePrompt({
+                                        promptType: '认知表征-认知资料整理',
+                                        currentMsgID: currentMsgID
+                                    })
+                                );
+                            }}
+                        >
+                            <HelpIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="保存笔记" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={() => {
+                                let noteInfo = {
+                                    id: currentNoteContent?.id,
+                                    title: noteTitle,
+                                    tags: noteTags,
+                                    intro: noteIntro,
+                                    // extraFeature: extraFeature,
+                                    content: text
+                                };
+                                console.log(noteInfo);
+                                dispatch(saveNoteById(noteInfo));
+                            }}
+                        >
+                            <SaveIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="删除笔记" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={() => setOpenDeleteNoteModal(true)}
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="返回列表" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={handleOpenNoteList}
+                        >
+                            <KeyboardReturnIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
                 {/* 删除笔记modal */}
                 <Modal
                     maxWidth="xs"

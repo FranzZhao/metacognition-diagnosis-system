@@ -22,9 +22,13 @@ import {
     updateCoreLearningObject,
     updateSubLearningObjects
 } from '@/store/slices/learningObjectSlice';
+// agent help
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const LearningObject = () => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentCoreLearningObject = useAppSelector(
         (state) => state.learningObject.coreLearningObject
     );
@@ -102,9 +106,27 @@ const LearningObject = () => {
 
     return (
         <Box>
-            <Typography fontWeight="bold" fontSize="1.2rem">
-                学习目标设定
-            </Typography>
+            <Box sx={{ display: 'flex' }}>
+                <Typography fontWeight="bold" fontSize="1.2rem">
+                    学习目标设定
+                </Typography>
+                <Tooltip title="认知计划-认知目标更新" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 'auto' }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知计划-认知目标更新',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             <Typography margin="10px 0">
                 请依据知识学习内容以及你所选择的任务情境，制定下你的学习目标吧！其中包括
                 <b>一个核心学习目标</b>，和为了完成这个核心学习目标而需要完成的<b>多个小目标</b>

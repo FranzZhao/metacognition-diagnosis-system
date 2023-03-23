@@ -60,7 +60,7 @@ const AgentCard = ({ msg, open, handleClose }) => {
             <Fade in={open}>
                 <Card
                     sx={{
-                        width: '450px',
+                        width: '500px',
                         bgcolor: '#252a38e3',
                         color: '#fff',
                         boxShadow: '0px 0px 20px #181818',
@@ -194,7 +194,7 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                 sx={{ ml: 'auto' }}
                                 onClick={() => {
                                     handleClose();
-                                    console.log(step);
+                                    // console.log(step);
                                     // 保存到redux中
                                     dispatch(
                                         savePromptAnswer({

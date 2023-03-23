@@ -11,10 +11,16 @@ import { Editor } from '@tinymce/tinymce-react';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { saveProject } from '@/store/slices';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const Task2 = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentTask = useAppSelector((state) => state.learningTask.taskContent);
     const project = useAppSelector((state) => state.learningTask.project);
     // 文本编辑器内容
@@ -67,6 +73,48 @@ const Task2 = () => {
                 >
                     保存方案
                 </Button>
+                <Tooltip title="认知表征-任务方案撰写" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{
+                            position: 'absolute',
+                            zIndex: 2,
+                            right: '120px',
+                            top: '10px'
+                        }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知表征-任务方案撰写',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="认知监控-任务解决监控" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{
+                            position: 'absolute',
+                            zIndex: 2,
+                            right: '150px',
+                            top: '10px'
+                        }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知监控-任务解决监控',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
                 <Editor
                     tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     init={{

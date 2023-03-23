@@ -15,6 +15,11 @@ import { mockTodoList } from '@/utils/mock';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { updateTodoList, TodoListSlice } from '@/store/slices';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 interface todoItemProps {
     id: string;
@@ -25,6 +30,7 @@ interface todoItemProps {
 const TodoList = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentTodoList = useAppSelector((state) => state.todoList.todoList);
     const nextTodoListId = useAppSelector((state) => state.todoList.nextTodoListId);
     // 任务列表
@@ -100,9 +106,27 @@ const TodoList = () => {
 
     return (
         <Box>
-            <Typography fontWeight="bold" fontSize="1.2rem">
-                任务计划列表
-            </Typography>
+            <Box sx={{ display: 'flex' }}>
+                <Typography fontWeight="bold" fontSize="1.2rem">
+                    任务计划列表
+                </Typography>
+                <Tooltip title="认知计划-认知目标更新" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 'auto' }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知计划-认知目标更新',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             {/* 新建事项 */}
             <Paper
                 variant="outlined"

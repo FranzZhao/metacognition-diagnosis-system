@@ -9,9 +9,15 @@ import ProjectEvaluatedScale from '@/components/business/scale';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { saveScaleById } from '@/store/slices';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const ScaleDetail = ({ handleOpenList }) => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentScaleId = useAppSelector((state) => state.learningTask.selectScaleId);
     const currentScaleContent = useAppSelector((state) => state.learningTask.scaleList).filter(
         (scale) => scale.id === currentScaleId
@@ -72,12 +78,23 @@ const ScaleDetail = ({ handleOpenList }) => {
                 <Typography fontWeight="bold">
                     现在请你依据任务评价量表，对你所完成的方案进行自我评价吧！
                 </Typography>
-                <Button
-                    sx={{ ml: 'auto', mr: 1 }}
-                    disableElevation
-                    size="small"
-                    onClick={handleOpenList}
-                >
+                <Tooltip title="认知评价-任务迭代评价" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 'auto', mr: 1 }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知评价-任务迭代评价',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+                <Button sx={{ mr: 1 }} disableElevation size="small" onClick={handleOpenList}>
                     返回评价列表
                 </Button>
                 <Button

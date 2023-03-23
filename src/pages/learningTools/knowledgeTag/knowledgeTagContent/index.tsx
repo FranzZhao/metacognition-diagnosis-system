@@ -14,6 +14,11 @@ import { mockTagContentLists } from '@/utils/mock/mockTagTree';
 // redux
 import { useAppSelector, useAppDispatch } from '@/store';
 import { saveTag } from '@/store/slices';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 interface KnowledgeTagContentProps {
     selectedTagContent: TagListProps;
@@ -21,6 +26,7 @@ interface KnowledgeTagContentProps {
 
 const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagContent }) => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentSelectedTag = useAppSelector((state) => state.knowledgeTag.currentSelectTag);
     // 编辑修改标签内容
     const [isEdit, setIsEdit] = useState(false);
@@ -201,9 +207,29 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                         <Typography margin={'15px 0'}>{tagContent}</Typography>
                     )}
                     <Divider sx={{ mt: 2, mb: 2 }} />
-                    <Typography fontWeight="bold" marginBottom="10px" fontSize="1.1rem">
-                        关联项目
-                    </Typography>
+                    <Box sx={{ display: 'flex' }}>
+                        <Typography fontWeight="bold" marginBottom="10px" fontSize="1.1rem">
+                            关联项目
+                        </Typography>
+                        <Box sx={{ ml: 'auto' }}>
+                            <Tooltip title="认知表征-认知资料整理" arrow>
+                                <IconButton
+                                    size="small"
+                                    onClick={() => {
+                                        dispatch(
+                                            metacognitivePrompt({
+                                                promptType: '认知表征-认知资料整理',
+                                                currentMsgID: currentMsgID
+                                            })
+                                        );
+                                    }}
+                                >
+                                    <HelpIcon fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    </Box>
+
                     <CustomTable
                         columns={[
                             { id: 'id', label: '#', minWidth: 50 },

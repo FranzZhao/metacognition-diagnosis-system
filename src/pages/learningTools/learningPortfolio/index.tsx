@@ -20,9 +20,16 @@ import BarChart from '@/components/common/charts/barChart';
 import { Chip, Grid } from '@mui/material';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const LearningPortfolio = () => {
     const theme = useTheme();
+    const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     /** 数量统计 */
     // 知识标签
     const tagList = useAppSelector((state) => state.knowledgeTag.tagList);
@@ -175,6 +182,22 @@ const LearningPortfolio = () => {
             >
                 <EqualizerIcon sx={{ mr: 1 }} />
                 <Box>学习分析面板</Box>
+                <Tooltip title="认知调节-学习过程监控" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 'auto' }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知调节-学习过程监控',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
             </Paper>
             {/* 数量统计 */}
             <Box sx={{ display: 'flex' }}>

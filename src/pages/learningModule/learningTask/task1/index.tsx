@@ -12,6 +12,12 @@ import TextField from '@mui/material/TextField';
 import { useAppDispatch, useAppSelector } from '@/store';
 import { saveTaskAnalysis, updateTaskSelect } from '@/store/slices';
 import { Button } from '@mui/material';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+// import { useAppDispatch, useAppSelector } from '@/store';
+import { metacognitivePrompt } from '@/store/slices';
 
 const task1 =
     '陈老师是一位小学5年级的英语老师，她发现虽然她的学生们已经掌握了基础的语言知识，但在语言表达和语言思维等方面能力不足。陈老师发现原因主要在于课文过于强调单一语言情境以及缺乏实践训练的问题。现在请你依据已经学到的知识，将复杂性理论与教学实践进行结合，设计针对性的课堂学习环境与活动，可以从硬件环境、软件系统、学习活动、教学指导、外部支持等多个角度进行设计，请你充分地发挥所学习的知识帮助陈老师解决问题';
@@ -23,6 +29,7 @@ const Task1 = () => {
     const dispatch = useAppDispatch();
     const currentTask = useAppSelector((state) => state.learningTask.taskContent);
     const currentTaskAnalysis = useAppSelector((state) => state.learningTask.taskAnalysis);
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     // 选择任务
     const [selectedTask, setSelectedTask] = useState<any>(currentTask);
     // 任务分析
@@ -125,6 +132,79 @@ const Task1 = () => {
                 value={taskAnalysis}
                 onChange={handleSaveTaskAnalysis}
             />
+            {/* agent msg */}
+            <Box
+                sx={{
+                    '& *': {
+                        padding: '0',
+                        lineHeight: '32px'
+                    }
+                }}
+            >
+                <Tooltip title="1. 任务初步分析" arrow>
+                    <IconButton
+                        size="small"
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知计划-任务初步分析',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="2. 对原有内容的评价" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 2 }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知评价-任务分析更新',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="3. 更新分析内容" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 2 }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知调节-任务分析更新',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="4. 更新任务计划" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 2 }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知计划-任务分析更新',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            </Box>
         </Box>
     );
 };

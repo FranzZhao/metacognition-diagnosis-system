@@ -25,6 +25,9 @@ import LinkInfo from './panelDetail/linkInfo';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { saveMapById } from '@/store/slices';
+// agent help
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 interface MapProps {
     mapInfo: any;
@@ -45,6 +48,7 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
     canvasHeight = 'calc(100vh - 150px)'
 }) => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentMapInfo = useAppSelector((state) => state.map.currentSelectMap);
     // map state
     const [map, setMap] = useState<MapProps>({
@@ -280,9 +284,26 @@ const KnowledgeMapDetail: React.FC<KnowledgeMapDetailProp> = ({
                 </Typography>
                 {/* 知识地图编辑工具 */}
                 <Box
-                    sx={{ height: '160px', zIndex: 1, position: 'absolute', bottom: 55, left: 20 }}
+                    sx={{ height: '160px', zIndex: 1, position: 'absolute', bottom: 90, left: 20 }}
                 >
                     <Paper variant="outlined" sx={{ p: '5px', borderRadius: '8px' }}>
+                        <Tooltip title="认知表征-认知资料整理" arrow placement="right">
+                            <IconButton
+                                size="small"
+                                sx={{ mb: '5px' }}
+                                onClick={() => {
+                                    dispatch(
+                                        metacognitivePrompt({
+                                            promptType: '认知表征-认知资料整理',
+                                            currentMsgID: currentMsgID
+                                        })
+                                    );
+                                }}
+                            >
+                                <HelpIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
+                        <Divider />
                         <Tooltip title="修改基本信息" arrow placement="right">
                             <IconButton
                                 aria-label="delete"

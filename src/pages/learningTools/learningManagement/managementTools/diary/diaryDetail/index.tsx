@@ -23,9 +23,15 @@ import { Editor } from '@tinymce/tinymce-react';
 // redux
 import { useAppSelector, useAppDispatch } from '@/store';
 import { saveDiary, deleteDiaryById } from '@/store/slices';
+// agent help
+// import Tooltip from '@mui/material/Tooltip';
+// import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const DiaryDetail = ({ handleOpenDiaryList }) => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentDiaryInfo = useAppSelector((state) => state.diary.currentSelectDiary);
     // 笔记标题
     const [diaryTitle, setDiaryTitle] = useState('');
@@ -68,7 +74,7 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
             <Box sx={{ display: 'flex' }}>
                 <InputBase
                     sx={{
-                        width: '85%',
+                        width: '70%',
                         fontSize: '1.3rem',
                         fontWeight: 'bold',
                         mt: '-4px',
@@ -80,36 +86,54 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                         setDiaryTitle(event.target.value);
                     }}
                 />
-                <Tooltip title="保存日志" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 'auto' }}
-                        onClick={handleSaveDiary}
-                    >
-                        <SaveIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="删除日志" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 1 }}
-                        onClick={() => setOpenDiaryModal(true)}
-                    >
-                        <DeleteIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="返回列表" arrow>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        sx={{ ml: 1 }}
-                        onClick={handleOpenDiaryList}
-                    >
-                        <KeyboardReturnIcon fontSize="small" />
-                    </IconButton>
-                </Tooltip>
+                <Box sx={{ ml: 'auto' }}>
+                    <Tooltip title="认知评价-学习过程监控" arrow>
+                        <IconButton
+                            size="small"
+                            onClick={() => {
+                                dispatch(
+                                    metacognitivePrompt({
+                                        promptType: '认知评价-学习过程监控',
+                                        currentMsgID: currentMsgID
+                                    })
+                                );
+                            }}
+                        >
+                            <HelpIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="保存日志" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={handleSaveDiary}
+                        >
+                            <SaveIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="删除日志" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={() => setOpenDiaryModal(true)}
+                        >
+                            <DeleteIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="返回列表" arrow>
+                        <IconButton
+                            aria-label="delete"
+                            size="small"
+                            sx={{ ml: 1 }}
+                            onClick={handleOpenDiaryList}
+                        >
+                            <KeyboardReturnIcon fontSize="small" />
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+
                 {/* 删除日志modal */}
                 <Modal
                     maxWidth="xs"

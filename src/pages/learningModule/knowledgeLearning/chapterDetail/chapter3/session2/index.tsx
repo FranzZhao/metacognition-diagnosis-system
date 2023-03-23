@@ -9,9 +9,15 @@ import img3_1 from '@/assets/img/img3-1.png';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
 import { updateChapterLearningProcess } from '@/store/slices';
+// agent help
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import HelpIcon from '@mui/icons-material/Help';
+import { metacognitivePrompt } from '@/store/slices';
 
 const Chapter3Session2 = () => {
     const dispatch = useAppDispatch();
+    const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
     const [number, setNumber] = useState<number | number[]>(parseInt(ChapterInfoList[7].progress));
 
@@ -27,6 +33,34 @@ const Chapter3Session2 = () => {
 
     return (
         <Box>
+            <Box
+                sx={{
+                    position: 'absolute',
+                    right: '30px',
+                    top: '180px',
+                    '& *': {
+                        p: '0px',
+                        lineHeight: '32px'
+                    }
+                }}
+            >
+                <Tooltip title="认知监控-学习过程监控" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{ ml: 1 }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知监控-学习过程监控',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+            </Box>
             <Paper variant="outlined" sx={{ mt: 2, p: '20px 30px', '& *': { lineHeight: '27px' } }}>
                 <Typography variant="h4" fontWeight="bold">
                     第二节 情境认知的过程
@@ -113,7 +147,34 @@ const Chapter3Session2 = () => {
                 </Typography>
             </Paper>
             <Paper sx={{ p: '20px 30px', mt: '10px' }}>
-                <Typography fontWeight="bold">完成进度:{number}%</Typography>
+                <Box sx={{ display: 'flex' }}>
+                    <Typography fontWeight="bold">完成进度:{number}%</Typography>
+                    <Box
+                        sx={{
+                            '& *': {
+                                p: '0px',
+                                lineHeight: '32px'
+                            }
+                        }}
+                    >
+                        <Tooltip title="认知调节-学习过程监控" arrow>
+                            <IconButton
+                                size="small"
+                                sx={{ ml: 1 }}
+                                onClick={() => {
+                                    dispatch(
+                                        metacognitivePrompt({
+                                            promptType: '认知调节-学习过程监控',
+                                            currentMsgID: currentMsgID
+                                        })
+                                    );
+                                }}
+                            >
+                                <HelpIcon fontSize="inherit" />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                </Box>
                 <Slider
                     value={number}
                     onChange={handleChangeNumber}
