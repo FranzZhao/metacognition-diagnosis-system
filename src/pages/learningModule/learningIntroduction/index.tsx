@@ -72,8 +72,7 @@ const LearningIntroduction = () => {
                                                 actor: currentActor,
                                                 verb: '弹出提示框',
                                                 object: '元认知提示 id：' + currentMsgID,
-                                                result:
-                                                    '弹出元认知提示：' + '认知计划-学习目标设定',
+                                                result: '弹出元认知提示：认知计划-学习目标设定',
                                                 time: '',
                                                 context: {
                                                     cognitiveContext: '认知计划',

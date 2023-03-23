@@ -10,14 +10,12 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { saveTaskAnalysis, updateTaskSelect, getAction } from '@/store/slices';
+import { saveTaskAnalysis, updateTaskSelect, getAction, metacognitivePrompt } from '@/store/slices';
 import { Button } from '@mui/material';
 // agent help
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-// import { useAppDispatch, useAppSelector } from '@/store';
-import { metacognitivePrompt } from '@/store/slices';
 
 const task1 =
     '陈老师是一位小学5年级的英语老师，她发现虽然她的学生们已经掌握了基础的语言知识，但在语言表达和语言思维等方面能力不足。陈老师发现原因主要在于课文过于强调单一语言情境以及缺乏实践训练的问题。现在请你依据已经学到的知识，将复杂性理论与教学实践进行结合，设计针对性的课堂学习环境与活动，可以从硬件环境、软件系统、学习活动、教学指导、外部支持等多个角度进行设计，请你充分地发挥所学习的知识帮助陈老师解决问题';

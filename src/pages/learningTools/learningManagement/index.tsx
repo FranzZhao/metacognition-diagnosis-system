@@ -7,27 +7,13 @@ import ToolTree from './toolsTree';
 import ManagementTools from './managementTools';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { metacognitivePrompt } from '@/store/slices';
+import { getAction } from '@/store/slices';
 
 const LearningManagement = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const [view, setView] = useState('学习目标');
-
-    useEffect(() => {
-        // useMemo(
-        //     () => (): void => {
-        //         console.log('here2');
-        //     },
-        //     []
-        // );
-        // dispatch(
-        //     metacognitivePrompt({
-        //         promptType: '认知计划-学习目标设定',
-        //         currentMsgID: currentMsgID
-        //     })
-        // );
-    }, []);
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -45,7 +31,21 @@ const LearningManagement = () => {
                     currentView={view}
                     handleGetCurrentView={(currentView) => {
                         setView(currentView);
-                        console.log('here');
+                        // console.log('here');
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '按钮：' + currentView,
+                                result: '切换学习管理工具试图',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '认知监控&认知计划',
+                                    otherContext: null,
+                                    taskContext: currentView
+                                }
+                            })
+                        );
                     }}
                 />
             </Card>

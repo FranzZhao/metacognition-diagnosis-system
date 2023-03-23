@@ -24,10 +24,11 @@ import {
 } from '@/store/slices/learningObjectSlice';
 // agent help
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const LearningObject = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentCoreLearningObject = useAppSelector(
         (state) => state.learningObject.coreLearningObject
@@ -121,6 +122,20 @@ const LearningObject = () => {
                                     currentMsgID: currentMsgID
                                 })
                             );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知计划-认知目标更新',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知计划',
+                                        otherContext: null,
+                                        taskContext: '认知计划-认知目标更新'
+                                    }
+                                })
+                            );
                         }}
                     >
                         <HelpIcon fontSize="inherit" />
@@ -150,7 +165,23 @@ const LearningObject = () => {
                                 size="small"
                                 disableElevation
                                 startIcon={<SaveIcon />}
-                                onClick={() => setIsEditCoreLearningObject(false)}
+                                onClick={() => {
+                                    setIsEditCoreLearningObject(false);
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '输入文本',
+                                            object: '核心学习目标输入框',
+                                            result: '保存核心学习目标：' + coreLearningObject,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知计划',
+                                                otherContext: null,
+                                                taskContext: '撰写学习目标'
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 保存
                             </Button>
@@ -160,7 +191,23 @@ const LearningObject = () => {
                                 size="small"
                                 disableElevation
                                 startIcon={<DriveFileRenameOutlineIcon />}
-                                onClick={() => setIsEditCoreLearningObject(true)}
+                                onClick={() => {
+                                    setIsEditCoreLearningObject(true);
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：修改',
+                                            result: '对核心学习目标进行调整',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知计划',
+                                                otherContext: null,
+                                                taskContext: '学习目标：' + coreLearningObject
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 修改
                             </Button>
@@ -199,7 +246,23 @@ const LearningObject = () => {
                             size="small"
                             disableElevation
                             startIcon={<AddBoxIcon />}
-                            onClick={handleAddNewGoal}
+                            onClick={() => {
+                                handleAddNewGoal();
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：添加子目标',
+                                        result: '为子目标分解添加新的子目标',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知计划',
+                                            otherContext: null,
+                                            taskContext: '认知计划'
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             添加子目标
                         </Button>
@@ -229,6 +292,8 @@ const SubGoalPaper = ({
     handleChangeProgress,
     handleDeleteSubGoalByID
 }) => {
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const [goalText, setGoalText] = useState('');
     const [number, setNumber] = useState<number | number[]>(0);
 
@@ -255,7 +320,23 @@ const SubGoalPaper = ({
                         <IconButton
                             size="small"
                             sx={{ borderRadius: '5px' }}
-                            onClick={() => handleDeleteSubGoalByID(data.id)}
+                            onClick={() => {
+                                handleDeleteSubGoalByID(data.id);
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '删除子目标',
+                                        result: '删除子目标 id：' + data.id,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知计划',
+                                            otherContext: '完成进度：' + number,
+                                            taskContext: '子目标：' + goalText
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             <IndeterminateCheckBoxIcon />
                         </IconButton>
@@ -283,6 +364,26 @@ const SubGoalPaper = ({
                     size="small"
                 />
             </Box>
+            <Button
+                onClick={() => {
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '输入文本+进度调整',
+                            object: '子目标信息模块',
+                            result: '更新子目标 id：' + data.id,
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知计划',
+                                otherContext: '完成进度：' + number,
+                                taskContext: '子目标：' + goalText
+                            }
+                        })
+                    );
+                }}
+            >
+                保存目标修改
+            </Button>
         </Paper>
     );
 };

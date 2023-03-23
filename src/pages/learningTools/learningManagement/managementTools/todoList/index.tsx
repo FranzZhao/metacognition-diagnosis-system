@@ -19,7 +19,7 @@ import { updateTodoList, TodoListSlice } from '@/store/slices';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 interface todoItemProps {
     id: string;
@@ -30,6 +30,7 @@ interface todoItemProps {
 const TodoList = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentTodoList = useAppSelector((state) => state.todoList.todoList);
     const nextTodoListId = useAppSelector((state) => state.todoList.nextTodoListId);
@@ -74,6 +75,23 @@ const TodoList = () => {
         newTodoList.map((item, index) => {
             if (item.id === value.id) {
                 newTodoList[index].isFinish = !value.isFinish;
+                dispatch(
+                    getAction({
+                        actor: currentActor,
+                        verb: '修改状态',
+                        object: '修改待办事项完成情况',
+                        result:
+                            '待办事项 id:' +
+                            value.id +
+                            (!value.isFinish ? ', 设置为未完成' : ', 设置为完成'),
+                        time: '',
+                        context: {
+                            cognitiveContext: '认知计划',
+                            otherContext: '待办事项：' + value.content,
+                            taskContext: '认知计划'
+                        }
+                    })
+                );
             }
         });
         setTodoList([...newTodoList]);
@@ -86,6 +104,20 @@ const TodoList = () => {
         newTodoList.map((item, index) => {
             if (item.id === value.id) {
                 newTodoList.splice(index, 1);
+                dispatch(
+                    getAction({
+                        actor: currentActor,
+                        verb: '点击按钮',
+                        object: '按钮：删除待办事项',
+                        result: '删除待办事项 id:' + value.id,
+                        time: '',
+                        context: {
+                            cognitiveContext: '认知计划',
+                            otherContext: '待办事项：' + value.content,
+                            taskContext: '认知计划'
+                        }
+                    })
+                );
             }
         });
         setTodoList([...newTodoList]);
@@ -98,6 +130,20 @@ const TodoList = () => {
         newTodoList.map((item, index) => {
             if (item.id === value.id) {
                 newTodoList[index].content = value.content;
+                dispatch(
+                    getAction({
+                        actor: currentActor,
+                        verb: '输入文本',
+                        object: '待办事项内容输入框',
+                        result: '修改待办事项 id:' + value.id,
+                        time: '',
+                        context: {
+                            cognitiveContext: '认知计划',
+                            otherContext: '待办事项：' + value.content,
+                            taskContext: '认知计划'
+                        }
+                    })
+                );
             }
         });
         setTodoList([...newTodoList]);
@@ -119,6 +165,20 @@ const TodoList = () => {
                                 metacognitivePrompt({
                                     promptType: '认知计划-认知目标更新',
                                     currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知计划-认知目标更新',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知计划',
+                                        otherContext: null,
+                                        taskContext: '认知计划-认知目标更新'
+                                    }
                                 })
                             );
                         }}
@@ -152,7 +212,23 @@ const TodoList = () => {
                     variant="contained"
                     size="small"
                     disableElevation
-                    onClick={handleAddNewTodoItem}
+                    onClick={() => {
+                        handleAddNewTodoItem();
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '输入文本',
+                                object: '新建待办事项文本框',
+                                result: '新建代办事项:' + newTodoItem,
+                                time: '',
+                                context: {
+                                    cognitiveContext: '认知计划',
+                                    otherContext: null,
+                                    taskContext: null
+                                }
+                            })
+                        );
+                    }}
                 >
                     新增任务事项
                 </Button>

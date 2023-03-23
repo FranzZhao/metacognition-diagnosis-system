@@ -42,7 +42,7 @@ const ScaleDetail = ({ handleOpenList }) => {
             currentScaleContent.innovation2
         ];
         setScaleData(currentScaleData);
-        console.log('scale data =>', currentScaleData);
+        // console.log('scale data =>', currentScaleData);
     }, [currentScaleId]);
 
     const handleSaveScaleContent = () => {

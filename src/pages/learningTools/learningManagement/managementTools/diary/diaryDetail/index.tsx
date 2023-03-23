@@ -27,10 +27,11 @@ import { saveDiary, deleteDiaryById } from '@/store/slices';
 // import Tooltip from '@mui/material/Tooltip';
 // import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const DiaryDetail = ({ handleOpenDiaryList }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentDiaryInfo = useAppSelector((state) => state.diary.currentSelectDiary);
     // 笔记标题
@@ -97,6 +98,20 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                                         currentMsgID: currentMsgID
                                     })
                                 );
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '弹出提示框',
+                                        object: '元认识提示 id: ' + currentMsgID,
+                                        result: '弹出元认知提示：认知评价-学习过程监控',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext: null,
+                                            taskContext: '认知评价-学习过程监控'
+                                        }
+                                    })
+                                );
                             }}
                         >
                             <HelpIcon fontSize="small" />
@@ -107,7 +122,27 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                             aria-label="delete"
                             size="small"
                             sx={{ ml: 1 }}
-                            onClick={handleSaveDiary}
+                            onClick={() => {
+                                handleSaveDiary();
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：保存日志',
+                                        result: '保存反思日志 id：' + currentDiaryInfo?.id,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext:
+                                                '反思日志标题：' +
+                                                diaryTitle +
+                                                ',内容：' +
+                                                diaryContent,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             <SaveIcon fontSize="small" />
                         </IconButton>
@@ -117,7 +152,9 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                             aria-label="delete"
                             size="small"
                             sx={{ ml: 1 }}
-                            onClick={() => setOpenDiaryModal(true)}
+                            onClick={() => {
+                                setOpenDiaryModal(true);
+                            }}
                         >
                             <DeleteIcon fontSize="small" />
                         </IconButton>
@@ -127,7 +164,23 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                             aria-label="delete"
                             size="small"
                             sx={{ ml: 1 }}
-                            onClick={handleOpenDiaryList}
+                            onClick={() => {
+                                handleOpenDiaryList();
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：返回列表',
+                                        result: '退出反思日志 id：' + currentDiaryInfo?.id,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext: null,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             <KeyboardReturnIcon fontSize="small" />
                         </IconButton>
@@ -151,6 +204,20 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                                 disableElevation
                                 onClick={() => {
                                     if (currentDiaryInfo) {
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '点击按钮',
+                                                object: '按钮：删除日志',
+                                                result: '删除反思日志 id：' + currentDiaryInfo?.id,
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知评价',
+                                                    otherContext: null,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
                                         dispatch(deleteDiaryById(currentDiaryInfo.id));
                                         handleOpenDiaryList();
                                     }
@@ -185,7 +252,23 @@ const DiaryDetail = ({ handleOpenDiaryList }) => {
                         value={diaryTags}
                         tagList={['元认知', '元认知意识', '认知调控', '自指', '自我概念']}
                         // tagList={[]}
-                        onChange={(event, newValue) => setDiaryTags(newValue)}
+                        onChange={(event, newValue) => {
+                            setDiaryTags(newValue);
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '标签选择',
+                                    object: '知识标签选择框',
+                                    result: '选择反思日志所属的知识标签',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知评价',
+                                        otherContext: '知识标签：' + newValue.join(','),
+                                        taskContext: null
+                                    }
+                                })
+                            );
+                        }}
                         sx={{ flex: 1, mr: 1, ml: 1 }}
                         placeholder="请选择日志所属标签"
                     />

@@ -24,11 +24,12 @@ import { useAppDispatch, useAppSelector } from '@/store';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const LearningPortfolio = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     /** 数量统计 */
     // 知识标签
@@ -191,6 +192,20 @@ const LearningPortfolio = () => {
                                 metacognitivePrompt({
                                     promptType: '认知调节-学习过程监控',
                                     currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认知提示 id：' + currentMsgID,
+                                    result: '弹出元认知提示：认知调节-学习过程监控',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知计划',
+                                        otherContext: null,
+                                        taskContext: '认知调节-学习过程监控'
+                                    }
                                 })
                             );
                         }}

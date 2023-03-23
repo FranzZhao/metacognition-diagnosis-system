@@ -12,10 +12,11 @@ import CustomTable from '@/components/common/table';
 import { mockDiaryList } from '@/utils/mock';
 // redux
 import { useAppSelector, useAppDispatch } from '@/store';
-import { getDiaryById, newDiary } from '@/store/slices';
+import { getDiaryById, newDiary, getAction } from '@/store/slices';
 
 const DiaryList = ({ handleOpenDiaryDetail }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentDiaryList = useAppSelector((state) => state.diary.diaryList);
     // 新建反思日志
     const [openNewDiaryModal, setOpenNewDiaryModal] = useState(false);
@@ -33,7 +34,23 @@ const DiaryList = ({ handleOpenDiaryDetail }) => {
                         variant="contained"
                         disableElevation
                         startIcon={<AddBoxIcon />}
-                        onClick={() => setOpenNewDiaryModal(true)}
+                        onClick={() => {
+                            setOpenNewDiaryModal(true);
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '点击按钮',
+                                    object: '按钮：新建反思日志',
+                                    result: '打开新建反思日志模态框',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知评价&认知监控',
+                                        otherContext: null,
+                                        taskContext: null
+                                    }
+                                })
+                            );
+                        }}
                         size="small"
                     >
                         新建反思日志
@@ -58,7 +75,26 @@ const DiaryList = ({ handleOpenDiaryDetail }) => {
                         }
                         actions={
                             <Box>
-                                <Button size="small" onClick={() => setOpenNewDiaryModal(false)}>
+                                <Button
+                                    size="small"
+                                    onClick={() => {
+                                        setOpenNewDiaryModal(false);
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '点击按钮',
+                                                object: '按钮：取消',
+                                                result: '取消新建反思日志',
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知评价&认知监控',
+                                                    otherContext: null,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
+                                    }}
+                                >
                                     取消
                                 </Button>
                                 <Button
@@ -70,6 +106,20 @@ const DiaryList = ({ handleOpenDiaryDetail }) => {
                                             setOpenNewDiaryModal(false);
                                             setNewDiaryTitle('');
                                         });
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '输入文本',
+                                                object: '新建反思日志标题输入框',
+                                                result: '新建反思日志',
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知评价&认知监控',
+                                                    otherContext: null,
+                                                    taskContext: '反思日志：' + newDiaryTitle
+                                                }
+                                            })
+                                        );
                                     }}
                                 >
                                     确认
@@ -97,6 +147,20 @@ const DiaryList = ({ handleOpenDiaryDetail }) => {
                     dispatch(getDiaryById(id)).then(() => {
                         handleOpenDiaryDetail();
                     });
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '点击按钮',
+                            object: '表格详情按钮',
+                            result: '编辑反思日志 id：' + id,
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知评价&认知监控',
+                                otherContext: null,
+                                taskContext: '反思日志编辑'
+                            }
+                        })
+                    );
                 }}
                 renderTags={'tags'}
                 sx={{
