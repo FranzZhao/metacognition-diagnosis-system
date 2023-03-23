@@ -9,6 +9,9 @@ import HubIcon from '@mui/icons-material/Hub';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import Tooltip from '@mui/material/Tooltip';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { getAction } from '@/store/slices';
 
 const buttonSize = '24px';
 const buttonRadius = '12px';
@@ -91,6 +94,9 @@ interface BottomToolBarProps {
 }
 
 const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) => {
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
+
     return (
         <Toolbar
             sx={{
@@ -114,7 +120,23 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
             <Tooltip title="学习管理小工具" placement="top" arrow>
                 <OrangeCircleToolIconButton
                     sx={{ ml: 'auto' }}
-                    onClick={() => handleOpenToolCared('learningManagementTool')}
+                    onClick={() => {
+                        handleOpenToolCared('learningManagementTool');
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '嵌入式学习工具-学习管理',
+                                result: '进入学习管理工具小窗口',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '计划、监控、调节',
+                                    otherContext: null,
+                                    taskContext: null
+                                }
+                            })
+                        );
+                    }}
                 >
                     <EventIcon sx={{ fontSize: '16px' }} />
                 </OrangeCircleToolIconButton>
@@ -122,7 +144,23 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
             <Tooltip title="知识地图小工具" placement="top" arrow>
                 <GreenCircleToolIconButton
                     sx={{ ml: 3 }}
-                    onClick={() => handleOpenToolCared('knowledgeMapTool')}
+                    onClick={() => {
+                        handleOpenToolCared('knowledgeMapTool');
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '嵌入式学习工具-知识地图',
+                                result: '进入知识地图工具小窗口',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '知识表征、组织与管理',
+                                    otherContext: null,
+                                    taskContext: null
+                                }
+                            })
+                        );
+                    }}
                 >
                     <HubIcon sx={{ fontSize: '16px' }} />
                 </GreenCircleToolIconButton>
@@ -130,7 +168,23 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
             <Tooltip title="知识标签小工具" placement="top" arrow>
                 <YellowCircleToolIconButton
                     sx={{ ml: 3 }}
-                    onClick={() => handleOpenToolCared('knowledgeTagTool')}
+                    onClick={() => {
+                        handleOpenToolCared('knowledgeTagTool');
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '嵌入式学习工具-知识标签',
+                                result: '进入知识标签工具小窗口',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '知识管理、知识梳理',
+                                    otherContext: null,
+                                    taskContext: null
+                                }
+                            })
+                        );
+                    }}
                 >
                     <LocalOfferIcon sx={{ fontSize: '16px' }} />
                 </YellowCircleToolIconButton>
@@ -138,7 +192,23 @@ const BottomToolBar: React.FC<BottomToolBarProps> = ({ handleOpenToolCared }) =>
             <Tooltip title="知识笔记小工具" placement="top" arrow>
                 <RedCircleToolIconButton
                     sx={{ ml: 3 }}
-                    onClick={() => handleOpenToolCared('knowledgeNoteTool')}
+                    onClick={() => {
+                        handleOpenToolCared('knowledgeNoteTool');
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '嵌入式学习工具-知识笔记',
+                                result: '进入知识标签工具小窗口',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '知识表征、逻辑梳理',
+                                    otherContext: null,
+                                    taskContext: null
+                                }
+                            })
+                        );
+                    }}
                 >
                     <NoteAltIcon sx={{ fontSize: '16px' }} />
                 </RedCircleToolIconButton>

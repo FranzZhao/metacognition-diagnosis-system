@@ -21,6 +21,9 @@ import { routes } from '@/utils/routers';
 import userBg from '@/assets/img/userBg.jpg';
 import logo from '@/assets/img/logo.png';
 import franz from '@/assets/img/Franz.png';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { addNewNote, getAction } from '@/store/slices';
 
 const drawerWidth = 220;
 
@@ -108,6 +111,8 @@ const CustomLink = ({ to, open, icon, name, selected, ...props }) => {
 };
 
 const Drawer = ({ open, handleChangeDrawerOpenState }) => {
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const theme = useTheme();
     const location = useLocation();
     // 当前所在的导航item
@@ -219,7 +224,26 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
                                 placement="right"
                                 arrow
                             >
-                                <ListItem disablePadding sx={{ display: 'block' }}>
+                                <ListItem
+                                    disablePadding
+                                    sx={{ display: 'block' }}
+                                    onClick={() => {
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '打开页面',
+                                                object: route.name,
+                                                result: '进入页面：' + route.name,
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: null,
+                                                    otherContext: null,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
+                                    }}
+                                >
                                     <CustomLink
                                         to={route.path}
                                         open={open}
@@ -261,7 +285,26 @@ const Drawer = ({ open, handleChangeDrawerOpenState }) => {
                                 )}
                                 {/* 页面导航项 */}
                                 <Tooltip title={open ? '' : route.name} placement="right" arrow>
-                                    <ListItem disablePadding sx={{ display: 'block' }}>
+                                    <ListItem
+                                        disablePadding
+                                        sx={{ display: 'block' }}
+                                        onClick={() => {
+                                            dispatch(
+                                                getAction({
+                                                    actor: currentActor,
+                                                    verb: '打开页面',
+                                                    object: route.name,
+                                                    result: '进入页面：' + route.name,
+                                                    time: '',
+                                                    context: {
+                                                        cognitiveContext: null,
+                                                        otherContext: null,
+                                                        taskContext: null
+                                                    }
+                                                })
+                                            );
+                                        }}
+                                    >
                                         <CustomLink
                                             to={route.path}
                                             open={open}

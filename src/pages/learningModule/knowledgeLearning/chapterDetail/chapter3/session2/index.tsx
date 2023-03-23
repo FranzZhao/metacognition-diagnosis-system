@@ -13,10 +13,12 @@ import { updateChapterLearningProcess } from '@/store/slices';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
+import Button from '@mui/material/Button';
 
 const Chapter3Session2 = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
     const [number, setNumber] = useState<number | number[]>(parseInt(ChapterInfoList[7].progress));
@@ -53,6 +55,20 @@ const Chapter3Session2 = () => {
                                 metacognitivePrompt({
                                     promptType: '认知监控-学习过程监控',
                                     currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认知提示 id：' + currentMsgID,
+                                    result: '弹出元认知提示：认知监控-学习过程监控',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知监控',
+                                        otherContext: null,
+                                        taskContext: '认知监控-学习过程监控'
+                                    }
                                 })
                             );
                         }}
@@ -168,6 +184,20 @@ const Chapter3Session2 = () => {
                                             currentMsgID: currentMsgID
                                         })
                                     );
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '弹出提示框',
+                                            object: '元认知提示 id：' + currentMsgID,
+                                            result: '弹出元认知提示：认知调节-学习过程监控',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知调节',
+                                                otherContext: null,
+                                                taskContext: '认知调节-学习过程监控'
+                                            }
+                                        })
+                                    );
                                 }}
                             >
                                 <HelpIcon fontSize="inherit" />
@@ -184,6 +214,26 @@ const Chapter3Session2 = () => {
                     max={100}
                     size="small"
                 />
+                <Button
+                    onClick={() => {
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '按钮：保存进度按钮',
+                                result: '对当前学习进度进行调控',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '认知监控',
+                                    otherContext: null,
+                                    taskContext: '学习进度：' + number
+                                }
+                            })
+                        );
+                    }}
+                >
+                    保存进度
+                </Button>
             </Paper>
         </Box>
     );

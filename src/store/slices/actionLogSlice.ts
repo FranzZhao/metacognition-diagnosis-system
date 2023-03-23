@@ -1,5 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+const getDate = () => {
+    let date = new Date();
+    let y = date.getFullYear();
+    let m = (date.getMonth() + 1 + '').padStart(2, '0');
+    let d = date.getDate().toString().padStart(2, '0');
+    let h = date.getHours().toString().padStart(2, '0');
+    let min = date.getMinutes().toString().padStart(2, '0');
+    let s = date.getSeconds().toString().padStart(2, '0');
+    return `${y}/${m}/${d} ${h}:${min}:${s}`;
+};
+
 interface ContextProps {
     cognitiveContext: string | null;
     taskContext: string | null;
@@ -36,7 +47,7 @@ export const ActionLogSlice = createSlice({
     extraReducers: {
         [getAction.fulfilled.type]: (state, action) => {
             let totalActions = state.actions;
-            totalActions.push(action.payload);
+            totalActions.push({ ...action.payload, time: getDate() });
         }
     }
 });

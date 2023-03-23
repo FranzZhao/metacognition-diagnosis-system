@@ -10,8 +10,12 @@ import learningBG from '@/assets/img/learning-bg.jpg';
 // custom components
 import ChapterList from './chapterList';
 import ChapterDetail from './chapterDetail';
-
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { getAction } from '@/store/slices';
 const KnowledgeLearning = () => {
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const [isChapterDetail, setIsChapterDetail] = useState(false);
     const [openSession, setOpenSession] = useState<any>();
 
@@ -48,7 +52,23 @@ const KnowledgeLearning = () => {
                                 variant="contained"
                                 size="small"
                                 disableElevation
-                                onClick={() => setIsChapterDetail(false)}
+                                onClick={() => {
+                                    setIsChapterDetail(false);
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：返回章节列表',
+                                            result: '退出章节学习',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知学习',
+                                                otherContext: null,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 返回列表
                             </Button>

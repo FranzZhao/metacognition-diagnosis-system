@@ -144,7 +144,7 @@ const LearningPortfolio = () => {
                 totalNotes + totalMap + totalNodes + totalLinks + totalDiary;
         });
         setTagPieChart(tagValueList);
-        console.log(tagValueList);
+        // console.log(tagValueList);
     }, [tagList, mapList, noteList, diaryList]);
 
     // 知识地图统计

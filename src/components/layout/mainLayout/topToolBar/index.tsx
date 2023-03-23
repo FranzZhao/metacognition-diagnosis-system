@@ -17,8 +17,7 @@ import franz from '@/assets/img/Franz.png';
 import bot1 from '@/assets/img/ai.png';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { AgentSlice, changeCurrentTheme } from '@/store/slices';
-import { setCurrentOpenAgentMsg } from '@/store/slices';
+import { AgentSlice, changeCurrentTheme, setCurrentOpenAgentMsg, getAction } from '@/store/slices';
 
 const buttonSize = '32px';
 
@@ -45,6 +44,7 @@ const AvatarToolIconButton = styled(MuiButton)(({ theme }) => ({
 
 const TopToolBar = () => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const theme = useTheme();
     const currentTheme = useAppSelector((state) => state.system.currentTheme);
     const agentMsgList = useAppSelector((state) => state.agent.msgList);
@@ -103,7 +103,26 @@ const TopToolBar = () => {
                 {/* <GreenToolIconButton sx={{ ml: 'auto' }}>
                     <QuestionAnswerIcon sx={{ fontSize: '18px' }} />
                 </GreenToolIconButton> */}
-                <AvatarToolIconButton sx={{ ml: 'auto' }} onClick={handleOpenMenu}>
+                <AvatarToolIconButton
+                    sx={{ ml: 'auto' }}
+                    onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                        handleOpenMenu(event);
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '元认知提示按钮',
+                                result: '打开元认知提示信息栏',
+                                time: '',
+                                context: {
+                                    cognitiveContext: null,
+                                    otherContext: '当前已有的提示信息条数：' + AgentMsg.length,
+                                    taskContext: '查看元认知提示的历史信息'
+                                }
+                            })
+                        );
+                    }}
+                >
                     <Avatar
                         src={bot1}
                         sx={{
@@ -215,6 +234,20 @@ const TopToolBar = () => {
                                     setOpenAgent(true);
                                     // setCurrentOpenAgentId(msg.id);
                                     dispatch(setCurrentOpenAgentMsg(msg));
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击消息栏',
+                                            object: '消息提示信息栏 AgentMsgID: ' + msg.id,
+                                            result: '查看元认知提示信息',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: msg.msgTitle,
+                                                otherContext: null,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
                                 }}
                             />
                         </Box>

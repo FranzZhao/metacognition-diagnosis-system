@@ -13,6 +13,9 @@ import Task2 from './task2';
 import Task3 from './task3';
 // img
 import learningBG from '@/assets/img/learning-bg.jpg';
+// redux
+import { useAppDispatch, useAppSelector } from '@/store';
+import { addNewNote, getAction } from '@/store/slices';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -22,6 +25,8 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
     const { children, value, index, ...other } = props;
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
 
     return (
         <div
@@ -48,6 +53,8 @@ function a11yProps(index: number) {
 }
 
 export default function LearningTask() {
+    const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const [step, setStep] = React.useState(0);
     // 选择的任务内容
     const [selectedTask, setSelectedTask] = useState('');
@@ -87,6 +94,22 @@ export default function LearningTask() {
                                     </Box>
                                 }
                                 {...a11yProps(0)}
+                                onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：任务分析与选择',
+                                            result: '进行任务分析与选择学习任务',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知任务',
+                                                otherContext: null,
+                                                taskContext: '任务分析与选择'
+                                            }
+                                        })
+                                    );
+                                }}
                             />
                             {/* DesignServicesIcon */}
                             <Tab
@@ -97,6 +120,22 @@ export default function LearningTask() {
                                     </Box>
                                 }
                                 {...a11yProps(1)}
+                                onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：任务解决方案撰写',
+                                            result: '进行任务解决方案撰写任务',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知任务',
+                                                otherContext: null,
+                                                taskContext: '任务解决方案撰写'
+                                            }
+                                        })
+                                    );
+                                }}
                             />
                             <Tab
                                 label={
@@ -106,6 +145,22 @@ export default function LearningTask() {
                                     </Box>
                                 }
                                 {...a11yProps(2)}
+                                onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮：方案评价与迭代',
+                                            result: '进行方案评价与迭代任务',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知任务',
+                                                otherContext: null,
+                                                taskContext: '方案评价与迭代'
+                                            }
+                                        })
+                                    );
+                                }}
                             />
                         </Tabs>
                     </Box>

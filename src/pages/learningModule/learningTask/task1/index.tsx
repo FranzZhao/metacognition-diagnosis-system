@@ -10,7 +10,7 @@ import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { saveTaskAnalysis, updateTaskSelect } from '@/store/slices';
+import { saveTaskAnalysis, updateTaskSelect, getAction } from '@/store/slices';
 import { Button } from '@mui/material';
 // agent help
 import Tooltip from '@mui/material/Tooltip';
@@ -27,6 +27,7 @@ const task2 =
 const Task1 = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentTask = useAppSelector((state) => state.learningTask.taskContent);
     const currentTaskAnalysis = useAppSelector((state) => state.learningTask.taskAnalysis);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
@@ -93,6 +94,22 @@ const Task1 = () => {
                                 {task1}
                             </Typography>
                         }
+                        onClick={() => {
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '点击单选项',
+                                    object: '单选项：任务1',
+                                    result: '选择任务1',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知任务分析',
+                                        otherContext: null,
+                                        taskContext: task1
+                                    }
+                                })
+                            );
+                        }}
                     />
                     <Divider sx={{ margin: '10px 0' }} />
                     <FormControlLabel
@@ -104,6 +121,22 @@ const Task1 = () => {
                                 {task2}
                             </Typography>
                         }
+                        onClick={() => {
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '点击单选项',
+                                    object: '单选项：任务2',
+                                    result: '选择任务2',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知任务分析',
+                                        otherContext: null,
+                                        taskContext: task2
+                                    }
+                                })
+                            );
+                        }}
                     />
                 </RadioGroup>
             </FormControl>
@@ -117,6 +150,20 @@ const Task1 = () => {
                         disableElevation
                         onClick={() => {
                             dispatch(saveTaskAnalysis(taskAnalysis));
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '输入文本',
+                                    object: '任务分析文本框',
+                                    result: '撰写任务情境分析',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知任务分析',
+                                        otherContext: null,
+                                        taskContext: taskAnalysis
+                                    }
+                                })
+                            );
                         }}
                     >
                         保存任务分析
@@ -151,6 +198,20 @@ const Task1 = () => {
                                     currentMsgID: currentMsgID
                                 })
                             );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知计划-任务初步分析',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知计划',
+                                        otherContext: null,
+                                        taskContext: '认知计划-任务初步分析'
+                                    }
+                                })
+                            );
                         }}
                     >
                         <HelpIcon fontSize="inherit" />
@@ -165,6 +226,20 @@ const Task1 = () => {
                                 metacognitivePrompt({
                                     promptType: '认知评价-任务分析更新',
                                     currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知评价-任务分析更新',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知评价',
+                                        otherContext: null,
+                                        taskContext: '认知评价-任务分析更新'
+                                    }
                                 })
                             );
                         }}
@@ -183,6 +258,20 @@ const Task1 = () => {
                                     currentMsgID: currentMsgID
                                 })
                             );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知调节-任务分析更新',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知调节',
+                                        otherContext: null,
+                                        taskContext: '认知调节-任务分析更新'
+                                    }
+                                })
+                            );
                         }}
                     >
                         <HelpIcon fontSize="inherit" />
@@ -197,6 +286,20 @@ const Task1 = () => {
                                 metacognitivePrompt({
                                     promptType: '认知计划-任务分析更新',
                                     currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知计划-任务分析更新',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知计划',
+                                        otherContext: null,
+                                        taskContext: '认知计划-任务分析更新'
+                                    }
                                 })
                             );
                         }}

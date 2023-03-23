@@ -19,7 +19,7 @@ import Box from '@mui/material/Box';
 import { CELearningProcessMonitoringXML } from '@/utils/agentXML/cognitiveEvaluation/learningProcessMonitoring';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { savePromptAnswer } from '@/store/slices';
+import { savePromptAnswer, getAction } from '@/store/slices';
 
 interface AgentMsgStep {
     step: string;
@@ -30,6 +30,7 @@ interface AgentMsgStep {
 
 const AgentCard = ({ msg, open, handleClose }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentPromptId = useAppSelector((state) => state.agent.currentMsg)?.id;
     const theme = useTheme();
     // const [open, setOpen] = useState(false);
@@ -100,7 +101,23 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                         maxWidth: '24px',
                                         maxHeight: '24px'
                                     }}
-                                    onClick={handleClose}
+                                    onClick={() => {
+                                        handleClose();
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '点击按钮',
+                                                object: '按钮: 元认知提示最小化',
+                                                result: '关闭元认知提示id:' + currentPromptId,
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '元认知活动',
+                                                    otherContext: null,
+                                                    taskContext: null
+                                                }
+                                            })
+                                        );
+                                    }}
                                 >
                                     <RemoveCircleOutlineIcon
                                         sx={{
@@ -180,7 +197,27 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                 color="secondary"
                                 disableElevation
                                 sx={{ ml: 'auto' }}
-                                onClick={stepBack}
+                                onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮: 上一步',
+                                            result: '返回元认知提示的上一步',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '元认知活动',
+                                                otherContext:
+                                                    '返回的信息：' +
+                                                    step[currentStep - 2].promptTitle +
+                                                    '-' +
+                                                    step[currentStep - 2].promptContent,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
+                                    stepBack();
+                                }}
                             >
                                 上一步
                             </Button>
@@ -202,6 +239,21 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                             msgList: step
                                         })
                                     );
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '按钮: 完成',
+                                            result: '完成元认知提示id:' + currentPromptId,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '元认知活动',
+                                                otherContext:
+                                                    '回复内容：' + step[currentStep - 1].answer,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
                                 }}
                             >
                                 完成
@@ -213,7 +265,26 @@ const AgentCard = ({ msg, open, handleClose }) => {
                                 color="secondary"
                                 disableElevation
                                 sx={{ ml: 'auto' }}
-                                onClick={nextStep}
+                                onClick={() => {
+                                    nextStep();
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '输入文本',
+                                            object: '元认知提问',
+                                            result: '完成第' + currentStep + '步的元认知提示回答',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '元认知活动',
+                                                otherContext:
+                                                    '回复内容：' + step[currentStep - 1].answer,
+                                                taskContext:
+                                                    '元认知提问：' +
+                                                    step[currentStep - 1].promptContent
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 下一步
                             </Button>

@@ -14,10 +14,11 @@ import { mockScaleList } from '@/utils/mock';
 import { TextField } from '@mui/material';
 // redux
 import { useAppDispatch, useAppSelector } from '@/store';
-import { addScale, openScaleById } from '@/store/slices';
+import { addScale, openScaleById, getAction } from '@/store/slices';
 
 const ScaleList = ({ handleOpenDetail }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const scaleList = useAppSelector((state) => state.learningTask.scaleList);
     // 查看量规-模态框
     const [isOpenScaleModal, setIsOpenScaleModal] = useState(false);
@@ -35,6 +36,20 @@ const ScaleList = ({ handleOpenDetail }) => {
                         sx={{ '&:hover': { cursor: 'pointer' } }}
                         onClick={() => {
                             setIsOpenScaleModal(true);
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '点击按钮',
+                                    object: '按钮：查看方案评价量表',
+                                    result: '在模态框中查看任务解决方案的评价量表',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知评价',
+                                        otherContext: null,
+                                        taskContext: '任务评价与迭代'
+                                    }
+                                })
+                            );
                         }}
                     >
                         点击此处查看评价量表
@@ -60,6 +75,20 @@ const ScaleList = ({ handleOpenDetail }) => {
                             size="small"
                             onClick={() => {
                                 setIsNewAssessment(true);
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：新建评价方案',
+                                        result: '打开创建新评价方案的模态框',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext: null,
+                                            taskContext: '任务评价与迭代'
+                                        }
+                                    })
+                                );
                             }}
                         >
                             创建新的评价
@@ -80,6 +109,22 @@ const ScaleList = ({ handleOpenDetail }) => {
                     dispatch(openScaleById(id)).then(() => {
                         handleOpenDetail();
                     });
+                    dispatch(
+                        getAction({
+                            actor: currentActor,
+                            verb: '点击表格按钮',
+                            object: '按钮：详情',
+                            result: '查看评价方案 id：' + id,
+                            time: '',
+                            context: {
+                                cognitiveContext: '认知评价',
+                                otherContext:
+                                    '评价方案标题：' +
+                                    scaleList.filter((list) => list.id === id)[0].title,
+                                taskContext: '任务评价与迭代'
+                            }
+                        })
+                    );
                     // console.log(id);
                 }}
                 // hasActions={
@@ -127,6 +172,20 @@ const ScaleList = ({ handleOpenDetail }) => {
                                 dispatch(addScale(newAssessmentTitle)).then((res: any) => {
                                     setIsNewAssessment(false);
                                 });
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：确认',
+                                        result: '确认建立新的评价方案',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext: '评价方案标题：' + newAssessmentTitle,
+                                            taskContext: '任务评价与迭代'
+                                        }
+                                    })
+                                );
                             }}
                         >
                             确认
@@ -134,7 +193,23 @@ const ScaleList = ({ handleOpenDetail }) => {
                         <Button
                             color="secondary"
                             size="small"
-                            onClick={() => setIsNewAssessment(false)}
+                            onClick={() => {
+                                setIsNewAssessment(false);
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击按钮',
+                                        object: '按钮：取消',
+                                        result: '取消建立新的评价方案',
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知评价',
+                                            otherContext: null,
+                                            taskContext: '任务评价与迭代'
+                                        }
+                                    })
+                                );
+                            }}
                         >
                             取消
                         </Button>

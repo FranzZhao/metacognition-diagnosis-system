@@ -81,7 +81,7 @@ const KnowledgeTagTool: React.FC<KnowledgeTagToolProps> = ({ handleClose }) => {
                             <KnowledgeTagContent selectedTagContent={selectedTag} />
                         </>
                     ) : (
-                        <Box sx={{ '& *': { position: 'unset' } }}>
+                        <Box sx={{ '& *': { position: 'unset', zIndex: 1 } }}>
                             <KnowledgeTagTree
                                 tagList={tagList}
                                 handleSelectedTag={handleSelectedTag}

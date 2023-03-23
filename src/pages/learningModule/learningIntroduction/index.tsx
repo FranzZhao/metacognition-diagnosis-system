@@ -21,11 +21,12 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const LearningIntroduction = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
 
     return (
@@ -66,6 +67,21 @@ const LearningIntroduction = () => {
                                                 currentMsgID: currentMsgID
                                             })
                                         );
+                                        dispatch(
+                                            getAction({
+                                                actor: currentActor,
+                                                verb: '弹出提示框',
+                                                object: '元认知提示 id：' + currentMsgID,
+                                                result:
+                                                    '弹出元认知提示：' + '认知计划-学习目标设定',
+                                                time: '',
+                                                context: {
+                                                    cognitiveContext: '认知计划',
+                                                    otherContext: null,
+                                                    taskContext: '学习内容概览+学习目标设定'
+                                                }
+                                            })
+                                        );
                                     }}
                                 >
                                     <HelpIcon fontSize="inherit" />
@@ -104,6 +120,22 @@ const LearningIntroduction = () => {
                             <Link
                                 to="/learningManagement"
                                 style={{ fontWeight: 'bold', color: theme.palette.error.main }}
+                                onClick={() => {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击链接',
+                                            object: '跳转链接：学习管理页面',
+                                            result: '从学习概览页面到学习管理页面',
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知计划',
+                                                otherContext: null,
+                                                taskContext: '学习目标设定-初步设定'
+                                            }
+                                        })
+                                    );
+                                }}
                             >
                                 “学习管理&rarr;学习目标”
                             </Link>

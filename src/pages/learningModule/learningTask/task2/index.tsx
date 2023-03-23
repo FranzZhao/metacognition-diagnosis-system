@@ -15,11 +15,12 @@ import { saveProject } from '@/store/slices';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const Task2 = () => {
     const theme = useTheme();
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentTask = useAppSelector((state) => state.learningTask.taskContent);
     const project = useAppSelector((state) => state.learningTask.project);
@@ -36,6 +37,21 @@ const Task2 = () => {
     // 保存文本内容
     const handleSaveProject = () => {
         dispatch(saveProject(diaryContent));
+        // action log
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '输入文本',
+                object: '任务解决方案',
+                result: '保存所撰写的任务解决方案内容',
+                time: '',
+                context: {
+                    cognitiveContext: '认知任务-任务解决方案撰写',
+                    otherContext: '撰写内容：' + diaryContent,
+                    taskContext: currentTask
+                }
+            })
+        );
     };
 
     return (
@@ -73,27 +89,6 @@ const Task2 = () => {
                 >
                     保存方案
                 </Button>
-                <Tooltip title="认知表征-任务方案撰写" arrow>
-                    <IconButton
-                        size="small"
-                        sx={{
-                            position: 'absolute',
-                            zIndex: 2,
-                            right: '120px',
-                            top: '10px'
-                        }}
-                        onClick={() => {
-                            dispatch(
-                                metacognitivePrompt({
-                                    promptType: '认知表征-任务方案撰写',
-                                    currentMsgID: currentMsgID
-                                })
-                            );
-                        }}
-                    >
-                        <HelpIcon fontSize="inherit" />
-                    </IconButton>
-                </Tooltip>
                 <Tooltip title="认知监控-任务解决监控" arrow>
                     <IconButton
                         size="small"
@@ -110,11 +105,61 @@ const Task2 = () => {
                                     currentMsgID: currentMsgID
                                 })
                             );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知监控-任务解决监控',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知监控',
+                                        otherContext: null,
+                                        taskContext: '认知监控-任务解决监控'
+                                    }
+                                })
+                            );
                         }}
                     >
                         <HelpIcon fontSize="inherit" />
                     </IconButton>
                 </Tooltip>
+                <Tooltip title="认知表征-任务方案撰写" arrow>
+                    <IconButton
+                        size="small"
+                        sx={{
+                            position: 'absolute',
+                            zIndex: 2,
+                            right: '120px',
+                            top: '10px'
+                        }}
+                        onClick={() => {
+                            dispatch(
+                                metacognitivePrompt({
+                                    promptType: '认知表征-任务方案撰写',
+                                    currentMsgID: currentMsgID
+                                })
+                            );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认识提示 id: ' + currentMsgID,
+                                    result: '弹出元认知提示：认知表征-任务方案撰写',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知表征',
+                                        otherContext: null,
+                                        taskContext: '认知表征-任务方案撰写'
+                                    }
+                                })
+                            );
+                        }}
+                    >
+                        <HelpIcon fontSize="inherit" />
+                    </IconButton>
+                </Tooltip>
+
                 <Editor
                     tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'}
                     init={{

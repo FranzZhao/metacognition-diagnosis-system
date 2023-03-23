@@ -13,10 +13,11 @@ import { saveScaleById } from '@/store/slices';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const ScaleDetail = ({ handleOpenList }) => {
     const dispatch = useAppDispatch();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const currentScaleId = useAppSelector((state) => state.learningTask.selectScaleId);
     const currentScaleContent = useAppSelector((state) => state.learningTask.scaleList).filter(
@@ -63,6 +64,21 @@ const ScaleDetail = ({ handleOpenList }) => {
                 innovation2: scaleData[10]
             })
         );
+        // action log
+        dispatch(
+            getAction({
+                actor: currentActor,
+                verb: '任务评价',
+                object: '方案评价与迭代',
+                result: '评价标题：' + title + ', 得分：' + total,
+                time: '',
+                context: {
+                    cognitiveContext: '认知评价',
+                    otherContext: null,
+                    taskContext: '认知评价-任务迭代评价'
+                }
+            })
+        );
     };
 
     return (
@@ -89,12 +105,47 @@ const ScaleDetail = ({ handleOpenList }) => {
                                     currentMsgID: currentMsgID
                                 })
                             );
+                            dispatch(
+                                getAction({
+                                    actor: currentActor,
+                                    verb: '弹出提示框',
+                                    object: '元认知提示 id：' + currentMsgID,
+                                    result: '弹出元认知提示：' + '认知评价-任务迭代评价',
+                                    time: '',
+                                    context: {
+                                        cognitiveContext: '认知评价',
+                                        otherContext: null,
+                                        taskContext: '认知评价-任务迭代评价'
+                                    }
+                                })
+                            );
                         }}
                     >
                         <HelpIcon fontSize="inherit" />
                     </IconButton>
                 </Tooltip>
-                <Button sx={{ mr: 1 }} disableElevation size="small" onClick={handleOpenList}>
+                <Button
+                    sx={{ mr: 1 }}
+                    disableElevation
+                    size="small"
+                    onClick={() => {
+                        handleOpenList();
+                        dispatch(
+                            getAction({
+                                actor: currentActor,
+                                verb: '点击按钮',
+                                object: '按钮：返回评价列表',
+                                result: '重新返回方案评价列表',
+                                time: '',
+                                context: {
+                                    cognitiveContext: '认知评价',
+                                    otherContext: null,
+                                    taskContext: '认知评价-任务迭代评价'
+                                }
+                            })
+                        );
+                    }}
+                >
                     返回评价列表
                 </Button>
                 <Button

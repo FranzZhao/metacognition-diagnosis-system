@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import HelpIcon from '@mui/icons-material/Help';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { metacognitivePrompt } from '@/store/slices';
+import { metacognitivePrompt, getAction } from '@/store/slices';
 
 const ItemStyle = {
     display: 'flex',
@@ -24,6 +24,7 @@ const ItemStyle = {
 
 const ChapterList = ({ handleOpenChapterDetail, handleOpenSession }) => {
     const theme = useTheme();
+    const currentActor = useAppSelector((state) => state.actionLog.actor);
     const dispatch = useAppDispatch();
     const currentMsgID = useAppSelector((state) => state.agent.currentId);
     const ChapterInfoList = useAppSelector((state) => state.knowledgeLearning.chapterInfoList);
@@ -54,6 +55,22 @@ const ChapterList = ({ handleOpenChapterDetail, handleOpenSession }) => {
                                                     currentMsgID: currentMsgID
                                                 })
                                             );
+                                            dispatch(
+                                                getAction({
+                                                    actor: currentActor,
+                                                    verb: '弹出提示框',
+                                                    object: '元认知提示 id：' + currentMsgID,
+                                                    result:
+                                                        '弹出元认知提示：' +
+                                                        '认知计划-认知目标更新',
+                                                    time: '',
+                                                    context: {
+                                                        cognitiveContext: '认知计划',
+                                                        otherContext: null,
+                                                        taskContext: '认知计划-认知目标回顾+更新'
+                                                    }
+                                                })
+                                            );
                                         }}
                                     >
                                         <HelpIcon sx={{ color: 'white' }} />
@@ -65,6 +82,20 @@ const ChapterList = ({ handleOpenChapterDetail, handleOpenSession }) => {
                                 onClick={() => {
                                     handleOpenChapterDetail();
                                     handleOpenSession(item);
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击链接',
+                                            object: '章节栏目',
+                                            result: '进入知识学习章节：' + item.title,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知学习活动',
+                                                otherContext: '当前学习进度：' + item.progress,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
                                 }}
                             >
                                 {item.isFinish ? (
@@ -89,6 +120,20 @@ const ChapterList = ({ handleOpenChapterDetail, handleOpenSession }) => {
                             onClick={() => {
                                 handleOpenChapterDetail();
                                 handleOpenSession(item);
+                                dispatch(
+                                    getAction({
+                                        actor: currentActor,
+                                        verb: '点击链接',
+                                        object: '章节栏目',
+                                        result: '进入知识学习章节：' + item.title,
+                                        time: '',
+                                        context: {
+                                            cognitiveContext: '认知学习活动',
+                                            otherContext: '当前学习进度：' + item.progress,
+                                            taskContext: null
+                                        }
+                                    })
+                                );
                             }}
                         >
                             {item.isFinish ? (
