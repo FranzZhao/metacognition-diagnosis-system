@@ -11,6 +11,7 @@ import MenuBookIcon from '@mui/icons-material/MenuBook'; // 认知条件提示
 import TrackChangesIcon from '@mui/icons-material/TrackChanges'; // 认知标准提示
 import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects'; // 认知制品提示
 import SquareFootIcon from '@mui/icons-material/SquareFoot'; // 认知评价提示
+import AddchartIcon from '@mui/icons-material/Addchart';
 
 interface AgentMsgProps {
     msg: any;
@@ -23,24 +24,29 @@ const AgentMsg: React.FC<AgentMsgProps> = ({ msg, handleClickItem }) => {
     return (
         <MenuItem onClick={handleClickItem}>
             <ListItemIcon>
-                {msg.id % 4 === 0 && (
-                    <Avatar sx={{ background: theme.palette.error.main }}>
-                        <SquareFootIcon fontSize="small" />
+                {msg.msgTitle.search('认知监控') !== -1 && (
+                    <Avatar sx={{ background: theme.palette.warning.main }}>
+                        <AddchartIcon fontSize="small" />
                     </Avatar>
                 )}
-                {msg.id % 4 === 1 && (
-                    <Avatar sx={{ background: theme.palette.primary.main }}>
+                {msg.msgTitle.search('认知调节') !== -1 && (
+                    <Avatar sx={{ background: theme.palette.error.main }}>
                         <MenuBookIcon fontSize="small" />
                     </Avatar>
                 )}
-                {msg.id % 4 === 2 && (
-                    <Avatar sx={{ background: theme.palette.secondary.main }}>
+                {msg.msgTitle.search('认知计划') !== -1 && (
+                    <Avatar sx={{ background: theme.palette.primary.main }}>
                         <TrackChangesIcon fontSize="small" />
                     </Avatar>
                 )}
-                {msg.id % 4 === 3 && (
-                    <Avatar sx={{ background: theme.palette.success.main }}>
+                {msg.msgTitle.search('认知表征') !== -1 && (
+                    <Avatar sx={{ background: theme.palette.secondary.main }}>
                         <EmojiObjectsIcon fontSize="small" />
+                    </Avatar>
+                )}
+                {msg.msgTitle.search('认知评价') !== -1 && (
+                    <Avatar sx={{ background: theme.palette.success.main }}>
+                        <SquareFootIcon fontSize="small" />
                     </Avatar>
                 )}
             </ListItemIcon>
