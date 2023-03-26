@@ -5,12 +5,13 @@ import TextFiled from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 // redux
-import { useAppDispatch } from '@/store';
+import { useAppDispatch, useAppSelector } from '@/store';
 import { setNewAgentMsg } from '@/store/slices';
 import json from './test.json';
 
 const LoginPage = () => {
     const dispatch = useAppDispatch();
+    const xAPI = useAppSelector((state) => state.actionLog.actions);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -19,22 +20,10 @@ const LoginPage = () => {
             <Button
                 variant="contained"
                 onClick={() => {
-                    dispatch(setNewAgentMsg());
+                    console.log(xAPI);
                 }}
             >
-                新增msg
-            </Button>
-            <Button
-                variant="contained"
-                onClick={() => {
-                    // alert('json测试')'
-                    console.log(json);
-                    // fetch('./test.json')
-                    //     .then((response) => response.json())
-                    //     .then((json) => console.log(json));
-                }}
-            >
-                操作行为写入json测试
+                输出行为json
             </Button>
             <Paper sx={{ p: '10px 20px', width: '450px' }}>
                 <Typography

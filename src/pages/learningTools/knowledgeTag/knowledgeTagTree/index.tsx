@@ -207,28 +207,39 @@ const KnowledgeTagTree: React.FC<KnowledgeTagTreeProps> = ({
                             size="small"
                             disableElevation
                             onClick={() => {
-                                dispatch(
-                                    getAction({
-                                        actor: currentActor,
-                                        verb: '点击按钮',
-                                        object: '添加知识标签',
-                                        result: '添加新的知识标签:' + newTag.labelText,
-                                        time: '',
-                                        context: {
-                                            cognitiveContext: '认知表征',
-                                            otherContext: null,
-                                            taskContext: null
-                                        }
-                                    })
-                                );
-                                dispatch(addNewTag(newTag)).then(() => {
-                                    setIsAddNewTag(false);
-                                    setNewTag({
-                                        labelText: '',
-                                        parentID: '',
-                                        content: ''
-                                    });
+                                // 必须判定新添加的tag不是已有的
+                                let isExist = false;
+                                currentTagList.map((tag) => {
+                                    if (tag.labelText === newTag.labelText) {
+                                        isExist = true;
+                                    }
                                 });
+                                if (!isExist) {
+                                    dispatch(
+                                        getAction({
+                                            actor: currentActor,
+                                            verb: '点击按钮',
+                                            object: '添加知识标签',
+                                            result: '添加新的知识标签:' + newTag.labelText,
+                                            time: '',
+                                            context: {
+                                                cognitiveContext: '认知表征',
+                                                otherContext: null,
+                                                taskContext: null
+                                            }
+                                        })
+                                    );
+                                    dispatch(addNewTag(newTag)).then(() => {
+                                        setIsAddNewTag(false);
+                                        setNewTag({
+                                            labelText: '',
+                                            parentID: '',
+                                            content: ''
+                                        });
+                                    });
+                                } else {
+                                    alert('标签名称不能重复！');
+                                }
                             }}
                         >
                             确认

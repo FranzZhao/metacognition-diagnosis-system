@@ -56,6 +56,7 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
             // 知识笔记
             let tagItems: any[] = [];
             notesInfo.map((note) => {
+                console.log(note);
                 if (note.tags.includes(tag)) {
                     tagItems.push({
                         id: num,
@@ -76,29 +77,29 @@ const KnowledgeTagContent: React.FC<KnowledgeTagContentProps> = ({ selectedTagCo
                         time: map.time
                     });
                     num += 1;
-                    map.nodes.map((node) => {
-                        if (node.extraInfo.tags.includes(tag)) {
-                            tagItems.push({
-                                id: num,
-                                title: node.name,
-                                type: ['知识节点'],
-                                time: '无'
-                            });
-                            num += 1;
-                        }
-                    });
-                    map.links.map((link) => {
-                        if (link.extraInfo.tags.includes(tag)) {
-                            tagItems.push({
-                                id: num,
-                                title: link.value,
-                                type: ['知识关联'],
-                                time: '无'
-                            });
-                            num += 1;
-                        }
-                    });
                 }
+                map.nodes.map((node) => {
+                    if (node.extraInfo.tags.includes(tag)) {
+                        tagItems.push({
+                            id: num,
+                            title: node.name,
+                            type: ['知识节点'],
+                            time: '无'
+                        });
+                        num += 1;
+                    }
+                });
+                map.links.map((link) => {
+                    if (link.extraInfo.tags.includes(tag)) {
+                        tagItems.push({
+                            id: num,
+                            title: link.value,
+                            type: ['知识关联'],
+                            time: '无'
+                        });
+                        num += 1;
+                    }
+                });
             });
             // 反思日志
             diariesInfo.map((diary) => {

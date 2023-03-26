@@ -23,7 +23,17 @@ const persistConfig = {
     storage, // 数据保存方法: local-storage(默认) || session-storage
     whitelist: [
         // 白名单, 指明保存的store中的特定数据
-        'user' // 保存user信息(jwt), 暂不持久化
+        // 'user' // 保存user信息(jwt), 暂不持久化
+        'todoList',
+        'agent',
+        'knowledgeLearning',
+        'learningTask',
+        'knowledgeNote',
+        'knowledgeTag',
+        'learningObject',
+        'diary',
+        'map',
+        'actionLog'
     ]
 };
 

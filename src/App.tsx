@@ -1,5 +1,5 @@
 import { lazy } from 'react';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import type { RouteObject } from 'react-router-dom';
 import { Outlet, Link, useRoutes, useParams, useNavigate } from 'react-router-dom';
 import MainLayout from './components/layout/mainLayout';
@@ -7,6 +7,7 @@ import { Box, Button } from '@mui/material';
 import { routes } from './utils/routers';
 
 export default function App() {
+
     // let routes: RouteObject[] = [
     //     {
     //         path: '/',

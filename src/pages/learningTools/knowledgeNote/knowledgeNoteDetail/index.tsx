@@ -177,7 +177,7 @@ const KnowledgeNoteDetail: React.FC<KnowledgeNoteDetailProps> = ({ handleOpenNot
                                     // extraFeature: extraFeature,
                                     content: text
                                 };
-                                console.log(noteInfo);
+                                // console.log(noteInfo);
                                 dispatch(saveNoteById(noteInfo));
                                 dispatch(
                                     getAction({
