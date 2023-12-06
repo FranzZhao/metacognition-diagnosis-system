@@ -859,7 +859,12 @@
         "time": "2023/03/24 11:25:59",
         "context": {
             "cognitiveContext": "认知表征",
-            "otherContext": null,
+            "otherContext": {
+                "简介": "采用系统、结构与层次的关键研究人类社会系统，是与还原论不同的哲学认识论",
+                "标签": [
+                    "复杂系统科学"
+                ]
+            },
             "taskContext": null
         }
     },

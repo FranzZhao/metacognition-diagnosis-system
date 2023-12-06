@@ -137,7 +137,7 @@ const AgentCard = ({ msg, open, handleClose }) => {
                         sx={{
                             mb: '10px',
                             pt: '0px',
-                            height: '105px',
+                            height: '115px',
                             overflowY: 'overlay',
                             '&::-webkit-scrollbar': {
                                 width: 5

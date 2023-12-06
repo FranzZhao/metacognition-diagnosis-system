@@ -186,7 +186,7 @@ const TopToolBar = () => {
                             transform: 'translateY(-50%) rotate(45deg)',
                             zIndex: 0
                         },
-                        maxHeight: '300px',
+                        maxHeight: '240px',
                         width: '200px',
                         overflowY: 'overlay',
                         '&::-webkit-scrollbar': {
